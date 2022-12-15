@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 25 Nov 2022 05:03:13 +0800
+Subject: [PATCH] Advancements matches environment
+
+
+diff --git a/src/main/java/net/minecraft/advancements/critereon/LocationPredicate.java b/src/main/java/net/minecraft/advancements/critereon/LocationPredicate.java
+index 950c4b185afac42ab1c921456a3da52a246ecaf7..cb6a91a2b5767ad027582d6627e84c50b53e104c 100644
+--- a/src/main/java/net/minecraft/advancements/critereon/LocationPredicate.java
++++ b/src/main/java/net/minecraft/advancements/critereon/LocationPredicate.java
+@@ -30,6 +30,7 @@ public class LocationPredicate {
+     private final ResourceKey<Structure> structure;
+     @Nullable
+     private final ResourceKey<Level> dimension;
++    @Nullable private final org.bukkit.World.Environment environment; // KioCG
+     @Nullable
+     private final Boolean smokey;
+     private final LightPredicate light;
+@@ -43,6 +44,7 @@ public class LocationPredicate {
+         this.biome = biome;
+         this.structure = feature;
+         this.dimension = dimension;
++        this.environment = dimension != null ? this.getEnvironment(dimension) : null; // KioCG
+         this.smokey = smokey;
+         this.light = light;
+         this.block = block;
+@@ -72,7 +74,7 @@ public class LocationPredicate {
+             return false;
+         } else if (!this.z.matches(z)) {
+             return false;
+-        } else if (this.dimension != null && this.dimension != world.dimension()) {
++        } else if (this.dimension != null && this.dimension != world.dimension() && (this.environment == org.bukkit.World.Environment.CUSTOM || this.environment != world.getWorld().getEnvironment())) { // KioCG
+             return false;
+         } else {
+             BlockPos blockPos = new BlockPos(x, y, z);
+@@ -240,4 +242,20 @@ public class LocationPredicate {
+             return new LocationPredicate(this.x, this.y, this.z, this.biome, this.structure, this.dimension, this.smokey, this.light, this.block, this.fluid);
+         }
+     }
++
++    // KioCG start
++    private org.bukkit.World.Environment getEnvironment(ResourceKey<Level> dimension) {
++        String path = dimension.location().getPath();
++        if ("overworld".equals(path)) {
++            return org.bukkit.World.Environment.NORMAL;
++        }
++        if ("the_nether".equals(path)) {
++            return org.bukkit.World.Environment.NETHER;
++        }
++        if ("the_end".equals(path)) {
++            return org.bukkit.World.Environment.THE_END;
++        }
++        return org.bukkit.World.Environment.CUSTOM;
++    }
++    // KioCG stop
+ }

@@ -1,0 +1,142 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Tue, 13 Dec 2022 21:02:02 +0800
+Subject: [PATCH] New agricultural system
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/CropBlock.java b/src/main/java/net/minecraft/world/level/block/CropBlock.java
+index 74620e6aee75334498d903c616c090caa615f0b4..54b36603e16a75ba51ee7348cfc7762365490997 100644
+--- a/src/main/java/net/minecraft/world/level/block/CropBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/CropBlock.java
+@@ -70,6 +70,7 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
+ 
+     @Override
+     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
++        BlockState belowState = world.getBlockState(pos.below()); if (belowState.is(Blocks.FARMLAND)) // KioCG - 农业拓展
+         if (world.getRawBrightness(pos, 0) >= 9) {
+             int i = this.getAge(state);
+ 
+@@ -90,7 +91,14 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
+ 
+                 if (random.nextFloat() < (modifier / (100.0f * (Math.floor((25.0F / f) + 1))))) { // Spigot - SPIGOT-7159: Better modifier resolution
+                     // Spigot end
++                    boolean canGrow = // KioCG
+                     CraftEventFactory.handleBlockGrowEvent(world, pos, this.getStateForAge(i + 1), 2); // CraftBukkit
++                    // KioCG start - 农业拓展
++                    if (canGrow) {
++                        int moisture = (Integer) belowState.getValue(FarmBlock.MOISTURE);
++                        if (moisture > 0) CraftEventFactory.handleMoistureChangeEvent(world, pos.below(), belowState.setValue(FarmBlock.MOISTURE, moisture - 1), 2);
++                    }
++                    // KioCG end - 农业拓展
+                 }
+             }
+         }
+diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
+index 7068cb39ab264fa0c65febff01236b8de564b883..43aabe9d9c0ac99c8470422199ffac5a8de0083a 100644
+--- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
+@@ -83,13 +83,13 @@ public class FarmBlock extends Block {
+     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+         int i = (Integer) state.getValue(FarmBlock.MOISTURE);
+ 
+-        if (!FarmBlock.isNearWater(world, pos) && !world.isRainingAt(pos.above())) {
++        if (false && !FarmBlock.isNearWater(world, pos) && !world.isRainingAt(pos.above())) { // KioCG - 农业拓展
+             if (i > 0) {
+                 org.bukkit.craftbukkit.event.CraftEventFactory.handleMoistureChangeEvent(world, pos, (BlockState) state.setValue(FarmBlock.MOISTURE, i - 1), 2); // CraftBukkit
+             } else if (!FarmBlock.isUnderCrops(world, pos)) {
+                 FarmBlock.turnToDirt(state, world, pos);
+             }
+-        } else if (i < 7) {
++        } else if (i < 7 && world.isRainingAt(pos.above())) { // KioCG - 农业拓展
+             org.bukkit.craftbukkit.event.CraftEventFactory.handleMoistureChangeEvent(world, pos, (BlockState) state.setValue(FarmBlock.MOISTURE, 7), 2); // CraftBukkit
+         }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/block/LayeredCauldronBlock.java b/src/main/java/net/minecraft/world/level/block/LayeredCauldronBlock.java
+index 1a90860bc39afb8bade96a5c6c40861dbb68c21e..285cdb1a12fa181fff9349d9d4361961651d0c2a 100644
+--- a/src/main/java/net/minecraft/world/level/block/LayeredCauldronBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/LayeredCauldronBlock.java
+@@ -147,4 +147,45 @@ public class LayeredCauldronBlock extends AbstractCauldronBlock {
+             world.levelEvent(1047, pos, 0);
+         }
+     }
++
++    // KioCG start - 农业拓展
++    @Override
++    public boolean isRandomlyTicking(BlockState state) {
++        return true;
++    }
++
++    @Override
++    public void randomTick(BlockState state, net.minecraft.server.level.ServerLevel world, BlockPos pos, net.minecraft.util.RandomSource random) {
++        if (random.nextFloat() < 0.02F && moistNearbyFarm(world, pos)) {
++            lowerFillLevel(state, world, pos, null, CauldronLevelChangeEvent.ChangeReason.FARMLAND);
++        }
++    }
++
++    private static boolean moistNearbyFarm(net.minecraft.server.level.ServerLevel world, BlockPos pos) {
++        boolean anyFarm = false;
++        // Paper start - remove abstract block iteration
++        int xOff = pos.getX();
++        int yOff = pos.getY();
++        int zOff = pos.getZ();
++
++        for (int dz = -4; dz <= 4; ++dz) {
++            int z = dz + zOff;
++            for (int dx = -4; dx <= 4; ++dx) {
++                int x = xOff + dx;
++                for (int dy = -1; dy <= 0; ++dy) {
++                    int y = dy + yOff;
++                    net.minecraft.world.level.chunk.LevelChunk chunk = (net.minecraft.world.level.chunk.LevelChunk)world.getChunk(x >> 4, z >> 4);
++                    BlockPos blockPos1 = new BlockPos(x, y, z);
++                    BlockState blockState1 = chunk.getBlockState(blockPos1);
++                    if (blockState1.is(Blocks.FARMLAND) && (Integer) blockState1.getValue(FarmBlock.MOISTURE) < 7) {
++                        anyFarm = true;
++                        org.bukkit.craftbukkit.event.CraftEventFactory.handleMoistureChangeEvent(world, blockPos1, (BlockState) blockState1.setValue(FarmBlock.MOISTURE, 7), 2); // CraftBukkit
++                    }
++                }
++            }
++        }
++
++        return anyFarm;
++    }
++    // KioCG end - 农业拓展
+ }
+diff --git a/src/main/java/net/minecraft/world/level/block/StemBlock.java b/src/main/java/net/minecraft/world/level/block/StemBlock.java
+index d95d5cd224b229fc34e271b56ca1dc9be13d6268..2f1b83876a209644e9d6ae5899cb8f2e4c22f1aa 100644
+--- a/src/main/java/net/minecraft/world/level/block/StemBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/StemBlock.java
+@@ -50,16 +50,20 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
+ 
+     @Override
+     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
++        BlockState belowState = world.getBlockState(pos.below()); if (belowState.is(Blocks.FARMLAND)) // KioCG - 农业拓展
+         if (world.getRawBrightness(pos, 0) >= 9) {
+             float f = CropBlock.getGrowthSpeed(this, world, pos);
+ 
+             if (random.nextFloat() < ((this == Blocks.PUMPKIN_STEM ? world.spigotConfig.pumpkinModifier : world.spigotConfig.melonModifier) / (100.0f * (Math.floor((25.0F / f) + 1))))) { // Spigot - SPIGOT-7159: Better modifier resolution
+                 int i = (Integer) state.getValue(StemBlock.AGE);
++                boolean canGrow = false; // KioCG
++                int moisture = (Integer) belowState.getValue(FarmBlock.MOISTURE); // KioCG - 农业拓展
+ 
+                 if (i < 7) {
+                     state = (BlockState) state.setValue(StemBlock.AGE, i + 1);
++                    canGrow = // KioCG
+                     CraftEventFactory.handleBlockGrowEvent(world, pos, state, 2); // CraftBukkit
+-                } else {
++                } else if (moisture > 0) { // KioCG - 农业拓展
+                     Direction enumdirection = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                     BlockPos blockposition1 = pos.relative(enumdirection);
+                     BlockState iblockdata1 = world.getBlockState(blockposition1.below());
+@@ -70,9 +74,12 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
+                             return;
+                         }
+                         // CraftBukkit end
++                        canGrow = true; // KioCG
+                         world.setBlockAndUpdate(pos, (BlockState) this.fruit.getAttachedStem().defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, enumdirection));
+                     }
+                 }
++
++                if (canGrow && moisture > 0) CraftEventFactory.handleMoistureChangeEvent(world, pos.below(), belowState.setValue(FarmBlock.MOISTURE, moisture - 1), 2); // KioCG - 农业拓展
+             }
+ 
+         }

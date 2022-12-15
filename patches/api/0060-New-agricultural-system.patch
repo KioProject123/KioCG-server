@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 14 Dec 2022 13:17:26 +0800
+Subject: [PATCH] New agricultural system
+
+
+diff --git a/src/main/java/org/bukkit/event/block/CauldronLevelChangeEvent.java b/src/main/java/org/bukkit/event/block/CauldronLevelChangeEvent.java
+index 891f3d250b8ea2af0902602758efb1e27183d558..11e82f5b4e028d39bcc113a7a6d100b13244c327 100644
+--- a/src/main/java/org/bukkit/event/block/CauldronLevelChangeEvent.java
++++ b/src/main/java/org/bukkit/event/block/CauldronLevelChangeEvent.java
+@@ -160,6 +160,12 @@ public class CauldronLevelChangeEvent extends BlockEvent implements Cancellable
+          * Filling due to natural fluid sources, eg rain or dripstone.
+          */
+         NATURAL_FILL,
++        // KioCG start
++        /**
++         * New agricultural system.
++         */
++        FARMLAND,
++        // KioCG end
+         /**
+          * Unknown.
+          */

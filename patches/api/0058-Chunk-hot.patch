@@ -1,0 +1,17 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sat, 19 Nov 2022 19:13:46 +0800
+Subject: [PATCH] Chunk hot
+
+
+diff --git a/src/main/java/org/bukkit/Chunk.java b/src/main/java/org/bukkit/Chunk.java
+index e1e1bc868019f715370490719ef887e0eee3ddec..037d511ce2917442b97f1031d178d93735bb3308 100644
+--- a/src/main/java/org/bukkit/Chunk.java
++++ b/src/main/java/org/bukkit/Chunk.java
+@@ -284,4 +284,6 @@ public interface Chunk extends PersistentDataHolder {
+      * @return if the block is contained within
+      */
+     boolean contains(@NotNull BlockData block);
++
++    long getChunkHot(); // KioCG
+ }

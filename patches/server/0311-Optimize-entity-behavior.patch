@@ -1,0 +1,177 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 16 Dec 2022 04:16:10 +0800
+Subject: [PATCH] Optimize entity behavior
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 9aebb5166fcd4dbb247295ff0ca8461f83ab3d27..b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -732,6 +732,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             org.spigotmc.ActivationRange.activateEntities(this); // Spigot
+             //timings.entityTick.startTiming(); // Spigot // Purpur
+             this.entityTickList.forEach((entity) -> {
++                if (entity.activatedPriorityReset == false) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体
+                 entity.activatedPriorityReset = false; // Pufferfish - DAB
+                 if (!entity.isRemoved()) {
+                     if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
+diff --git a/src/main/java/net/minecraft/world/entity/PathfinderMob.java b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
+index a53466a84973f5e83afc71245b317ab4296e0f9e..d7bb42c9a3cbcbe627b8f72162bc1eabd09fa488 100644
+--- a/src/main/java/net/minecraft/world/entity/PathfinderMob.java
++++ b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
+@@ -86,7 +86,7 @@ public abstract class PathfinderMob extends Mob {
+     }
+ 
+     protected boolean shouldStayCloseToLeashHolder() {
+-        return true;
++        return false; // KioCG - 临时修复https://github.com/PaperMC/Paper/issues/8587
+     }
+ 
+     protected double followLeashSpeed() {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
+index fd7fc2d6a28110050b2050355897d551737939a7..1d01dbe21da1162567931a675dd66dd8b57a3af3 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
+@@ -159,7 +159,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+         this.goalSelector.addGoal(8, new LeapAtTargetGoal(this, 0.3F));
+         this.goalSelector.addGoal(9, new OcelotAttackGoal(this));
+         this.goalSelector.addGoal(10, new BreedGoal(this, 0.8D));
+-        this.goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 0.8D, 1.0000001E-5F));
++        // KioCG start
++        this.goalSelector.addGoal(11, new WaterAvoidingRandomStrollGoal(this, 0.8D, 1.0000001E-5F) {
++            @Override
++            public boolean canUse() {
++                return (!((TamableAnimal) this.mob).isOrderedToSit() || this.mob.isInWaterOrBubble()) && super.canUse();
++            }
++        });
++        // KioCG end
+         this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 10.0F));
+         this.targetSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, Rabbit.class, false, (Predicate) null));
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
+index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..bc16a4d2ff376a0bc07f1f8bed7cc6dd3f6adc30 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
+@@ -237,7 +237,14 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
+         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
+         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
+-        this.goalSelector.addGoal(2, new Parrot.ParrotWanderGoal(this, 1.0D));
++        // KioCG start
++        this.goalSelector.addGoal(2, new Parrot.ParrotWanderGoal(this, 1.0D) {
++            @Override
++            public boolean canUse() {
++                return (!((net.minecraft.world.entity.TamableAnimal) this.mob).isOrderedToSit() || this.mob.isInWaterOrBubble()) && super.canUse();
++            }
++        });
++        // KioCG end
+         this.goalSelector.addGoal(3, new LandOnOwnersShoulderGoal(this));
+         this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
+index 006d5fc7c96a47bf57ab26f374143400138b8b17..3c07f6764491480cbc5207bc0eda1098afe541ca 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
+@@ -231,7 +231,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
+-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
++        // KioCG start
++        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D) {
++            @Override
++            public boolean canUse() {
++                return (!((TamableAnimal) this.mob).isOrderedToSit() || this.mob.isInWaterOrBubble()) && super.canUse();
++            }
++        });
++        // KioCG end
+         this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
+         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
+index 616f51445c360188c7a6958e5ea02642c5559ee5..d0b5d970ecc1d91212ceb01d6dd804973553d12f 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
++++ b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
+@@ -64,7 +64,7 @@ public class AllayAi {
+     private static void initIdleActivity(Brain<Allay> brain) {
+         brain.addActivityWithConditions(Activity.IDLE, ImmutableList.of(Pair.of(0, GoToWantedItem.create((allay) -> {
+             return true;
+-        }, 1.75F, true, 32)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of());
++        }, 1.75F, true, 8 /* KioCG - 降低搜索范围 */)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of()); // KioCG
+     }
+ 
+     public static void updateActivity(Allay allay) {
+@@ -119,7 +119,7 @@ public class AllayAi {
+                 Entity entity = serverLevel.getEntity(optional.get());
+                 if (entity instanceof ServerPlayer) {
+                     ServerPlayer serverPlayer = (ServerPlayer)entity;
+-                    if ((serverPlayer.gameMode.isSurvival() || serverPlayer.gameMode.isCreative()) && serverPlayer.closerThan(allay, 64.0D)) {
++                    if ((serverPlayer.gameMode.isSurvival() || serverPlayer.gameMode.isCreative()) && serverPlayer.closerThan(allay, 8.0D)) { // KioCG - 降低搜索范围
+                         return Optional.of(serverPlayer);
+                     }
+                 }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
+index 0cfe5cb3ce0ac8554bbdb68c6658369306ce634c..935351a7c94f0e6471bcd911868cdb3ca79336c0 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
++++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
+@@ -81,7 +81,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
+         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
++        // this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR)); // KioCG - 优化实体行为
+     }
+ 
+     public static AttributeSupplier.Builder createAttributes() {
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+index 68e31cf561f3d76bce6fa4324a75594c776f8964..e92a07760a8d9f55a8b177d21a6301bf2d917ea4 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
+@@ -147,7 +147,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
+         // Purpur end
+         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Axolotl.class, true, false));
+-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
++        // this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR)); // KioCG - 优化实体行为
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Giant.java b/src/main/java/net/minecraft/world/entity/monster/Giant.java
+index 2511ca42039fa91483a316ae13bb7da54f312f13..7d2f6e0430d950b6e7a37d516f3bcf34f3c6780a 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Giant.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Giant.java
+@@ -75,9 +75,9 @@ public class Giant extends Monster {
+                 this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
+                 this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ZombifiedPiglin.class));
+                 this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+-                this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Villager.class, false));
++                // this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Villager.class, false)); // KioCG - 优化实体行为
+                 this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+-                this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, true));
++                // this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, true)); // KioCG - 优化实体行为
+             }
+         }
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
+index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8a9b5d1af 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
+@@ -163,7 +163,7 @@ public class Zombie extends Monster {
+ 
+     protected void addBehaviourGoals() {
+         this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0D, false));
+-        this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors));
++        // this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0D, true, 4, this::canBreakDoors)); // KioCG - 优化实体行为
+         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(ZombifiedPiglin.class));
+         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+@@ -181,7 +181,7 @@ public class Zombie extends Monster {
+         });
+         // Purpur end
+         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
++        // this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR)); // KioCG - 优化实体行为
+     }
+ 
+     public static AttributeSupplier.Builder createAttributes() {

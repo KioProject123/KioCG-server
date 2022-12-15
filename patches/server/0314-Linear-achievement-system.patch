@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 16 Nov 2022 06:16:03 +0800
+Subject: [PATCH] Linear achievement system
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
+index ce42e91a95ccd42deff65e1942b918e9d789001b..2a949c7eb006ea323c809efe583c9b5ad7f20d5c 100644
+--- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
++++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
+@@ -285,6 +285,13 @@ public class PlayerAdvancements {
+             }
+             // Paper end
+             this.unregisterListeners(advancement);
++            // KioCG start - 线性的成就系统
++            Iterator iterator = advancement.getChildren().iterator();
++            while (iterator.hasNext()) {
++                Advancement children = (Advancement) iterator.next();
++                this.registerListenersLinear(children);
++            }
++            // KioCG end
+             this.progressChanged.add(advancement);
+             flag = true;
+             if (!flag1 && advancementprogress.isDone()) {
+@@ -330,6 +337,18 @@ public class PlayerAdvancements {
+     }
+ 
+     private void registerListeners(Advancement advancement) {
++    // KioCG start - 线性的成就系统
++        if (advancement.getDisplay() == null || advancement.getParent() == null || this.getOrStartProgress(advancement.getParent()).isDone()) {
++            this.registerListenersLinear(advancement);
++            return;
++        }
++        String path = advancement.getId().getPath();
++        if (path.startsWith("bacap") || path.startsWith("challenges")) {
++            this.registerListenersLinear(advancement);
++        }
++    }
++    private void registerListenersLinear(Advancement advancement) {
++    // KioCG end - 线性的成就系统
+         AdvancementProgress advancementprogress = this.getOrStartProgress(advancement);
+ 
+         if (!advancementprogress.isDone()) {

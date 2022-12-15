@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Thu, 15 Dec 2022 00:04:23 +0800
+Subject: [PATCH] Prevent fire spreading
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/FireBlock.java b/src/main/java/net/minecraft/world/level/block/FireBlock.java
+index 3d3f6b85c8463963d1ba557fab1de7a32cfd1a2f..7a4be9933152bc5869b9411461c53336fdd48834 100644
+--- a/src/main/java/net/minecraft/world/level/block/FireBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/FireBlock.java
+@@ -212,6 +212,8 @@ public class FireBlock extends BaseFireBlock {
+                 this.trySpread(world, pos.north(), 300 + k, random, i, pos);
+                 this.trySpread(world, pos.south(), 300 + k, random, i, pos);
+                 // CraftBukkit end
++
++                if (true) return; // KioCG - 阻止火焰蔓延
+                 BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
+ 
+                 for (int l = -1; l <= 1; ++l) {

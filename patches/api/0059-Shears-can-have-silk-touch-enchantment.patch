@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 16 Nov 2022 22:37:53 +0800
+Subject: [PATCH] Shears can have silk touch enchantment
+
+
+diff --git a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
+index c8a603bb614f891d8eb43acd3eddd0504816566f..8248ddf07ef76a572f3c1a1aa59749694350d83d 100644
+--- a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
++++ b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
+@@ -249,6 +249,18 @@ public enum EnchantmentTarget {
+             return WEAPON.includes(item) || item.equals(Material.SHEARS);
+         }
+         // Purpur end
++        // KioCG start
++    },
++
++    /**
++     * Allow the Enchantment to be placed on shears.
++     */
++    TOOL_AND_SHEARS {
++        @Override
++        public boolean includes(@NotNull Material item) {
++            return TOOL.includes(item) || item.equals(Material.SHEARS);
++        }
++        // KioCG end
+     };
+ 
+     /**

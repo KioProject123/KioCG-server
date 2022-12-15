@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 16 Nov 2022 22:37:53 +0800
+Subject: [PATCH] Shears can have silk touch enchantment
+
+
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
+index a19dd0946f853193ff32b2b560db27534b8b4abf..c3b06f11e6120c3910cc8a4e01c77f9642e531c4 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
+@@ -111,6 +111,14 @@ public enum EnchantmentCategory {
+             return WEAPON.canEnchant(item) || item instanceof net.minecraft.world.item.ShearsItem;
+         }
+     // Purpur end
++    // KioCG start
++    },
++    TOOL_AND_SHEARS {
++        @Override
++        public boolean canEnchant(Item item) {
++            return DIGGER.canEnchant(item) || item instanceof net.minecraft.world.item.ShearsItem;
++        }
++    // KioCG end
+     };
+ 
+     public abstract boolean canEnchant(Item item);
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
+index 965004d95759fea1e68a84413110e1286f939b2d..261b83ddc69617388adda75d3b41128964279123 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
+@@ -7,6 +7,13 @@ public class UntouchingEnchantment extends Enchantment {
+         super(weight, EnchantmentCategory.DIGGER, slotTypes);
+     }
+ 
++    // KioCG start
++    @Override
++    public boolean canEnchant(net.minecraft.world.item.ItemStack stack) {
++        return EnchantmentCategory.TOOL_AND_SHEARS.canEnchant(stack.getItem());
++    }
++    // KioCG end
++
+     @Override
+     public int getMinCost(int level) {
+         return 15;

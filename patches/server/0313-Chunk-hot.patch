@@ -1,0 +1,226 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sat, 10 Dec 2022 02:59:22 +0800
+Subject: [PATCH] Chunk hot
+
+
+diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6915b25a572dea286757080a1fbe4dd769467b35
+--- /dev/null
++++ b/src/main/java/com/kiocg/ChunkHot.java
+@@ -0,0 +1,38 @@
++package com.kiocg;
++
++import net.minecraft.server.MinecraftServer;
++
++public class ChunkHot {
++    private static final int TIMES_LENGTH = 100;
++    private static int tickCount;
++    private static int index;
++
++    private final long[] times = new long[TIMES_LENGTH];
++    private int prevTickCount;
++    private long nanos;
++
++    public static void tick() {
++        index = (tickCount = MinecraftServer.getServer().getTickCount()) % TIMES_LENGTH;
++    }
++
++    public void startTicking() {
++        nanos = System.nanoTime();
++    }
++
++    public void stopTickingAndCount() {
++        if (prevTickCount != tickCount) {
++            prevTickCount = tickCount;
++            times[index] = System.nanoTime() - nanos;
++        } else {
++            times[index] += System.nanoTime() - nanos;
++        }
++    }
++
++    public long getAverage() {
++        long total = 0L;
++        for (long value : times) {
++            total += value;
++        }
++        return total / (long) TIMES_LENGTH;
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index cea4447aad2d64db56a76e4ba180dc7326d2e13b..1dc477266bd969a5c91240bcf1058576425f7caf 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1420,6 +1420,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         // Paper end
+         new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
+ 
++        com.kiocg.ChunkHot.tick(); // KioCG - tick chunk hot
+         ++this.tickCount;
+         this.tickChildren(shouldKeepTicking);
+         if (i - this.lastServerStatus >= 5000000000L) {
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe..a56f9379432a18ad500e591bd916222c3e862830 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1294,7 +1294,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         //gameprofilerfiller.incrementCounter("tickNonPassenger"); // Purpur
+         if (isActive) { // Paper - EAR 2
+             TimingHistory.activatedEntityTicks++;
++        LevelChunk levelChunk = entity instanceof Player || entity instanceof Mob mob && mob.removeWhenFarAway(0.0) && !mob.isPersistenceRequired() && !mob.requiresCustomPersistence() ? null : this.getChunkIfLoaded(entity.blockPosition()); // KioCG
++        if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
+         entity.tick();
++        if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
+         entity.postTick(); // CraftBukkit
+         } else { entity.inactiveTick(); } // Paper - EAR 2
+         //this.getProfiler().pop(); // Purpur
+@@ -1334,7 +1337,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+                 //gameprofilerfiller.incrementCounter("tickPassenger"); // Purpur
+                 // Paper start - EAR 2
+                 if (isActive) {
++                LevelChunk levelChunk = passenger instanceof Player ? null : this.getChunkIfLoaded(passenger.blockPosition()); // KioCG
++                if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
+                 passenger.rideTick();
++                if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
+                 passenger.postTick(); // CraftBukkit
+                 } else {
+                     passenger.setDeltaMovement(Vec3.ZERO);
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 6f77d292e24cfa02e4f09ff088597f4b561d84d8..2239374a369d06e68a3bc9094dd135efde2aadf8 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -275,6 +275,7 @@ public class ServerPlayer extends Player {
+     private boolean ramBar = false; // Purpur
+     private boolean tpsBar = false; // Purpur
+     private boolean compassBar = false; // Purpur
++    private long nearbyChunkHot = 0; public long getNearbyChunkHot() { return this.nearbyChunkHot; } // KioCG
+ 
+     public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
+         super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
+@@ -667,6 +668,9 @@ public class ServerPlayer extends Player {
+         return new ServerItemCooldowns(this);
+     }
+ 
++    private int tickChunkHot = 0; // KioCG - tick chunk hot
++    private static boolean bypassStartup = false; // KioCG
++
+     @Override
+     public void tick() {
+         // CraftBukkit start
+@@ -723,6 +727,42 @@ public class ServerPlayer extends Player {
+             }
+         }
+         // Purpur end
++
++        // KioCG start
++        if (bypassStartup) {
++            if (++tickChunkHot >= 20) {
++                tickChunkHot = 0;
++                this.nearbyChunkHot = this.refreshNearbyChunkHot();
++
++                if (this.nearbyChunkHot > 300000L) {
++                    if (this.isAfk) {
++                        this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
++                    } else {
++                        this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
++                        this.setSecondsOnFire((int) (Math.random() * (this.nearbyChunkHot / 100000.0)) + 1);
++                    }
++                } else if (false && this.nearbyChunkHot > 350000L) { // 取消黄值
++                    this.sendActionBarMessage("<gold><italic>你所在的区块有点热.");
++                }
++            }
++        } else if (this.server.getTickCount() > 600) {
++            bypassStartup = true;
++        }
++    }
++
++    private long refreshNearbyChunkHot() {
++        net.minecraft.world.level.chunk.LevelChunk chunk = this.getLevel().getChunkAt(this.blockPosition());
++        int x = chunk.locX;
++        int z = chunk.locZ;
++        net.minecraft.world.level.Level world = chunk.getLevel();
++        long total = 0L;
++        for (int i = x - 1; i <= x + 1; ++i) {
++            for (int j = z - 1; j <= z + 1; ++j) {
++                total += world.getChunk(i, j).getChunkHot().getAverage();
++            }
++        }
++        return total;
++        // KioCG end
+     }
+ 
+     public void doTick() {
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index 79bf9c277fe98df176113de39360fb34ad917577..259223cee17b06f69e425b1596b38ae3053a0e56 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -87,6 +87,7 @@ public class LevelChunk extends ChunkAccess {
+     private final Int2ObjectMap<GameEventListenerRegistry> gameEventListenerRegistrySections;
+     private final LevelChunkTicks<Block> blockTicks;
+     private final LevelChunkTicks<Fluid> fluidTicks;
++    private final com.kiocg.ChunkHot chunkHot = new com.kiocg.ChunkHot(); public com.kiocg.ChunkHot getChunkHot() { return this.chunkHot; } // KioCG
+ 
+     // Pufferfish start - instead of using a random every time the chunk is ticked, define when lightning strikes preemptively
+     private int lightningTick;
+@@ -1314,7 +1315,9 @@ public class LevelChunk extends ChunkAccess {
+                         BlockState iblockdata = LevelChunk.this.getBlockState(blockposition);
+ 
+                         if (this.blockEntity.getType().isValid(iblockdata)) {
++                            LevelChunk.this.chunkHot.startTicking(); // KioCG
+                             this.ticker.tick(LevelChunk.this.level, this.blockEntity.getBlockPos(), iblockdata, this.blockEntity);
++                            LevelChunk.this.chunkHot.stopTickingAndCount(); // KioCG
+                             this.loggedInvalidBlockState = false;
+                         } else if (!this.loggedInvalidBlockState) {
+                             this.loggedInvalidBlockState = true;
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
+index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d83786566b6bb491 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
+@@ -94,6 +94,13 @@ public class CraftChunk implements Chunk {
+         return c;
+     }
+ 
++    // KioCG start
++    @Override
++    public long getChunkHot() {
++        return this.getHandle().getChunkHot().getAverage();
++    }
++    // KioCG end
++
+     void breakLink() {
+         this.weakChunk.clear();
+     }
+diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
+index 8769993e7ca59da309087051a3cd38fc562c15d1..8231154efb5d27038b3538ebac750a9c28d1f7a8 100644
+--- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
++++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
+@@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
+         bossbar.progress(getBossBarProgress());
+         bossbar.color(getBossBarColor());
+         bossbar.name(MiniMessage.miniMessage().deserialize(PurpurConfig.commandTPSBarTitle,
++                Placeholder.component("hot", getHotColor(((org.bukkit.craftbukkit.entity.CraftPlayer)player).getHandle().getNearbyChunkHot())), // KioCG
+                 Placeholder.component("tps", getTPSColor()),
+                 Placeholder.component("mspt", getMSPTColor()),
+                 Placeholder.component("ping", getPingColor(player.getPing()))
+@@ -136,6 +137,20 @@ public class TPSBarTask extends BossBarTask {
+         return MiniMessage.miniMessage().deserialize(color, Placeholder.parsed("text", String.format("%s", ping)));
+     }
+ 
++    // KioCG start
++    private Component getHotColor(long hot) {
++        String color;
++        if (hot < 300000L) {
++            color = PurpurConfig.commandTPSBarTextColorGood;
++        } else if (false && hot < 500000L) { // 取消黄值
++            color = PurpurConfig.commandTPSBarTextColorMedium;
++        } else {
++            color = PurpurConfig.commandTPSBarTextColorLow;
++        }
++        return MiniMessage.miniMessage().deserialize(color, Placeholder.parsed("text", String.format("%s", hot)));
++    }
++    // KioCG end
++
+     public enum FillMode {
+         TPS, MSPT, PING
+     }

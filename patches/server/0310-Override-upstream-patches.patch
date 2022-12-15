@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sun, 27 Nov 2022 09:45:43 +0800
+Subject: [PATCH] Override upstream patches
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 7f2a811505c2aeaad6e1a91a0719613a6694f77a..6f77d292e24cfa02e4f09ff088597f4b561d84d8 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -2085,7 +2085,7 @@ public class ServerPlayer extends Player {
+ 
+     public void resetLastActionTime() {
+         this.lastActionTime = Util.getMillis();
+-        this.setAfk(false); // Purpur
++        //this.setAfk(false); // Purpur // KioCG - 使用插件控制AFK
+     }
+ 
+     // Purpur Start
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 86d7552acc7bea0e0a5af4c16b8a0dd3af4e6560..ee2c76457b80525f962070c66c926af370b1d7ff 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -463,7 +463,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+ 
+         if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) (this.server.getPlayerIdleTimeout() * 1000 * 60) && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
+             // Purpur start
+-            this.player.setAfk(true);
++            //this.player.setAfk(true); // KioCG - 使用插件控制AFK
+             if (!this.player.level.purpurConfig.idleTimeoutKick || kickPermissionCache.getUnchecked(this.player.getBukkitEntity())) {
+                 return;
+             }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
+index 00d86c57fabbb464a156dfaceadccd978f0d149c..198b4c928c1ff32d8ee5a045dde6e3c7457b261e 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
++++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
+@@ -233,8 +233,8 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+         if (!this.level.isClientSide()) {
+             this.setPumpkin(false);
+             this.forceDrops = true; // CraftBukkit
+-            if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur
+-            for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur
++            // if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur // KioCG - fix dupe
++            // for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur // KioCG - fix dupe
+             this.spawnAtLocation(new ItemStack(Items.CARVED_PUMPKIN), 1.7F);
+             this.forceDrops = false; // CraftBukkit
+         }
+diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+index 7c52c048fb9b265d57f57f0c69796668235a26fd..0333c0f3885601a3a0f0d5b235800560f971c44e 100644
+--- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+@@ -306,6 +306,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+                                 name = name.replace("&" + match, "\u00a7" + match.toLowerCase(java.util.Locale.ROOT));
+                             }
+                             //name = name.replaceAll("(?i)&([0-9a-fr])", "\u00a7$1");
++                            name = name.replaceAll("(?i)&#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])", "\u00a7x\u00a7$1\u00a7$2\u00a7$3\u00a7$4\u00a7$5\u00a7$6"); // KioCG
+                         }
+                         if (player.hasPermission("purpur.anvil.format")) {
+                             java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([l-or])").matcher(name);
