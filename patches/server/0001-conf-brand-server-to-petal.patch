@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Dec 2022 06:43:31 +0800
+Date: Sat, 17 Dec 2022 05:21:07 +0800
 Subject: [PATCH] conf: brand server to petal
 
 
@@ -27,7 +27,7 @@ index d5b7458f6b79addf1a12eb82443ba5bdbe2ea5d3..2ed422781ef195f4d5816358fbdd09ef
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index acd95cf1dc7f009b63e44e4404e1736283fd458e..f10c8cde1bf11db618fcd128aa60c3b524746360 100644
+index 9713263c3bd34ab8a3bfc0a8797ba0b1b88ed733..6bb291fc0a81f422dce42390c4fe1c331838db9e 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -43,8 +43,8 @@ index acd95cf1dc7f009b63e44e4404e1736283fd458e..f10c8cde1bf11db618fcd128aa60c3b5
  
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
                  metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
--                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur
-+                metrics.addCustomChart(new Metrics.SimplePie("petal_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // petal
+-                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur
++                metrics.addCustomChart(new Metrics.SimplePie("petal_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // petal
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
@@ -113,7 +113,7 @@ index cea4447aad2d64db56a76e4ba180dc7326d2e13b..551913ee80cb5a500921726eaaa3b4b4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fbfd5ea459ab2751bf100c43c4f0398f579c8fdb..3b172bc897ff565f6903eb0579f39873b8831605 100644
+index 398dd8cf321cd2f0ba68a80e18014bb020138f78..a62d69da177265fe309da4b4a99664c12a82cc6b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -262,7 +262,7 @@ import javax.annotation.Nullable; // Paper
