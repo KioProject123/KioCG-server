@@ -175,3 +175,30 @@ index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8
      }
  
      public static AttributeSupplier.Builder createAttributes() {
+diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
+index fe830a419c81811f0a72add63a3f09a94392e4a7..19c210075ad02909bf6e1114e577e71f1fbf394f 100644
+--- a/src/main/java/org/spigotmc/ActivationRange.java
++++ b/src/main/java/org/spigotmc/ActivationRange.java
+@@ -207,14 +207,14 @@ public class ActivationRange
+             if (!player.level.purpurConfig.idleTimeoutTickNearbyEntities && player.isAfk()) continue; // Purpur
+             // Paper start
+             int worldHeight = world.getHeight();
+-            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, worldHeight, maxRange );
+-            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, worldHeight, miscActivationRange );
+-            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, worldHeight, raiderActivationRange );
+-            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, worldHeight, animalActivationRange );
+-            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, worldHeight, monsterActivationRange );
+-            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, worldHeight, waterActivationRange );
+-            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, worldHeight, flyingActivationRange );
+-            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, worldHeight, villagerActivationRange );
++            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, Math.min(16, maxRange), maxRange ); // KioCG - 减少搜索范围
++            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, Math.min(16, miscActivationRange), miscActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, Math.min(16, raiderActivationRange), raiderActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, Math.min(16, animalActivationRange), animalActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, Math.min(16, monsterActivationRange), monsterActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, Math.min(16, waterActivationRange), waterActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, Math.min(16, flyingActivationRange), flyingActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, Math.min(16, villagerActivationRange), villagerActivationRange ); // KioCG - 减少搜索范围
+             // Paper end
+ 
+             // Paper start
