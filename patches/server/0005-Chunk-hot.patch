@@ -6,25 +6,25 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6915b25a572dea286757080a1fbe4dd769467b35
+index 0000000000000000000000000000000000000000..c15bceaeb91f28c52051bc390bd84c2ad3417ac5
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,33 @@
 +package com.kiocg;
-+
-+import net.minecraft.server.MinecraftServer;
 +
 +public class ChunkHot {
 +    private static final int TIMES_LENGTH = 100;
-+    private static int tickCount;
 +    private static int index;
 +
 +    private final long[] times = new long[TIMES_LENGTH];
-+    private int prevTickCount;
 +    private long nanos;
 +
-+    public static void tick() {
-+        index = (tickCount = MinecraftServer.getServer().getTickCount()) % TIMES_LENGTH;
++    public static void nextTick(int tickCount) {
++        index = tickCount % TIMES_LENGTH;
++    }
++
++    public void tick() {
++        times[index] = 0L;
 +    }
 +
 +    public void startTicking() {
@@ -32,12 +32,7 @@ index 0000000000000000000000000000000000000000..6915b25a572dea286757080a1fbe4dd7
 +    }
 +
 +    public void stopTickingAndCount() {
-+        if (prevTickCount != tickCount) {
-+            prevTickCount = tickCount;
-+            times[index] = System.nanoTime() - nanos;
-+        } else {
-+            times[index] += System.nanoTime() - nanos;
-+        }
++        times[index] += System.nanoTime() - nanos;
 +    }
 +
 +    public long getAverage() {
@@ -49,17 +44,29 @@ index 0000000000000000000000000000000000000000..6915b25a572dea286757080a1fbe4dd7
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cea4447aad2d64db56a76e4ba180dc7326d2e13b..1dc477266bd969a5c91240bcf1058576425f7caf 100644
+index 551913ee80cb5a500921726eaaa3b4b4c91be052..3721b3cd5a7f070de6e9e0419ab7b51f81e610f5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1420,6 +1420,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-         // Paper end
+@@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
-+        com.kiocg.ChunkHot.tick(); // KioCG - tick chunk hot
          ++this.tickCount;
++        com.kiocg.ChunkHot.nextTick(tickCount); this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().tick())); // KioCG - tick chunk hot
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
+             this.lastServerStatus = i;
+diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719b9cfc68f 100644
+--- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
++++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+@@ -74,6 +74,7 @@ public class ServerChunkCache extends ChunkSource {
+     // Paper start
+     final com.destroystokyo.paper.util.concurrent.WeakSeqLock loadedChunkMapSeqLock = new com.destroystokyo.paper.util.concurrent.WeakSeqLock();
+     final it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> loadedChunkMap = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>(8192, 0.5f);
++    public it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> getLoadedChunkMap() { return this.loadedChunkMap; } // KioCG
+ 
+     private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
+     
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
 index b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe..a56f9379432a18ad500e591bd916222c3e862830 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
