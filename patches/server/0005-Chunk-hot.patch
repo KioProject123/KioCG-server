@@ -94,7 +94,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..c44672c32f46f6850d7056d3a2367e61
                  } else {
                      passenger.setDeltaMovement(Vec3.ZERO);
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..70dd3d9cbb7749fc8b32be230c2f2dff66d5610d 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..901a5fdcac2a1481bb88b1091136b530c0235ceb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -115,7 +115,7 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..70dd3d9cbb7749fc8b32be230c2f2dff
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -721,6 +725,42 @@ public class ServerPlayer extends Player {
+@@ -721,6 +725,45 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -131,7 +131,10 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..70dd3d9cbb7749fc8b32be230c2f2dff
 +                        this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                    } else {
 +                        this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
-+                        this.setSecondsOnFire((int) (Math.random() * (this.nearbyChunkHot / 100000.0)) + 1);
++                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
++                        if (this.getRemainingFireTicks() < fireTicks) {
++                            this.setRemainingFireTicks(fireTicks);
++                        }
 +                    }
 +                } else if (false && this.nearbyChunkHot > 350000L) { // 取消黄值
 +                    this.sendActionBarMessage("<gold><italic>你所在的区块有点热.");
