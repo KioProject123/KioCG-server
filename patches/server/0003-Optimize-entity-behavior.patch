@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 9aebb5166fcd4dbb247295ff0ca8461f83ab3d27..b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe 100644
+index b396a329e753f42b3878736b6b14bafda02d3744..1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -732,6 +732,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -730,6 +730,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
              org.spigotmc.ActivationRange.activateEntities(this); // Spigot
              //timings.entityTick.startTiming(); // Spigot // Purpur
              this.entityTickList.forEach((entity) -> {

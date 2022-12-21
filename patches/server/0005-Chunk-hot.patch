@@ -68,10 +68,10 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe..a56f9379432a18ad500e591bd916222c3e862830 100644
+index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..c44672c32f46f6850d7056d3a2367e61a58e590c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1294,7 +1294,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1292,7 +1292,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
          //gameprofilerfiller.incrementCounter("tickNonPassenger"); // Purpur
          if (isActive) { // Paper - EAR 2
              TimingHistory.activatedEntityTicks++;
@@ -82,7 +82,7 @@ index b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe..a56f9379432a18ad500e591bd916222c
          entity.postTick(); // CraftBukkit
          } else { entity.inactiveTick(); } // Paper - EAR 2
          //this.getProfiler().pop(); // Purpur
-@@ -1334,7 +1337,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1332,7 +1335,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  //gameprofilerfiller.incrementCounter("tickPassenger"); // Purpur
                  // Paper start - EAR 2
                  if (isActive) {
@@ -94,10 +94,10 @@ index b8e5ea6e00a2e3f6c947b087c40c2c0e51c72afe..a56f9379432a18ad500e591bd916222c
                  } else {
                      passenger.setDeltaMovement(Vec3.ZERO);
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6f77d292e24cfa02e4f09ff088597f4b561d84d8..2239374a369d06e68a3bc9094dd135efde2aadf8 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..70dd3d9cbb7749fc8b32be230c2f2dff66d5610d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -275,6 +275,7 @@ public class ServerPlayer extends Player {
+@@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
      private boolean ramBar = false; // Purpur
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
@@ -105,7 +105,7 @@ index 6f77d292e24cfa02e4f09ff088597f4b561d84d8..2239374a369d06e68a3bc9094dd135ef
  
      public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
          super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
-@@ -667,6 +668,9 @@ public class ServerPlayer extends Player {
+@@ -665,6 +666,9 @@ public class ServerPlayer extends Player {
          return new ServerItemCooldowns(this);
      }
  
@@ -115,7 +115,7 @@ index 6f77d292e24cfa02e4f09ff088597f4b561d84d8..2239374a369d06e68a3bc9094dd135ef
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -723,6 +727,42 @@ public class ServerPlayer extends Player {
+@@ -721,6 +725,42 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end

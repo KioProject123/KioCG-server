@@ -5,10 +5,10 @@ Subject: [PATCH] Override upstream patches
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7f2a811505c2aeaad6e1a91a0719613a6694f77a..6f77d292e24cfa02e4f09ff088597f4b561d84d8 100644
+index d62bf95fb067c2e2a4fc9b2757c636bd4ee75bea..8570b4a863c0ef058463e1a5eef5f381ca7317cb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2085,7 +2085,7 @@ public class ServerPlayer extends Player {
+@@ -2083,7 +2083,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -18,10 +18,10 @@ index 7f2a811505c2aeaad6e1a91a0719613a6694f77a..6f77d292e24cfa02e4f09ff088597f4b
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 86d7552acc7bea0e0a5af4c16b8a0dd3af4e6560..ee2c76457b80525f962070c66c926af370b1d7ff 100644
+index a37849179a34d0ba5997f7d83c10bd1851135835..ea11e1ba37260b0ab237dd60c1513e2ed29ec1c2 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -463,7 +463,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -459,7 +459,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) (this.server.getPlayerIdleTimeout() * 1000 * 60) && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
              // Purpur start
