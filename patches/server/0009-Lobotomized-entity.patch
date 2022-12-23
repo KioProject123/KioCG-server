@@ -78,7 +78,7 @@ index 0000000000000000000000000000000000000000..fb8d49a0ff73ba45194b0f1b706f2908
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 3fd8e115319e24d31f0b81e88633b83969a41b4b..4d46f6b577138e2bc7b948a56406d434738a2519 100644
+index 454cd09309f581b43a521fcb8fd184b7788c6a88..c6f6ba13fda8d1c7fecc859a908c6581f90d3e4c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -308,6 +308,8 @@ public abstract class LivingEntity extends Entity {
@@ -247,7 +247,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..856450f3d87c51426bcdb6aff27c263d
      // Function disabled as it has no special function anymore after
      // setSitting is disabled.
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 832469e39901d9ec666ddaf3aff77419f6195b1c..e8758cfd6180add637635987e9be7b5ba14405ba 100644
+index 832469e39901d9ec666ddaf3aff77419f6195b1c..6b9f09cef88af0203bb1b90c382ca9d6280696f4 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,8 +139,9 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -290,7 +290,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..e8758cfd6180add637635987e9be7b5b
          if (this.level.purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
 -            inactive = inactive || checkLobotomized();
-+            inactive = inactive || this.lobotomized.checkLobotomized(this); // KioCG - 使用更好的检测
++            inactive = this.lobotomized.checkLobotomized(this) || inactive; // KioCG - 使用更好的检测
          } else {
              // clean up state for API
              this.isLobotomized = false;
