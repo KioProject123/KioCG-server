@@ -68,33 +68,43 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..c44672c32f46f6850d7056d3a2367e61a58e590c 100644
+index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..8b9130bccbbee68f98c28ea8f9703deca1da687e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1292,7 +1292,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1290,11 +1290,14 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             return BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
+         });*/ // Purpur
          //gameprofilerfiller.incrementCounter("tickNonPassenger"); // Purpur
-         if (isActive) { // Paper - EAR 2
-             TimingHistory.activatedEntityTicks++;
 +        LevelChunk levelChunk = entity instanceof Player || entity instanceof Mob mob && mob.removeWhenFarAway(0.0) && !mob.isPersistenceRequired() && !mob.requiresCustomPersistence() ? null : this.getChunkIfLoaded(entity.blockPosition()); // KioCG
 +        if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
+         if (isActive) { // Paper - EAR 2
+             TimingHistory.activatedEntityTicks++;
          entity.tick();
-+        if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
          entity.postTick(); // CraftBukkit
          } else { entity.inactiveTick(); } // Paper - EAR 2
++        if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
          //this.getProfiler().pop(); // Purpur
-@@ -1332,7 +1335,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         //} finally { timer.stopTiming(); } // Paper - timings // Purpur
+         Iterator iterator = entity.getPassengers().iterator();
+@@ -1330,6 +1333,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
+                     return BuiltInRegistries.ENTITY_TYPE.getKey(passenger.getType()).toString();
+                 });*/ // Purpur
                  //gameprofilerfiller.incrementCounter("tickPassenger"); // Purpur
-                 // Paper start - EAR 2
-                 if (isActive) {
 +                LevelChunk levelChunk = passenger instanceof Player ? null : this.getChunkIfLoaded(passenger.blockPosition()); // KioCG
 +                if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
+                 // Paper start - EAR 2
+                 if (isActive) {
                  passenger.rideTick();
+@@ -1341,6 +1346,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+                     vehicle.positionRider(passenger);
+                 }
+                 // Paper end - EAR 2
 +                if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
-                 passenger.postTick(); // CraftBukkit
-                 } else {
-                     passenger.setDeltaMovement(Vec3.ZERO);
+                 //gameprofilerfiller.pop(); // Purpur
+                 Iterator iterator = passenger.getPassengers().iterator();
+ 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..901a5fdcac2a1481bb88b1091136b530c0235ceb 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1dbec404d78 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -115,7 +125,7 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..901a5fdcac2a1481bb88b1091136b530
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -721,6 +725,45 @@ public class ServerPlayer extends Player {
+@@ -721,6 +725,43 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -136,8 +146,6 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..901a5fdcac2a1481bb88b1091136b530
 +                            this.setRemainingFireTicks(fireTicks);
 +                        }
 +                    }
-+                } else if (false && this.nearbyChunkHot > 350000L) { // 取消黄值
-+                    this.sendActionBarMessage("<gold><italic>你所在的区块有点热.");
 +                }
 +            }
 +        } else if (this.server.getTickCount() > 600) {
@@ -162,7 +170,7 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..901a5fdcac2a1481bb88b1091136b530
  
      public void doTick() {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 79bf9c277fe98df176113de39360fb34ad917577..259223cee17b06f69e425b1596b38ae3053a0e56 100644
+index 79bf9c277fe98df176113de39360fb34ad917577..2395f450ec791317e2b01a706d57b35ae16647da 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -87,6 +87,7 @@ public class LevelChunk extends ChunkAccess {
@@ -173,16 +181,22 @@ index 79bf9c277fe98df176113de39360fb34ad917577..259223cee17b06f69e425b1596b38ae3
  
      // Pufferfish start - instead of using a random every time the chunk is ticked, define when lightning strikes preemptively
      private int lightningTick;
-@@ -1314,7 +1315,9 @@ public class LevelChunk extends ChunkAccess {
+@@ -1311,6 +1312,7 @@ public class LevelChunk extends ChunkAccess {
+ 
+                         //gameprofilerfiller.push(this::getType); // Purpur
+                         //this.blockEntity.tickTimer.startTiming(); // Spigot // Purpur
++                        LevelChunk.this.chunkHot.startTicking(); // KioCG
                          BlockState iblockdata = LevelChunk.this.getBlockState(blockposition);
  
                          if (this.blockEntity.getType().isValid(iblockdata)) {
-+                            LevelChunk.this.chunkHot.startTicking(); // KioCG
-                             this.ticker.tick(LevelChunk.this.level, this.blockEntity.getBlockPos(), iblockdata, this.blockEntity);
-+                            LevelChunk.this.chunkHot.stopTickingAndCount(); // KioCG
-                             this.loggedInvalidBlockState = false;
-                         } else if (!this.loggedInvalidBlockState) {
-                             this.loggedInvalidBlockState = true;
+@@ -1321,6 +1323,7 @@ public class LevelChunk extends ChunkAccess {
+                             LevelChunk.LOGGER.warn("Block entity {} @ {} state {} invalid for ticking:", new Object[]{LogUtils.defer(this::getType), LogUtils.defer(this::getPos), iblockdata});
+                         }
+ 
++                        LevelChunk.this.chunkHot.stopTickingAndCount(); // KioCG
+                         //gameprofilerfiller.pop(); // Purpur
+                     } catch (Throwable throwable) {
+                         if (throwable instanceof ThreadDeath) throw throwable; // Paper
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
 index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d83786566b6bb491 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
@@ -202,7 +216,7 @@ index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d8378656
          this.weakChunk.clear();
      }
 diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
-index 8769993e7ca59da309087051a3cd38fc562c15d1..8231154efb5d27038b3538ebac750a9c28d1f7a8 100644
+index 8769993e7ca59da309087051a3cd38fc562c15d1..2d9c05b187d3b740401db88418d214007a64d309 100644
 --- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 +++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 @@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
@@ -213,7 +227,7 @@ index 8769993e7ca59da309087051a3cd38fc562c15d1..8231154efb5d27038b3538ebac750a9c
                  Placeholder.component("tps", getTPSColor()),
                  Placeholder.component("mspt", getMSPTColor()),
                  Placeholder.component("ping", getPingColor(player.getPing()))
-@@ -136,6 +137,20 @@ public class TPSBarTask extends BossBarTask {
+@@ -136,6 +137,18 @@ public class TPSBarTask extends BossBarTask {
          return MiniMessage.miniMessage().deserialize(color, Placeholder.parsed("text", String.format("%s", ping)));
      }
  
@@ -222,8 +236,6 @@ index 8769993e7ca59da309087051a3cd38fc562c15d1..8231154efb5d27038b3538ebac750a9c
 +        String color;
 +        if (hot < 300000L) {
 +            color = PurpurConfig.commandTPSBarTextColorGood;
-+        } else if (false && hot < 500000L) { // 取消黄值
-+            color = PurpurConfig.commandTPSBarTextColorMedium;
 +        } else {
 +            color = PurpurConfig.commandTPSBarTextColorLow;
 +        }
