@@ -6,10 +6,10 @@ Subject: [PATCH] Lobotomized entity
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fb8d49a0ff73ba45194b0f1b706f2908eacf29a4
+index 0000000000000000000000000000000000000000..0fe8eae33f7c6415d3d3bf4f37debb7bb8596891
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,68 @@
 +package com.kiocg.entity;
 +
 +import net.minecraft.core.BlockPos;
@@ -34,7 +34,8 @@ index 0000000000000000000000000000000000000000..fb8d49a0ff73ba45194b0f1b706f2908
 +        }
 +        if ((livingEntity.getLevel().getGameTime() + brainTickOffset) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
-+            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(new BlockPos(livingEntity.getX(), livingEntity.getY() + 0.0625D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
++            // 扩展到半砖高度 (希望不会出问题!)
++            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(new BlockPos(livingEntity.getX(), livingEntity.getY() + 0.5D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
 +
 +            if (this.isLobotomized) {
 +                this.notLobotomizedCount = 0;
