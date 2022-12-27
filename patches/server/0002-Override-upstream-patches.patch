@@ -31,16 +31,14 @@ index a37849179a34d0ba5997f7d83c10bd1851135835..ea11e1ba37260b0ab237dd60c1513e2e
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 00d86c57fabbb464a156dfaceadccd978f0d149c..198b4c928c1ff32d8ee5a045dde6e3c7457b261e 100644
+index 00d86c57fabbb464a156dfaceadccd978f0d149c..21cc269225392a47c415b3f5d3e01efd4c51ae77 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -233,8 +233,8 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
-         if (!this.level.isClientSide()) {
+@@ -234,7 +234,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
              this.setPumpkin(false);
              this.forceDrops = true; // CraftBukkit
--            if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur
+             if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur
 -            for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur
-+            // if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur // KioCG - fix dupe
 +            // for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur // KioCG - fix dupe
              this.spawnAtLocation(new ItemStack(Items.CARVED_PUMPKIN), 1.7F);
              this.forceDrops = false; // CraftBukkit
