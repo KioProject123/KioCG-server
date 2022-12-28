@@ -18,7 +18,7 @@ index d62bf95fb067c2e2a4fc9b2757c636bd4ee75bea..8570b4a863c0ef058463e1a5eef5f381
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index a37849179a34d0ba5997f7d83c10bd1851135835..ea11e1ba37260b0ab237dd60c1513e2ed29ec1c2 100644
+index be44d43ee9b5fec44f1b3cb27e7180ba370f6de7..289f9b3082f8c246e8c695fc14a7e53cf5589c94 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -459,7 +459,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -30,6 +30,19 @@ index a37849179a34d0ba5997f7d83c10bd1851135835..ea11e1ba37260b0ab237dd60c1513e2e
              if (!this.player.level.purpurConfig.idleTimeoutKick || kickPermissionCache.getUnchecked(this.player.getBukkitEntity())) {
                  return;
              }
+diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
+index 651c156dc8a5aad04d461add02e22147af657d07..9601092b5057396dd48bf47e2c639075bf5f5690 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
++++ b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
+@@ -50,7 +50,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
+     public final boolean tryStart(ServerLevel world, E entity, long time) {
+         // Paper start - behavior tick rate
+         int tickRate = java.util.Objects.requireNonNullElse(world.paperConfig().tickRates.behavior.get(entity.getType(), this.configKey), -1);
+-        if (tickRate > -1 && time < this.endTimestamp + tickRate) {
++        if (tickRate != -1 && time < this.endTimestamp + tickRate) { // KioCG - > → !=
+             return false;
+         }
+         // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 index 00d86c57fabbb464a156dfaceadccd978f0d149c..21cc269225392a47c415b3f5d3e01efd4c51ae77 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
