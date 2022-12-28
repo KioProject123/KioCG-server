@@ -29,6 +29,19 @@ index a53466a84973f5e83afc71245b317ab4296e0f9e..d7bb42c9a3cbcbe627b8f72162bc1eab
      }
  
      protected double followLeashSpeed() {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
+index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152ef80828a 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
+@@ -28,7 +28,7 @@ public class RandomStrollGoal extends Goal {
+     public RandomStrollGoal(PathfinderMob entity, double speed, int chance, boolean canDespawn) {
+         this.mob = entity;
+         this.speedModifier = speed;
+-        this.interval = chance;
++        this.interval = chance << 1; // KioCG - 降低生物寻路频率
+         this.checkNoActionTime = canDespawn;
+         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+     }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
 index fd7fc2d6a28110050b2050355897d551737939a7..1d01dbe21da1162567931a675dd66dd8b57a3af3 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
@@ -176,7 +189,7 @@ index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index fe830a419c81811f0a72add63a3f09a94392e4a7..19c210075ad02909bf6e1114e577e71f1fbf394f 100644
+index 198b0a0772cd2bb62198443332cbeeb545b2a65d..095aca639a0a49fb68d9dde8cb1251ded6279bc1 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -207,14 +207,14 @@ public class ActivationRange
