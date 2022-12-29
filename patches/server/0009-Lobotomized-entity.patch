@@ -6,10 +6,10 @@ Subject: [PATCH] Lobotomized entity
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0fe8eae33f7c6415d3d3bf4f37debb7bb8596891
+index 0000000000000000000000000000000000000000..82ba15b3046f0b4a5f4675003f0a7968c080256d
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
-@@ -0,0 +1,68 @@
+@@ -0,0 +1,76 @@
 +package com.kiocg.entity;
 +
 +import net.minecraft.core.BlockPos;
@@ -19,11 +19,19 @@ index 0000000000000000000000000000000000000000..0fe8eae33f7c6415d3d3bf4f37debb7b
 +
 +public class Lobotomized {
 +    private final int brainTickOffset;
-+    private boolean isLobotomized = false; public boolean isLobotomized() { return this.isLobotomized; }
++    private boolean isLobotomized = false;
 +    private int notLobotomizedCount = 0;
 +
 +    public Lobotomized(LivingEntity livingEntity) {
 +        this.brainTickOffset = livingEntity.getRandom().nextInt(100);
++    }
++
++    public boolean isLobotomized() {
++        return this.isLobotomized;
++    }
++
++    public void setLobotomized(boolean b) {
++        this.isLobotomized = b;
 +    }
 +
 +    public boolean checkLobotomized(LivingEntity livingEntity) {
@@ -79,7 +87,7 @@ index 0000000000000000000000000000000000000000..0fe8eae33f7c6415d3d3bf4f37debb7b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 454cd09309f581b43a521fcb8fd184b7788c6a88..c6f6ba13fda8d1c7fecc859a908c6581f90d3e4c 100644
+index 094afd5636590608c8ec31c9fec97614dfef60db..29888180f6c271d810219bc594dd3a74dc5d6803 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -308,6 +308,8 @@ public abstract class LivingEntity extends Entity {
@@ -164,7 +172,7 @@ index 268b7457c2a93af6d36c1c5f623c5856f94a7af1..f0373b95dcb8e56f73de6c049a247214
          if ((this.mob.tickCount - this.mob.lastHurtByMobTimestamp) > 100) {
              this.mob.setLastHurtByMob((LivingEntity) null);
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
-index 216929c838446c3c14d9b9906ffa625ef35fcbc8..74d373d4427c304fd6325b905e6b8632a87218a4 100644
+index d4389f006c01e9ef1bf9c6b0a6156152ef80828a..88704e619ef0b8696d2fe9e99a68e20d52e661c9 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 @@ -35,6 +35,7 @@ public class RandomStrollGoal extends Goal {
@@ -204,7 +212,7 @@ index 2cbc9adc8e417def48be03d08174a5833068ec65..e60176ac8eb5e8b772331e51d9f4563b
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..856450f3d87c51426bcdb6aff27c263d0c1f0f03 100644
+index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..787fbfb054eb5f3a7467a946c1c09c7ff4fcf92a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -39,6 +39,7 @@ public abstract class Animal extends AgeableMob {
@@ -247,8 +255,30 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..856450f3d87c51426bcdb6aff27c263d
      /* CraftBukkit start
      // Function disabled as it has no special function anymore after
      // setSitting is disabled.
+@@ -102,6 +126,7 @@ public abstract class Animal extends AgeableMob {
+         if (this.loveCause != null) {
+             nbt.putUUID("LoveCause", this.loveCause);
+         }
++        nbt.putBoolean("KioCG.Lobotomized", this.lobotomized.isLobotomized()); // KioCG
+ 
+     }
+ 
+@@ -115,6 +140,13 @@ public abstract class Animal extends AgeableMob {
+         super.readAdditionalSaveData(nbt);
+         this.inLove = nbt.getInt("InLove");
+         this.loveCause = nbt.hasUUID("LoveCause") ? nbt.getUUID("LoveCause") : null;
++        // KioCG start
++        boolean isLobotomized = nbt.getBoolean("KioCG.Lobotomized");
++        this.lobotomized.setLobotomized(isLobotomized);
++        if (isLobotomized) {
++            this.onGround = true;
++        }
++        // KioCG end
+     }
+ 
+     public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 832469e39901d9ec666ddaf3aff77419f6195b1c..6b9f09cef88af0203bb1b90c382ca9d6280696f4 100644
+index 832469e39901d9ec666ddaf3aff77419f6195b1c..8ce4b0c6b5cb2406a33a43c0d5a7cb61fc246732 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,8 +139,9 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -304,3 +334,26 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..6b9f09cef88af0203bb1b90c382ca9d6
              // make sure we restock if needed when lobotomized
              restock();
          }
+@@ -647,6 +665,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         if (this.assignProfessionWhenSpawned) {
+             nbt.putBoolean("AssignProfessionWhenSpawned", true);
+         }
++        nbt.putBoolean("KioCG.Lobotomized", this.lobotomized.isLobotomized()); // KioCG
+ 
+     }
+ 
+@@ -688,6 +707,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+             this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
+         }
+ 
++        // KioCG start
++        boolean isLobotomized = nbt.getBoolean("KioCG.Lobotomized");
++        this.lobotomized.setLobotomized(isLobotomized);
++        if (isLobotomized) {
++            this.onGround = true;
++        }
++        // KioCG end
++
+     }
+ 
+     @Override
