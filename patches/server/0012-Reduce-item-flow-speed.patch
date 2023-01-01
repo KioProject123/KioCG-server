@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Mon, 2 Jan 2023 04:27:42 +0800
+Subject: [PATCH] Reduce item flow speed
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..1ffe6614512d2bee67e89f721d7fff416a35184a 100644
+--- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
++++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+@@ -234,6 +234,7 @@ public class ItemEntity extends Entity {
+     // Spigot end
+ 
+     private void setUnderwaterMovement() {
++        if (true) setUnderLavaMovement(); // KioCG - 降低物品流速
+         Vec3 vec3d = this.getDeltaMovement();
+ 
+         this.setDeltaMovement(vec3d.x * 0.9900000095367432D, vec3d.y + (double) (vec3d.y < 0.05999999865889549D ? 5.0E-4F : 0.0F), vec3d.z * 0.9900000095367432D);
