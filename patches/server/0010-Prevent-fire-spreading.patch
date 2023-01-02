@@ -17,3 +17,15 @@ index 3d3f6b85c8463963d1ba557fab1de7a32cfd1a2f..7a4be9933152bc5869b9411461c53336
                  BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
                  for (int l = -1; l <= 1; ++l) {
+diff --git a/src/main/java/net/minecraft/world/level/material/LavaFluid.java b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
+index 3a04cb4c646c07abf4338c70c865a4c4cb34b1bc..213f0e5506ad9d5c7cda433822bdd1396dfe6f07 100644
+--- a/src/main/java/net/minecraft/world/level/material/LavaFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
+@@ -68,6 +68,7 @@ public abstract class LavaFluid extends FlowingFluid {
+ 
+     @Override
+     public void randomTick(Level world, BlockPos pos, FluidState state, RandomSource random) {
++        if (net.minecraft.server.MinecraftServer.currentTick % 10 == 0) // KioCG
+         if (world.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+             int i = random.nextInt(3);
+ 
