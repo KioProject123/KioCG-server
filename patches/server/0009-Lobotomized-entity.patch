@@ -212,7 +212,7 @@ index 2cbc9adc8e417def48be03d08174a5833068ec65..e60176ac8eb5e8b772331e51d9f4563b
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..787fbfb054eb5f3a7467a946c1c09c7ff4fcf92a 100644
+index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..805cfd25620c77332bad6cf57b2855f579ef3666 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -39,6 +39,7 @@ public abstract class Animal extends AgeableMob {
@@ -240,7 +240,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..787fbfb054eb5f3a7467a946c1c09c7f
 +
 +    @Override
 +    public boolean isCollidable(boolean ignoreClimbing) {
-+        if (!this.isLobotomized()) {
++        if (!this.isLobotomized() || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
 +            return super.isCollidable(ignoreClimbing);
 +        }
 +        return false;
@@ -278,7 +278,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..787fbfb054eb5f3a7467a946c1c09c7f
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 832469e39901d9ec666ddaf3aff77419f6195b1c..8ce4b0c6b5cb2406a33a43c0d5a7cb61fc246732 100644
+index 832469e39901d9ec666ddaf3aff77419f6195b1c..a48eccca3191f1a42088e9f05567b15218bd255e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,8 +139,9 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -306,7 +306,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..8ce4b0c6b5cb2406a33a43c0d5a7cb61
 +
 +    @Override
 +    public boolean isCollidable(boolean ignoreClimbing) {
-+        if (!this.isLobotomized()) {
++        if (!this.isLobotomized() || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
 +            return super.isCollidable(ignoreClimbing);
 +        }
 +        return false;
