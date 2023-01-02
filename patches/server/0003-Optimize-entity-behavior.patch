@@ -189,7 +189,7 @@ index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 198b0a0772cd2bb62198443332cbeeb545b2a65d..095aca639a0a49fb68d9dde8cb1251ded6279bc1 100644
+index 198b0a0772cd2bb62198443332cbeeb545b2a65d..a6817cc1ce04aaf833702302298ae85b0c2d526c 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -207,14 +207,14 @@ public class ActivationRange
@@ -204,14 +204,14 @@ index 198b0a0772cd2bb62198443332cbeeb545b2a65d..095aca639a0a49fb68d9dde8cb1251de
 -            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, worldHeight, waterActivationRange );
 -            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, worldHeight, flyingActivationRange );
 -            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, worldHeight, villagerActivationRange );
-+            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, Math.min(16, maxRange), maxRange ); // KioCG - 减少搜索范围
-+            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, Math.min(16, miscActivationRange), miscActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, Math.min(16, raiderActivationRange), raiderActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, Math.min(16, animalActivationRange), animalActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, Math.min(16, monsterActivationRange), monsterActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, Math.min(16, waterActivationRange), waterActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, Math.min(16, flyingActivationRange), flyingActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, Math.min(16, villagerActivationRange), villagerActivationRange ); // KioCG - 减少搜索范围
++            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, Math.max(16, maxRange), maxRange ); // KioCG - 减少搜索范围
++            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, Math.max(16, miscActivationRange), miscActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, Math.max(16, raiderActivationRange), raiderActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, Math.max(16, animalActivationRange), animalActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, Math.max(16, monsterActivationRange), monsterActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, Math.max(16, waterActivationRange), waterActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, Math.max(16, flyingActivationRange), flyingActivationRange ); // KioCG - 减少搜索范围
++            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, Math.max(16, villagerActivationRange), villagerActivationRange ); // KioCG - 减少搜索范围
              // Paper end
  
              // Paper start
