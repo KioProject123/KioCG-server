@@ -68,14 +68,14 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..8b9130bccbbee68f98c28ea8f9703deca1da687e 100644
+index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..00704f9b6436b4914216f00e1e00712ac1294510 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1290,11 +1290,14 @@ public class ServerLevel extends Level implements WorldGenLevel {
              return BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
          });*/ // Purpur
          //gameprofilerfiller.incrementCounter("tickNonPassenger"); // Purpur
-+        LevelChunk levelChunk = entity instanceof Player || entity instanceof Mob mob && mob.removeWhenFarAway(0.0) && !mob.isPersistenceRequired() && !mob.requiresCustomPersistence() ? null : this.getChunkIfLoaded(entity.blockPosition()); // KioCG
++        LevelChunk levelChunk = entity instanceof Mob mob && (!mob.removeWhenFarAway(0.0) || mob.isPersistenceRequired() || mob.requiresCustomPersistence()) ? this.getChunkIfLoaded(entity.blockPosition()) : null; // KioCG
 +        if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
          if (isActive) { // Paper - EAR 2
              TimingHistory.activatedEntityTicks++;
@@ -90,7 +90,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..8b9130bccbbee68f98c28ea8f9703dec
                      return BuiltInRegistries.ENTITY_TYPE.getKey(passenger.getType()).toString();
                  });*/ // Purpur
                  //gameprofilerfiller.incrementCounter("tickPassenger"); // Purpur
-+                LevelChunk levelChunk = passenger instanceof Player ? null : this.getChunkIfLoaded(passenger.blockPosition()); // KioCG
++                LevelChunk levelChunk = passenger instanceof Mob ? this.getChunkIfLoaded(passenger.blockPosition()) : null; // KioCG
 +                if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
                  // Paper start - EAR 2
                  if (isActive) {
