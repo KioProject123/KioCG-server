@@ -68,14 +68,14 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..00704f9b6436b4914216f00e1e00712ac1294510 100644
+index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..8e112be5ee41eca6dfb961ebab54721059685578 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1290,11 +1290,14 @@ public class ServerLevel extends Level implements WorldGenLevel {
              return BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
          });*/ // Purpur
          //gameprofilerfiller.incrementCounter("tickNonPassenger"); // Purpur
-+        LevelChunk levelChunk = entity instanceof Mob mob && (!mob.removeWhenFarAway(0.0) || mob.isPersistenceRequired() || mob.requiresCustomPersistence()) ? this.getChunkIfLoaded(entity.blockPosition()) : null; // KioCG
++        LevelChunk levelChunk = entity.shouldTickHot() ? this.getChunkIfLoaded(entity.blockPosition()) : null; // KioCG
 +        if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
          if (isActive) { // Paper - EAR 2
              TimingHistory.activatedEntityTicks++;
@@ -90,7 +90,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..00704f9b6436b4914216f00e1e00712a
                      return BuiltInRegistries.ENTITY_TYPE.getKey(passenger.getType()).toString();
                  });*/ // Purpur
                  //gameprofilerfiller.incrementCounter("tickPassenger"); // Purpur
-+                LevelChunk levelChunk = passenger instanceof Mob ? this.getChunkIfLoaded(passenger.blockPosition()) : null; // KioCG
++                LevelChunk levelChunk = !(passenger instanceof Player) ? this.getChunkIfLoaded(passenger.blockPosition()) : null; // KioCG
 +                if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
                  // Paper start - EAR 2
                  if (isActive) {
@@ -169,6 +169,97 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1db
      }
  
      public void doTick() {
+diff --git a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
+index 11a6f5b9e726453979d4c718c32a44024e1b8a08..f2202483b14f7c3121c49c26371c07ac517cc95f 100644
+--- a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
++++ b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
+@@ -510,4 +510,11 @@ public class AreaEffectCloud extends Entity {
+     public EntityDimensions getDimensions(Pose pose) {
+         return EntityDimensions.scalable(this.getRadius() * 2.0F, 0.5F);
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 1ae7ef3d94d4d3d8413a5419eeb9fadad89d2f8d..4a5a97f8a9c03a25cef42a9f38b2c5d6b35f0221 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -4746,4 +4746,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+         return false;
+     }
+     // Purpur end
++
++    public boolean shouldTickHot() { return true; } // KioCG
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/LightningBolt.java b/src/main/java/net/minecraft/world/entity/LightningBolt.java
+index 0142aff35dea5bf5aff55e3293fb2d173c97e677..32b5be45f121507905d782e3faf9865bc09d8d9a 100644
+--- a/src/main/java/net/minecraft/world/entity/LightningBolt.java
++++ b/src/main/java/net/minecraft/world/entity/LightningBolt.java
+@@ -286,4 +286,11 @@ public class LightningBolt extends Entity {
+     public Stream<Entity> getHitEntities() {
+         return this.hitEntities.stream().filter(Entity::isAlive);
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index 7bd4e95fcaf3855a4fe412b5898a97d7992caad3..a0b0ec5805923a0457139b7df7dc2f1c444a6f93 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -1803,4 +1803,11 @@ public abstract class Mob extends LivingEntity {
+         }
+     }
+     // Purpur end
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return !this.removeWhenFarAway(0.0) || this.isPersistenceRequired() || this.requiresCustomPersistence();
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index a667401600fc47efa9efa2964ea4099cddc7167a..4821ed0a0db33626ebe485aa2c97634fec857e52 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -2451,4 +2451,11 @@ public abstract class Player extends LivingEntity {
+             return this.message;
+         }
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+index d01d3b752f89df479ff985dd34043191fd5d59a4..45479af9bc492771355f041e8e5fb0e8566fd994 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+@@ -305,4 +305,11 @@ public abstract class Projectile extends Entity {
+ 
+         return entity instanceof Player ? entity.mayInteract(world, pos) : entity == null || world.purpurConfig.projectilesBypassMobGriefing || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 index 79bf9c277fe98df176113de39360fb34ad917577..2395f450ec791317e2b01a706d57b35ae16647da 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
@@ -197,6 +288,21 @@ index 79bf9c277fe98df176113de39360fb34ad917577..2395f450ec791317e2b01a706d57b35a
                          //gameprofilerfiller.pop(); // Purpur
                      } catch (Throwable throwable) {
                          if (throwable instanceof ThreadDeath) throw throwable; // Paper
+diff --git a/src/main/java/net/minecraft/world/level/redstone/NeighborUpdater.java b/src/main/java/net/minecraft/world/level/redstone/NeighborUpdater.java
+index 19faa8f5f891c1ffbed0af8391dee8202433c447..e00b5f0287604cff46283d6ad2b9f848922801d3 100644
+--- a/src/main/java/net/minecraft/world/level/redstone/NeighborUpdater.java
++++ b/src/main/java/net/minecraft/world/level/redstone/NeighborUpdater.java
+@@ -63,7 +63,10 @@ public interface NeighborUpdater {
+                 }
+             }
+             // CraftBukkit end
++            net.minecraft.world.level.chunk.LevelChunk levelChunk = world.getChunkIfLoaded(pos); // KioCG
++            if (levelChunk != null) levelChunk.getChunkHot().startTicking(); // KioCG
+             state.neighborChanged(world, pos, sourceBlock, sourcePos, notify);
++            if (levelChunk != null) levelChunk.getChunkHot().stopTickingAndCount(); // KioCG
+             // Spigot Start
+         } catch (StackOverflowError ex) {
+             world.lastPhysicsProblem = new BlockPos(pos);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
 index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d83786566b6bb491 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
