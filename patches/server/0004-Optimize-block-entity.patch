@@ -121,7 +121,7 @@ index 830326496e2f961682daadc7a7859247042b4cdd..281d9b1d493e6e53653cff10f0539385
 +        }
 +
 +    }
-+    // KioCG stop
++    // KioCG end
 +
      public static void particleTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
          RandomSource randomsource = world.random;

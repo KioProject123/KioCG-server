@@ -227,7 +227,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..a1c5c9a9f0101a12c91e3a25eb7ef2f7
 +    public boolean isLobotomized() {
 +        return this.lobotomized.isLobotomized();
 +    }
-+    // KioCG stop
++    // KioCG end
 +
      /* CraftBukkit start
      // Function disabled as it has no special function anymore after
@@ -288,7 +288,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..fd41ecb96ab33c88c2e2767a54dd5764
 +        }
 +        return false;
 +    }
-+    // KioCG stop
++    // KioCG end
 +
      @Override
      public Brain<Villager> getBrain() {

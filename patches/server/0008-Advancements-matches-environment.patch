@@ -52,5 +52,5 @@ index 950c4b185afac42ab1c921456a3da52a246ecaf7..cb6a91a2b5767ad027582d6627e84c50
 +        }
 +        return org.bukkit.World.Environment.CUSTOM;
 +    }
-+    // KioCG stop
++    // KioCG end
  }
