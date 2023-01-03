@@ -6,10 +6,10 @@ Subject: [PATCH] Lobotomized entity
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..82ba15b3046f0b4a5f4675003f0a7968c080256d
+index 0000000000000000000000000000000000000000..b776d7fa7345b2ac5918aafdbb0f0b62126b978e
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
-@@ -0,0 +1,76 @@
+@@ -0,0 +1,53 @@
 +package com.kiocg.entity;
 +
 +import net.minecraft.core.BlockPos;
@@ -20,7 +20,6 @@ index 0000000000000000000000000000000000000000..82ba15b3046f0b4a5f4675003f0a7968
 +public class Lobotomized {
 +    private final int brainTickOffset;
 +    private boolean isLobotomized = false;
-+    private int notLobotomizedCount = 0;
 +
 +    public Lobotomized(LivingEntity livingEntity) {
 +        this.brainTickOffset = livingEntity.getRandom().nextInt(100);
@@ -36,23 +35,10 @@ index 0000000000000000000000000000000000000000..82ba15b3046f0b4a5f4675003f0a7968
 +
 +    public boolean checkLobotomized(LivingEntity livingEntity) {
 +        int interval = livingEntity.getLevel().purpurConfig.villagerLobotomizeCheckInterval;
-+        if (this.notLobotomizedCount > 3) {
-+            // check half as often if not lobotomized for the last 3+ consecutive checks
-+            interval *= 2;
-+        }
 +        if ((livingEntity.getLevel().getGameTime() + brainTickOffset) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
 +            // 扩展到半砖高度 (希望不会出问题!)
 +            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(new BlockPos(livingEntity.getX(), livingEntity.getY() + 0.5D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
-+
-+            if (this.isLobotomized) {
-+                this.notLobotomizedCount = 0;
-+
-+                // 尝试恢复重力
-+                this.isLobotomized = shouldRestoreGravity(livingEntity);
-+            } else {
-+                this.notLobotomizedCount++;
-+            }
 +        }
 +        return this.isLobotomized;
 +    }
@@ -75,15 +61,6 @@ index 0000000000000000000000000000000000000000..82ba15b3046f0b4a5f4675003f0a7968
 +
 +        // only if both blocks have no collision
 +        return state.isPathfindable(level, pos, PathComputationType.LAND) && level.getBlockState(pos.above()).isPathfindable(level, pos, PathComputationType.LAND);
-+    }
-+
-+    private boolean shouldRestoreGravity(LivingEntity livingEntity) {
-+        net.minecraft.world.level.block.state.BlockState state = livingEntity.getLevel().getBlockState(livingEntity.blockPosition().offset(0.0, -0.001D, 0.0));
-+        if (state == null) {
-+            // chunk not loaded
-+            return false;
-+        }
-+        return livingEntity.isColliding(livingEntity.blockPosition(), state);
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
@@ -212,7 +189,7 @@ index 2cbc9adc8e417def48be03d08174a5833068ec65..e60176ac8eb5e8b772331e51d9f4563b
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..2ce42db6c820dffc57dcd03db9b23fbb7b0a008d 100644
+index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..a1c5c9a9f0101a12c91e3a25eb7ef2f7f7fb56a7 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -39,6 +39,7 @@ public abstract class Animal extends AgeableMob {
@@ -233,7 +210,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..2ce42db6c820dffc57dcd03db9b23fbb
 +    // KioCG start
 +    @Override
 +    public void travel(net.minecraft.world.phys.Vec3 vec3) {
-+        if (!this.isLobotomized()) {
++        if (!this.isLobotomized() || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
 +            super.travel(vec3);
 +        }
 +    }
@@ -278,7 +255,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..2ce42db6c820dffc57dcd03db9b23fbb
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 832469e39901d9ec666ddaf3aff77419f6195b1c..5431e2072bcbd333102d4e1c345cec7cf74b314d 100644
+index 832469e39901d9ec666ddaf3aff77419f6195b1c..fd41ecb96ab33c88c2e2767a54dd576454fa1c93 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,8 +139,9 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -299,7 +276,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..5431e2072bcbd333102d4e1c345cec7c
 +    // KioCG start
 +    @Override
 +    public void travel(net.minecraft.world.phys.Vec3 vec3) {
-+        if (!this.isLobotomized()) {
++        if (!this.isLobotomized() || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
 +            super.travel(vec3);
 +        }
 +    }
