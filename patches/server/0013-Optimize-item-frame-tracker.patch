@@ -1,0 +1,63 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 4 Jan 2023 18:34:04 +0800
+Subject: [PATCH] Optimize item frame tracker
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 75965afd7b4bed23a5ecf618c7f91ff5e7ffd92f..ece859b9a9890ee5a2d2f41e5b4772da110ca4d3 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -1253,6 +1253,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+         //this.level.timings.tracker1.startTiming(); // Purpur
+         try {
+             for (TrackedEntity tracker : this.entityMap.values()) {
++                if (tracker.entity instanceof net.minecraft.world.entity.decoration.ItemFrame itemFrame && !itemFrame.shouldUpdateTrackerAndInvert()) continue; // KioCG
+                 // update tracker entry
+                 tracker.updatePlayers(tracker.entity.getPlayersInTrackRange());
+             }
+diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
+index d2cd7629a69d04937180df04829d12425815588c..13afc12489204b84be1cbcfe261d874ef1410161 100644
+--- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
++++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
+@@ -198,6 +198,7 @@ public class ItemFrame extends HangingEntity {
+                 // Paper end
+                 this.dropItem(source.getEntity(), false);
+                 this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
++                trackerUpdate = true; // KioCG
+             }
+ 
+             return true;
+@@ -489,6 +490,7 @@ public class ItemFrame extends HangingEntity {
+                     if (!player.getAbilities().instabuild) {
+                         itemstack.shrink(1);
+                     }
++                    trackerUpdate = true; // KioCG
+                 }
+             } else {
+                 // Paper start - call PlayerItemFrameChangeEvent
+@@ -498,6 +500,7 @@ public class ItemFrame extends HangingEntity {
+                 // Paper end
+                 this.playSound(this.getRotateItemSound(), 1.0F, 1.0F);
+                 this.setRotation(this.getRotation() + 1);
++                trackerUpdate = true; // KioCG
+             }
+ 
+             return InteractionResult.CONSUME;
+@@ -543,4 +546,16 @@ public class ItemFrame extends HangingEntity {
+ 
+         return (float) Mth.wrapDegrees(180 + enumdirection.get2DDataValue() * 90 + this.getRotation() * 45 + i);
+     }
++
++    // KioCG start
++    private boolean trackerUpdate = true;
++    public boolean shouldUpdateTrackerAndInvert() {
++        if (trackerUpdate) {
++            trackerUpdate = false;
++            return true;
++        }
++
++        return this.tickCount % 20 == 0;
++    }
++    // KioCG end
+ }
