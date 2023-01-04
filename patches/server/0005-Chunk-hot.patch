@@ -104,7 +104,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..8e112be5ee41eca6dfb961ebab547210
                  Iterator iterator = passenger.getPassengers().iterator();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1dbec404d78 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..dbfb88a71923f392161b26f30b2e9a722ba8e7eb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -125,7 +125,7 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1db
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -721,6 +725,43 @@ public class ServerPlayer extends Player {
+@@ -721,6 +725,46 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -141,10 +141,10 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1db
 +                        this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                    } else {
 +                        this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
-+                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
-+                        if (this.getRemainingFireTicks() < fireTicks) {
-+                            this.setRemainingFireTicks(fireTicks);
-+                        }
++//                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
++//                        if (this.getRemainingFireTicks() < fireTicks) {
++//                            this.setRemainingFireTicks(fireTicks);
++//                        }
 +                    }
 +                }
 +            }
@@ -159,9 +159,12 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..a4bca2b9c4fce6b2fe7d86957290f1db
 +        int z = chunk.locZ;
 +        net.minecraft.world.level.Level world = chunk.getLevel();
 +        long total = 0L;
-+        for (int i = x - 1; i <= x + 1; ++i) {
-+            for (int j = z - 1; j <= z + 1; ++j) {
-+                total += world.getChunk(i, j).getChunkHot().getAverage();
++        for (int i = x - 3; i <= x + 3; ++i) {
++            for (int j = z - 3; j <= z + 3; ++j) {
++                net.minecraft.world.level.chunk.LevelChunk chunk0 = world.getChunkIfLoaded(i, j);
++                if (chunk0 != null) {
++                    total += chunk0.getChunkHot().getAverage();
++                }
 +            }
 +        }
 +        return total;
@@ -322,7 +325,7 @@ index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d8378656
          this.weakChunk.clear();
      }
 diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
-index 8769993e7ca59da309087051a3cd38fc562c15d1..2d9c05b187d3b740401db88418d214007a64d309 100644
+index 8769993e7ca59da309087051a3cd38fc562c15d1..a1d35f1ce4bd1bf260f252125ee69a8a75325a83 100644
 --- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 +++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 @@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
