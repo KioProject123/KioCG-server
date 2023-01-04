@@ -102,6 +102,24 @@ index 006d5fc7c96a47bf57ab26f374143400138b8b17..3c07f6764491480cbc5207bc0eda1098
          this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
          this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
+index e8f42ad6cc32cb21584d8988fcf3d1e4b6552f0c..ae50a700051f7fcbf37747d4ca1467729c2bb25a 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
++++ b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
+@@ -263,11 +263,11 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
+         return 0.4F;
+     }
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() {
+         //this.level.getProfiler().push("allayBrain"); // Purpur
+-        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
++        if (this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // KioCG
+         this.getBrain().tick((ServerLevel) this.level, this);
+         //this.level.getProfiler().pop(); // Purpur
+         //this.level.getProfiler().push("allayActivityUpdate"); // Purpur
 diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
 index 616f51445c360188c7a6958e5ea02642c5559ee5..d0b5d970ecc1d91212ceb01d6dd804973553d12f 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
@@ -124,6 +142,78 @@ index 616f51445c360188c7a6958e5ea02642c5559ee5..d0b5d970ecc1d91212ceb01d6dd80497
                          return Optional.of(serverPlayer);
                      }
                  }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
+index 867091706521dbb16e66bdf5c9f4136759ab2677..17032ca2ce786db5efa224fe6a5daf24ef4057f0 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
++++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
+@@ -327,11 +327,11 @@ public class Axolotl extends Animal implements LerpingModel, VariantHolder<Axolo
+         return true;
+     }
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() {
+         //this.level.getProfiler().push("axolotlBrain"); // Purpur
+-        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
++        if (this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // KioCG
+         this.getBrain().tick((ServerLevel) this.level, this);
+         //this.level.getProfiler().pop(); // Purpur
+         //this.level.getProfiler().push("axolotlActivityUpdate"); // Purpur
+diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
+index fe1f01d7aa27907298dd2e97e6b4d4fa9c507628..575cbf3067d43a5dae771b20f5b990eb1867cb39 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
++++ b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
+@@ -230,11 +230,11 @@ public class Frog extends Animal implements VariantHolder<FrogVariant> {
+         return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && this.isInWaterOrBubble();
+     }
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() {
+         //this.level.getProfiler().push("frogBrain"); // Purpur
+-        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
++        if (this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // KioCG
+         this.getBrain().tick((ServerLevel)this.level, this);
+         //this.level.getProfiler().pop(); // Purpur
+         //this.level.getProfiler().push("frogActivityUpdate"); // Purpur
+diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+index 93fe8efe4ddd4de440fff1ca7a38960203d0ff74..af90b58b5257437b26204592bde10b1b4dde978c 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
++++ b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+@@ -114,11 +114,11 @@ public class Tadpole extends AbstractFish {
+         return SoundEvents.TADPOLE_FLOP;
+     }
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() {
+         //this.level.getProfiler().push("tadpoleBrain"); // Purpur
+-        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
++        if (this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // KioCG
+         this.getBrain().tick((ServerLevel) this.level, this);
+         //this.level.getProfiler().pop(); // Purpur
+         //this.level.getProfiler().push("tadpoleActivityUpdate"); // Purpur
+diff --git a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
+index 8f3817df5996bb63ab15ee1ab1ef38e90715018a..26b79e5ce1d4b41ec83907103cab09ff31fd4c56 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
++++ b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
+@@ -225,11 +225,11 @@ public class Goat extends Animal {
+         return (Brain<Goat>) super.getBrain(); // CraftBukkit - decompile error
+     }
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() {
+         //this.level.getProfiler().push("goatBrain"); // Purpur
+-        if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur - only use brain if no rider
++        if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // Purpur - only use brain if no rider // KioCG
+         this.getBrain().tick((ServerLevel) this.level, this);
+         //this.level.getProfiler().pop(); // Purpur
+         //this.level.getProfiler().push("goatActivityUpdate"); // Purpur
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 index 0cfe5cb3ce0ac8554bbdb68c6658369306ce634c..935351a7c94f0e6471bcd911868cdb3ca79336c0 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
@@ -188,6 +278,28 @@ index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8
      }
  
      public static AttributeSupplier.Builder createAttributes() {
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index 832469e39901d9ec666ddaf3aff77419f6195b1c..0fcc8605b85be1e779813ed09f0dceee211adbb8 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -331,7 +331,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     }
+     // Spigot End
+ 
+-    private int behaviorTick = 0; // Pufferfish
++    private int behaviorTick = this.getRandom().nextInt(200); // Pufferfish // KioCG
+     @Override
+     protected void customServerAiStep() { mobTick(false); }
+     protected void mobTick(boolean inactive) {
+@@ -347,7 +347,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         // Purpur end
+         // Pufferfish start
+         if (!inactive) {
+-            if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur - only use brain if no rider
++            if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 10 + 100) < 10) // Pufferfish // Purpur - only use brain if no rider // KioCG
+             this.getBrain().tick((ServerLevel) this.level, this); // Paper
+          }
+         // Pufferfish end
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
 index 198b0a0772cd2bb62198443332cbeeb545b2a65d..a6817cc1ce04aaf833702302298ae85b0c2d526c 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
