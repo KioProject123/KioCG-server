@@ -68,16 +68,3 @@ index 7c52c048fb9b265d57f57f0c69796668235a26fd..0333c0f3885601a3a0f0d5b235800560
                          }
                          if (player.hasPermission("purpur.anvil.format")) {
                              java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([l-or])").matcher(name);
-diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index fe830a419c81811f0a72add63a3f09a94392e4a7..198b0a0772cd2bb62198443332cbeeb545b2a65d 100644
---- a/src/main/java/org/spigotmc/ActivationRange.java
-+++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -434,7 +434,7 @@ public class ActivationRange
- 
-             }
-             // Add a little performance juice to active entities. Skip 1/4 if not immune.
--        } else if ( entity.tickCount + entity.getId() + 1 % 4 == 0 && ActivationRange.checkEntityImmunities( entity ) < 0 ) // Paper
-+        } else if ( (entity.tickCount + entity.getId() + 1) % 4 == 0 && ActivationRange.checkEntityImmunities( entity ) < 0 ) // Paper // KioCG - Fix Paper#8686
-         {
-             isActive = false;
-         }
