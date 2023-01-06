@@ -301,7 +301,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..0fcc8605b85be1e779813ed09f0dceee
           }
          // Pufferfish end
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 198b0a0772cd2bb62198443332cbeeb545b2a65d..a6817cc1ce04aaf833702302298ae85b0c2d526c 100644
+index e126789cb1e04835b0e6a0668884334c87c2c4b2..51d87646f54f27c81b536cd6b7dee853edfe27d8 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -207,14 +207,14 @@ public class ActivationRange
@@ -327,3 +327,32 @@ index 198b0a0772cd2bb62198443332cbeeb545b2a65d..a6817cc1ce04aaf833702302298ae85b
              // Paper end
  
              // Paper start
+@@ -297,6 +297,7 @@ public class ActivationRange
+             return 100; // Paper
+         }
+         // Paper start
++        if (entity instanceof net.minecraft.world.entity.item.ItemEntity) // KioCG - Check items only. https://github.com/PaperMC/Paper/pull/7644
+         if ( !entity.isOnGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
+         {
+             return 100;
+@@ -306,6 +307,11 @@ public class ActivationRange
+         {
+             if ( (!entity.isOnGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
+             {
++                // KioCG start
++                if (!(entity instanceof WaterAnimal) && !(entity instanceof net.minecraft.world.entity.animal.axolotl.Axolotl)
++                    && !(entity instanceof net.minecraft.world.entity.animal.FlyingAnimal) && !(entity instanceof net.minecraft.world.entity.animal.allay.Allay)
++                    && !(entity instanceof net.minecraft.world.entity.ambient.Bat))
++                // KioCG end
+                 return 10; // Paper
+             }
+         } else if ( !( (AbstractArrow) entity ).inGround )
+@@ -397,7 +403,7 @@ public class ActivationRange
+      */
+     public static boolean checkIfActive(Entity entity)
+     {
+-        if (entity.level.purpurConfig.squidImmuneToEAR && entity instanceof Squid) return true; // Purpur
++        if (entity.level.purpurConfig.squidImmuneToEAR && entity instanceof Squid && !(entity instanceof net.minecraft.world.entity.GlowSquid)) return true; // Purpur // KioCG - exclude GlowSquid
+         // Never safe to skip fireworks or entities not yet added to chunk
+         if ( entity instanceof FireworkRocketEntity ) {
+             return true;
