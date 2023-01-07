@@ -6,13 +6,11 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d3774e6008f8b174d4ebca09f023f6fe9ab1e860
+index 0000000000000000000000000000000000000000..3be063b7fb922c98e6e9ada3c672924c988c4983
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,33 @@
 +package com.kiocg;
-+
-+import org.bukkit.Bukkit;
 +
 +public class ChunkHot {
 +    private static final int TIMES_LENGTH = 100;
@@ -30,21 +28,17 @@ index 0000000000000000000000000000000000000000..d3774e6008f8b174d4ebca09f023f6fe
 +    }
 +
 +    public void startTicking() {
-+        if (Bukkit.isPrimaryThread()) {
-+            nanos = System.nanoTime();
-+        }
++        nanos = System.nanoTime();
 +    }
 +
 +    public void stopTickingAndCount() {
-+        if (Bukkit.isPrimaryThread()) {
-+            times[index] += System.nanoTime() - nanos;
-+        }
++        times[index] += System.nanoTime() - nanos;
 +    }
 +
 +    public long getAverage() {
 +        long total = 0L;
 +        for (long value : times) {
-+            total += value;
++            total += Math.min(value, 600000L);
 +        }
 +        return total / (long) TIMES_LENGTH;
 +    }
@@ -112,7 +106,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..1894609af81098d3fd82c79219ccb414
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..9938b2ee28cedc849b99f9d9e9a27b28c8dd788f 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..24031adb80fca63f8620b9d0c93c4bb3c5f57388 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -144,7 +138,7 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..9938b2ee28cedc849b99f9d9e9a27b28
 +                tickChunkHot = 0;
 +                this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +
-+                if (this.nearbyChunkHot > 300000L) {
++                if (this.nearbyChunkHot > 330000L) {
 +                    if (this.isAfk) {
 +                        this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                    } else {
