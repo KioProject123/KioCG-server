@@ -38,7 +38,7 @@ index 0000000000000000000000000000000000000000..3be063b7fb922c98e6e9ada3c672924c
 +    public long getAverage() {
 +        long total = 0L;
 +        for (long value : times) {
-+            total += Math.min(value, 600000L);
++            total += Math.min(value, 1000000L);
 +        }
 +        return total / (long) TIMES_LENGTH;
 +    }
