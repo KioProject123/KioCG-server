@@ -29,6 +29,19 @@ index a53466a84973f5e83afc71245b317ab4296e0f9e..d7bb42c9a3cbcbe627b8f72162bc1eab
      }
  
      protected double followLeashSpeed() {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/FollowMobGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/FollowMobGoal.java
+index 2e6855411c49f8bde1aeed4f8f3616c4427c56ad..843a616985f4a9d798bc50df93238874f9b2473f 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/FollowMobGoal.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/FollowMobGoal.java
+@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
+ import net.minecraft.world.level.pathfinder.BlockPathTypes;
+ 
+ public class FollowMobGoal extends Goal {
+-    private final Mob mob;
++    protected final Mob mob; // KioCG - protected
+     private final Predicate<Mob> followPredicate;
+     @Nullable
+     private Mob followingMob;
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152ef80828a 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
@@ -43,7 +56,7 @@ index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152
          this.setFlags(EnumSet.of(Goal.Flag.MOVE));
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index fd7fc2d6a28110050b2050355897d551737939a7..1d01dbe21da1162567931a675dd66dd8b57a3af3 100644
+index fd7fc2d6a28110050b2050355897d551737939a7..7572815e2e0ca94f5e65eb61ef51a55390a25057 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
 @@ -159,7 +159,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
@@ -62,11 +75,20 @@ index fd7fc2d6a28110050b2050355897d551737939a7..1d01dbe21da1162567931a675dd66dd8
          this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 10.0F));
          this.targetSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
          this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, Rabbit.class, false, (Predicate) null));
+@@ -561,7 +568,7 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+ 
+         @Override
+         public boolean canUse() {
+-            return super.canUse() && !this.cat.isTame();
++            return !this.cat.isTame() && super.canUse(); // KioCG - 优化判断顺序
+         }
+     }
+ 
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..bc16a4d2ff376a0bc07f1f8bed7cc6dd3f6adc30 100644
+index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..469686ecfb6ac5d2e8a24f6ae3b12e6d41514d3d 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-@@ -237,7 +237,14 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -237,9 +237,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
@@ -80,13 +102,31 @@ index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..bc16a4d2ff376a0bc07f1f8bed7cc6dd
 +        });
 +        // KioCG end
          this.goalSelector.addGoal(3, new LandOnOwnersShoulderGoal(this));
-         this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
+-        this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F));
++        // KioCG start
++        this.goalSelector.addGoal(3, new FollowMobGoal(this, 1.0D, 3.0F, 7.0F) {
++            @Override
++            public boolean canUse() {
++                return !((net.minecraft.world.entity.TamableAnimal) this.mob).isOrderedToSit() && super.canUse();
++            }
++        });
++        // KioCG end
      }
+ 
+     public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 006d5fc7c96a47bf57ab26f374143400138b8b17..3c07f6764491480cbc5207bc0eda1098afe541ca 100644
+index 006d5fc7c96a47bf57ab26f374143400138b8b17..d6ae00ce910a4a47f0b353bc1a785fccd9196bd4 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -231,7 +231,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -105,6 +105,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+ 
+         @Override
+         public boolean canUse() {
++            if (this.wolf.isOrderedToSit()) return false; // KioCG
+             return super.canUse() && !this.wolf.isRabid() && this.toAvoid != null && this.toAvoid.isRabid(); // wolves which are not rabid run away from rabid wolves
+         }
+ 
+@@ -231,7 +232,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
          this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
          this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
@@ -102,6 +142,42 @@ index 006d5fc7c96a47bf57ab26f374143400138b8b17..3c07f6764491480cbc5207bc0eda1098
          this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
          this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+@@ -239,10 +247,24 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers());
+-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
++        // KioCG start
++        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt) {
++            @Override
++            public boolean canUse() {
++                return !((TamableAnimal) this.mob).isOrderedToSit() && super.canUse();
++            }
++        });
++        // KioCG end
+         // this.targetSelector.addGoal(5, new NonTameRandomTargetGoal<>(this, Animal.class, false, Wolf.PREY_SELECTOR)); // Purpur - moved to updatePathfinders()
+         this.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(this, Turtle.class, false, Turtle.BABY_ON_LAND_SELECTOR));
+-        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
++        // KioCG start
++        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false) {
++            @Override
++            public boolean canUse() {
++                return !((TamableAnimal) this.mob).isOrderedToSit() && super.canUse();
++            }
++        });
++        // KioCG end
+         this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
+     }
+ 
+@@ -729,7 +751,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+ 
+         @Override
+         public boolean canUse() {
+-            return super.canUse() && this.toAvoid instanceof Llama ? !this.wolf.isTame() && this.avoidLlama((Llama) this.toAvoid) : false;
++            return !this.wolf.isTame() && super.canUse() && this.toAvoid instanceof Llama && this.avoidLlama((Llama) this.toAvoid); // KioCG - 优化判断顺序
+         }
+ 
+         private boolean avoidLlama(Llama llama) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
 index e8f42ad6cc32cb21584d8988fcf3d1e4b6552f0c..ae50a700051f7fcbf37747d4ca1467729c2bb25a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
@@ -301,7 +377,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..0fcc8605b85be1e779813ed09f0dceee
           }
          // Pufferfish end
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index e126789cb1e04835b0e6a0668884334c87c2c4b2..51d87646f54f27c81b536cd6b7dee853edfe27d8 100644
+index e126789cb1e04835b0e6a0668884334c87c2c4b2..0d4e8bd86f13229efcad35cd341a279897d43318 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -207,14 +207,14 @@ public class ActivationRange
