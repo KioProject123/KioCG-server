@@ -1,0 +1,69 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sun, 8 Jan 2023 23:44:46 +0800
+Subject: [PATCH] Optimize trigger advancements
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..a6cd679bfa9f578428ab8d86e3eb87fa9ddb3f77 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -685,7 +685,7 @@ public class ServerPlayer extends Player {
+ 
+         // Paper start - Configurable container update tick rate
+         if (--containerUpdateDelay <= 0) {
+-            this.containerMenu.broadcastChanges();
++            this.containerMenu.broadcastChanges(60); // KioCG
+             containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
+         }
+         // Paper end
+@@ -708,6 +708,7 @@ public class ServerPlayer extends Player {
+             }
+         }
+ 
++        if (this.tickCount % (20 * 60) == 0) // KioCG
+         CriteriaTriggers.TICK.trigger(this);
+         if (this.levitationStartPos != null) {
+             CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
+diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
+index 8b198d31578c4618f730d572844292ae3bdda2c7..7bcf46cf42227c64915f0330aefbc41a5229dc1f 100644
+--- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
+@@ -233,6 +233,12 @@ public abstract class AbstractContainerMenu {
+     }
+ 
+     public void broadcastChanges() {
++    // KioCG start
++        this.broadcastChanges(-1);
++    }
++
++    public void broadcastChanges(int triggerUpdateDelay) {
++    // KioCG end
+         int i;
+ 
+         for (i = 0; i < this.slots.size(); ++i) {
+@@ -241,7 +247,7 @@ public abstract class AbstractContainerMenu {
+             Objects.requireNonNull(itemstack);
+             Supplier<ItemStack> supplier = Suppliers.memoize(itemstack::copy);
+ 
+-            this.triggerSlotListeners(i, itemstack, supplier);
++            this.triggerSlotListeners(i, itemstack, supplier, triggerUpdateDelay); // KioCG
+             this.synchronizeSlotToRemote(i, itemstack, supplier);
+         }
+ 
+@@ -293,6 +299,15 @@ public abstract class AbstractContainerMenu {
+     }
+ 
+     private void triggerSlotListeners(int slot, ItemStack stack, Supplier<ItemStack> copySupplier) {
++    // KioCG start
++        this.triggerSlotListeners(slot, stack, copySupplier, -1);
++    }
++
++    private int triggerUpdate = 0;
++    private void triggerSlotListeners(int slot, ItemStack stack, Supplier<ItemStack> copySupplier, int delay) {
++        if (delay != -1 && ++triggerUpdate <= delay) return;
++        triggerUpdate = 0;
++    // KioCG end
+         ItemStack itemstack1 = (ItemStack) this.lastSlots.get(slot);
+ 
+         if (!ItemStack.matches(itemstack1, stack)) {
