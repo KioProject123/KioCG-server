@@ -377,7 +377,7 @@ index 832469e39901d9ec666ddaf3aff77419f6195b1c..0fcc8605b85be1e779813ed09f0dceee
           }
          // Pufferfish end
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index e126789cb1e04835b0e6a0668884334c87c2c4b2..0d4e8bd86f13229efcad35cd341a279897d43318 100644
+index e126789cb1e04835b0e6a0668884334c87c2c4b2..36dc1361e211bbc4aa8219b27827df0b071d14b6 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -207,14 +207,14 @@ public class ActivationRange
@@ -416,7 +416,7 @@ index e126789cb1e04835b0e6a0668884334c87c2c4b2..0d4e8bd86f13229efcad35cd341a2798
              if ( (!entity.isOnGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
 +                // KioCG start
-+                if (!(entity instanceof WaterAnimal) && !(entity instanceof net.minecraft.world.entity.animal.axolotl.Axolotl)
++                if (!(entity instanceof WaterAnimal) && !(entity instanceof net.minecraft.world.entity.animal.axolotl.Axolotl) && !(entity instanceof net.minecraft.world.entity.animal.Turtle)
 +                    && !(entity instanceof net.minecraft.world.entity.animal.FlyingAnimal) && !(entity instanceof net.minecraft.world.entity.animal.allay.Allay)
 +                    && !(entity instanceof net.minecraft.world.entity.ambient.Bat))
 +                // KioCG end
