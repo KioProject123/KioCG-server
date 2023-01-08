@@ -189,18 +189,10 @@ index 2cbc9adc8e417def48be03d08174a5833068ec65..e60176ac8eb5e8b772331e51d9f4563b
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
-index 2f2d9bb31194618ef5bba39cd1cbe7c4919e82c5..6d14dd0ad7393e5929526182ff5da390fb828d14 100644
+index 2f2d9bb31194618ef5bba39cd1cbe7c4919e82c5..bb0b5861a7ff3b2fedaeda1d5f2c86383d95eabc 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
-@@ -144,6 +144,7 @@ public abstract class PathNavigation {
-     }
- 
-     @Nullable protected Path createPath(Set<BlockPos> positions, @Nullable Entity target, int range, boolean useHeadPos, int distance, float followRange) {
-+        if (this.mob.isLobotomized()) return null; // KioCG
-         // Paper end
-         if (positions.isEmpty()) {
-             return null;
-@@ -197,6 +198,7 @@ public abstract class PathNavigation {
+@@ -197,6 +197,7 @@ public abstract class PathNavigation {
      // Paper end
  
      public boolean moveTo(Entity entity, double speed) {
@@ -208,7 +200,7 @@ index 2f2d9bb31194618ef5bba39cd1cbe7c4919e82c5..6d14dd0ad7393e5929526182ff5da390
          // Paper start - Pathfinding optimizations
          if (this.pathfindFailures > 10 && this.path == null && net.minecraft.server.MinecraftServer.currentTick < this.lastFailure + 40) {
              return false;
-@@ -217,6 +219,7 @@ public abstract class PathNavigation {
+@@ -217,6 +218,7 @@ public abstract class PathNavigation {
      }
  
      public boolean moveTo(@Nullable Path path, double speed) {
