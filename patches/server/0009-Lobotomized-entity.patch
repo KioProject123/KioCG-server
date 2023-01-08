@@ -188,8 +188,36 @@ index 2cbc9adc8e417def48be03d08174a5833068ec65..e60176ac8eb5e8b772331e51d9f4563b
          if (this.canScare()) {
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
+index 2f2d9bb31194618ef5bba39cd1cbe7c4919e82c5..6d14dd0ad7393e5929526182ff5da390fb828d14 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
++++ b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
+@@ -144,6 +144,7 @@ public abstract class PathNavigation {
+     }
+ 
+     @Nullable protected Path createPath(Set<BlockPos> positions, @Nullable Entity target, int range, boolean useHeadPos, int distance, float followRange) {
++        if (this.mob.isLobotomized()) return null; // KioCG
+         // Paper end
+         if (positions.isEmpty()) {
+             return null;
+@@ -197,6 +198,7 @@ public abstract class PathNavigation {
+     // Paper end
+ 
+     public boolean moveTo(Entity entity, double speed) {
++        if (this.mob.isLobotomized()) return false; // KioCG
+         // Paper start - Pathfinding optimizations
+         if (this.pathfindFailures > 10 && this.path == null && net.minecraft.server.MinecraftServer.currentTick < this.lastFailure + 40) {
+             return false;
+@@ -217,6 +219,7 @@ public abstract class PathNavigation {
+     }
+ 
+     public boolean moveTo(@Nullable Path path, double speed) {
++        if (this.mob.isLobotomized()) return false; // KioCG
+         if (path == null) {
+             this.path = null;
+             return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..a1c5c9a9f0101a12c91e3a25eb7ef2f7f7fb56a7 100644
+index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..becd78efb31a23321c4d97d5aa4973d4e111be34 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -39,6 +39,7 @@ public abstract class Animal extends AgeableMob {
@@ -255,7 +283,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..a1c5c9a9f0101a12c91e3a25eb7ef2f7
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 832469e39901d9ec666ddaf3aff77419f6195b1c..fd41ecb96ab33c88c2e2767a54dd576454fa1c93 100644
+index 0fcc8605b85be1e779813ed09f0dceee211adbb8..8ee862e0d639e92c3ecbc8afda03e76215d14755 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,8 +139,9 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
