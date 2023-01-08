@@ -274,6 +274,42 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..becd78efb31a23321c4d97d5aa4973d4
      }
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
+index 87bd7991a81a2e30ecfccb60e614d7f13acd3744..eecd1393f95720618820b25862b99c0c91fb5d19 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
+@@ -1113,6 +1113,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+ 
+         @Override
+         public boolean canBeeUse() {
++            if (Bee.this.isLobotomized()) return false; // KioCG
+             return Bee.this.hivePos != null && !Bee.this.hasRestriction() && Bee.this.wantsToEnterHive() && !this.hasReachedTarget(Bee.this.hivePos) && Bee.this.level.getBlockState(Bee.this.hivePos).is(BlockTags.BEEHIVES);
+         }
+ 
+@@ -1229,6 +1230,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+ 
+         @Override
+         public boolean canBeeUse() {
++            if (Bee.this.isLobotomized()) return false; // KioCG
+             return Bee.this.savedFlowerPos != null && !Bee.this.hasRestriction() && this.wantsToGoToKnownFlower() && Bee.this.isFlowerValid(Bee.this.savedFlowerPos) && !Bee.this.closerThan(Bee.this.savedFlowerPos, 2);
+         }
+ 
+@@ -1281,6 +1283,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+ 
+         @Override
+         public boolean canBeeUse() {
++            if (Bee.this.isLobotomized()) return false; // KioCG
+             return Bee.this.getCropsGrownSincePollination() >= 10 ? false : (Bee.this.random.nextFloat() < 0.3F ? false : Bee.this.hasNectar() && Bee.this.isHiveValid());
+         }
+ 
+@@ -1349,6 +1352,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+ 
+         @Override
+         public boolean canUse() {
++            if (Bee.this.isLobotomized()) return false; // KioCG
+             return Bee.this.navigation.isDone() && Bee.this.random.nextInt(10) == 0;
+         }
+ 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 index 0fcc8605b85be1e779813ed09f0dceee211adbb8..8ee862e0d639e92c3ecbc8afda03e76215d14755 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
