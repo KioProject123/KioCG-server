@@ -98,7 +98,7 @@ index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 830326496e2f961682daadc7a7859247042b4cdd..281d9b1d493e6e53653cff10f05393852d967f06 100644
+index 830326496e2f961682daadc7a7859247042b4cdd..becea4b9d23aaf50f5757aa439f46b524d57fbaa 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 @@ -120,6 +120,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
@@ -135,7 +135,7 @@ index 830326496e2f961682daadc7a7859247042b4cdd..281d9b1d493e6e53653cff10f0539385
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 698a0ac71cf9fb409d609a81cc2958121260a46d..7819c8263cef7c704982991ef22f61dc378f4d8e 100644
+index 698a0ac71cf9fb409d609a81cc2958121260a46d..11fbf275836bbdcbc41ddd3e2a8ca331cc20e00b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -673,7 +673,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -147,33 +147,46 @@ index 698a0ac71cf9fb409d609a81cc2958121260a46d..7819c8263cef7c704982991ef22f61dc
      }
  
      public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper) {
-@@ -691,9 +691,11 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -691,9 +691,17 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          return HopperBlockEntity.getContainerAt(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, true); // Paper
      }
  
 +    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) { return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity); } // KioCG
      public static Container getContainerAt(Level world, double x, double y, double z) { return getContainerAt(world, x, y, z, false); } // Paper - overload to default false
-+    @Nullable private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) { return getContainerAt(world, x, y, z, optimizeEntities, false); } // KioCG
      @Nullable
--    private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) {
-+    private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities, boolean optimizeHopper) { // KioCG
+     private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) {
++    // KioCG start
++        return getContainerAt(world, x, y, z, optimizeEntities, false);
++    }
++
++    @Nullable
++    private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities, boolean optimizeHopper) {
++    // KioCG end
          Object object = null;
          BlockPos blockposition = new BlockPos(x, y, z);
          if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -713,12 +715,15 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -713,12 +721,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  
 -        if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
-+        else { // KioCG
-+            boolean ignoreOccludingBlocks = world.paperConfig().hopper.ignoreOccludingBlocks && iblockdata.isCollisionShapeFullBlock(world, blockposition); // KioCG
-+            if (!optimizeEntities || !ignoreOccludingBlocks) { // Paper // KioCG
++        // KioCG start
++        else {
++            // if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
++        boolean ignoreOccludingBlocks = world.paperConfig().hopper.ignoreOccludingBlocks && iblockdata.isCollisionShapeFullBlock(world, blockposition);
++        if (!optimizeEntities || !ignoreOccludingBlocks) {
++        // KioCG end
              List<Entity> list = world.getEntities((Entity) null, new AABB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelector.CONTAINER_ENTITY_SELECTOR);
  
              if (!list.isEmpty()) {
                  object = (Container) list.get(world.random.nextInt(list.size()));
              }
-+            } if (object == null && optimizeHopper && (ignoreOccludingBlocks || block instanceof net.minecraft.world.level.block.BaseRailBlock)) return new net.minecraft.world.level.block.ComposterBlock.EmptyContainer(world, blockposition); // KioCG - 优化漏斗
++        // KioCG start
++        }
++        if (object == null && optimizeHopper && (ignoreOccludingBlocks || block instanceof net.minecraft.world.level.block.BaseRailBlock)) {
++            return new net.minecraft.world.level.block.ComposterBlock.EmptyContainer(world, blockposition);
++        }
++        // KioCG end
          }
  
          return (Container) object;
