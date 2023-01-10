@@ -6,7 +6,7 @@ Subject: [PATCH] Lobotomized entity
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..a17f5e108053bacbdbce442e8fe2014255d2183f
+index 0000000000000000000000000000000000000000..28f6363e5562f08ee29b116158728dcd3ca48ad9
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
 @@ -0,0 +1,48 @@
@@ -30,7 +30,7 @@ index 0000000000000000000000000000000000000000..a17f5e108053bacbdbce442e8fe20142
 +
 +    public boolean checkLobotomized(LivingEntity livingEntity) {
 +        int interval = livingEntity.getLevel().purpurConfig.villagerLobotomizeCheckInterval;
-+        if ((livingEntity.getLevel().getGameTime() + livingEntity.tickCount) % interval == 0) {
++        if ((livingEntity.getId() + livingEntity.tickCount) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
 +            // 扩展到半砖高度 (希望不会出问题!)
 +            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(new BlockPos(livingEntity.getX(), livingEntity.getY() + 0.5D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
