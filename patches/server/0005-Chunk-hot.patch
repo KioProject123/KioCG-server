@@ -6,32 +6,25 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0398c1f794e2d6ee9c3a38571380b22a1ad3e386
+index 0000000000000000000000000000000000000000..3be063b7fb922c98e6e9ada3c672924c988c4983
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,33 @@
 +package com.kiocg;
 +
 +public class ChunkHot {
-+    private static final int TIMES_LENGTH = 20 * 15;
++    private static final int TIMES_LENGTH = 100;
 +    private static int index;
 +
 +    private final long[] times = new long[TIMES_LENGTH];
-+    private long total;
 +    private long nanos;
 +
 +    public static void nextTick(int tickCount) {
 +        index = tickCount % TIMES_LENGTH;
 +    }
 +
-+    public void start() {
-+        total -= times[index];
++    public void tick() {
 +        times[index] = 0L;
-+    }
-+
-+    public void stop() {
-+        times[index] = Math.min(times[index], 1000000L);
-+        total += times[index];
 +    }
 +
 +    public void startTicking() {
@@ -43,86 +36,37 @@ index 0000000000000000000000000000000000000000..0398c1f794e2d6ee9c3a38571380b22a
 +    }
 +
 +    public long getAverage() {
++        long total = 0L;
++        for (long value : times) {
++            total += Math.min(value, 1000000L);
++        }
 +        return total / (long) TIMES_LENGTH;
 +    }
 +}
-diff --git a/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java b/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
-index 0e45a340ae534caf676b7f9d0adcbcee5829925e..71c4578c268a0267ecf0821a2380b751199e0e96 100644
---- a/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
-+++ b/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
-@@ -118,10 +118,12 @@ public final class ChunkSystem {
- 
-     public static void onChunkEntityTicking(final LevelChunk chunk, final ChunkHolder holder) {
-         chunk.level.getChunkSource().entityTickingChunks.add(chunk);
-+        chunk.getChunkHot().start(); // KioCG
-     }
- 
-     public static void onChunkNotEntityTicking(final LevelChunk chunk, final ChunkHolder holder) {
-         chunk.level.getChunkSource().entityTickingChunks.remove(chunk);
-+        chunk.getChunkHot().stop(); // KioCG
-     }
- 
-     public static ChunkHolder getUnloadingChunkHolder(final ServerLevel level, final int chunkX, final int chunkZ) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 551913ee80cb5a500921726eaaa3b4b4c91be052..e3f213c979ad684f511d993fa09f1f0c99b5d674 100644
+index 551913ee80cb5a500921726eaaa3b4b4c91be052..3721b3cd5a7f070de6e9e0419ab7b51f81e610f5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
          ++this.tickCount;
-+        this.startChunkHotTick(); // KioCG
++        com.kiocg.ChunkHot.nextTick(tickCount); this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().tick())); // KioCG - tick chunk hot
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
              this.lastServerStatus = i;
-@@ -1477,6 +1478,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-         long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
-         new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
-         // Paper end
-+        this.stopChunkHotTick(); // KioCG
-         //this.profiler.push("tallying"); // Purpur
-         long l = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
+diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719b9cfc68f 100644
+--- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
++++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+@@ -74,6 +74,7 @@ public class ServerChunkCache extends ChunkSource {
+     // Paper start
+     final com.destroystokyo.paper.util.concurrent.WeakSeqLock loadedChunkMapSeqLock = new com.destroystokyo.paper.util.concurrent.WeakSeqLock();
+     final it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> loadedChunkMap = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>(8192, 0.5f);
++    public it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> getLoadedChunkMap() { return this.loadedChunkMap; } // KioCG
  
-@@ -1495,6 +1497,39 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-         //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
-     }
- 
-+    // KioCG start
-+    private void startChunkHotTick() {
-+        com.kiocg.ChunkHot.nextTick(this.tickCount);
-+        for (ServerLevel level : this.getAllLevels()) {
-+            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().entityTickingChunks.iterator();
-+            try {
-+                while (iterator1.hasNext()) {
-+                    iterator1.next().getChunkHot().start();
-+                }
-+            } finally {
-+                if (iterator1 instanceof io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet.Iterator safeIterator) {
-+                    safeIterator.finishedIterating();
-+                }
-+            }
-+        }
-+    }
-+
-+    private void stopChunkHotTick() {
-+        for (ServerLevel level : this.getAllLevels()) {
-+            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().entityTickingChunks.iterator();
-+            try {
-+                while (iterator1.hasNext()) {
-+                    iterator1.next().getChunkHot().stop();
-+                }
-+            } finally {
-+                if (iterator1 instanceof io.papermc.paper.util.maplist.IteratorSafeOrderedReferenceSet.Iterator safeIterator) {
-+                    safeIterator.finishedIterating();
-+                }
-+            }
-+        }
-+    }
-+    // KioCG end
-+
-     public void tickChildren(BooleanSupplier shouldKeepTicking) {
-         //MinecraftTimings.bukkitSchedulerTimer.startTiming(); // Spigot // Paper // Purpur
-         this.server.getScheduler().mainThreadHeartbeat(this.tickCount); // CraftBukkit
+     private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
+     
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
 index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..1894609af81098d3fd82c79219ccb4147e0cccaf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
