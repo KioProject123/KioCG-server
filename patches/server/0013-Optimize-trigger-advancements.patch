@@ -5,10 +5,18 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..a6cd679bfa9f578428ab8d86e3eb87fa9ddb3f77 100644
+index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..c3d168563aa6f3e4bd4313342ba8e993c49ffe34 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -685,7 +685,7 @@ public class ServerPlayer extends Player {
+@@ -658,6 +658,7 @@ public class ServerPlayer extends Player {
+ 
+     @Override
+     protected void onInsideBlock(BlockState state) {
++        if (!state.isAir()) // KioCG
+         CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
+     }
+ 
+@@ -685,7 +686,7 @@ public class ServerPlayer extends Player {
  
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
@@ -17,7 +25,7 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..a6cd679bfa9f578428ab8d86e3eb87fa
              containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
          }
          // Paper end
-@@ -708,6 +708,7 @@ public class ServerPlayer extends Player {
+@@ -708,6 +709,7 @@ public class ServerPlayer extends Player {
              }
          }
  
@@ -25,8 +33,17 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..a6cd679bfa9f578428ab8d86e3eb87fa
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
+@@ -833,7 +835,7 @@ public class ServerPlayer extends Player {
+                 this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
+             }
+ 
+-            if (this.tickCount % 20 == 0) {
++            if (this.tickCount % (20 * 3) == 0) { // KioCG
+                 CriteriaTriggers.LOCATION.trigger(this);
+             }
+ 
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 8b198d31578c4618f730d572844292ae3bdda2c7..7bcf46cf42227c64915f0330aefbc41a5229dc1f 100644
+index 8b198d31578c4618f730d572844292ae3bdda2c7..1224de1b2f675c7a774d91a42a824d419e28bffe 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 @@ -233,6 +233,12 @@ public abstract class AbstractContainerMenu {
@@ -51,7 +68,7 @@ index 8b198d31578c4618f730d572844292ae3bdda2c7..7bcf46cf42227c64915f0330aefbc41a
              this.synchronizeSlotToRemote(i, itemstack, supplier);
          }
  
-@@ -293,6 +299,15 @@ public abstract class AbstractContainerMenu {
+@@ -293,6 +299,16 @@ public abstract class AbstractContainerMenu {
      }
  
      private void triggerSlotListeners(int slot, ItemStack stack, Supplier<ItemStack> copySupplier) {
@@ -61,7 +78,8 @@ index 8b198d31578c4618f730d572844292ae3bdda2c7..7bcf46cf42227c64915f0330aefbc41a
 +
 +    private int triggerUpdate = 0;
 +    private void triggerSlotListeners(int slot, ItemStack stack, Supplier<ItemStack> copySupplier, int delay) {
-+        if (delay != -1 && ++triggerUpdate <= delay) return;
++        // 不再触发用处不大的事件
++        if (delay == -1 || ++triggerUpdate <= delay) return;
 +        triggerUpdate = 0;
 +    // KioCG end
          ItemStack itemstack1 = (ItemStack) this.lastSlots.get(slot);
