@@ -6,14 +6,14 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..343d035c0e9782cac17e020eb2297650acfeb146
+index 0000000000000000000000000000000000000000..0398c1f794e2d6ee9c3a38571380b22a1ad3e386
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
 @@ -0,0 +1,36 @@
 +package com.kiocg;
 +
 +public class ChunkHot {
-+    private static final int TIMES_LENGTH = 100;
++    private static final int TIMES_LENGTH = 20 * 15;
 +    private static int index;
 +
 +    private final long[] times = new long[TIMES_LENGTH];
@@ -47,24 +47,24 @@ index 0000000000000000000000000000000000000000..343d035c0e9782cac17e020eb2297650
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java b/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
-index 0e45a340ae534caf676b7f9d0adcbcee5829925e..3c2bfe349e90fc7660cc91e9c8bc43b90926397d 100644
+index 0e45a340ae534caf676b7f9d0adcbcee5829925e..71c4578c268a0267ecf0821a2380b751199e0e96 100644
 --- a/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
 +++ b/src/main/java/io/papermc/paper/chunk/system/ChunkSystem.java
-@@ -110,10 +110,12 @@ public final class ChunkSystem {
+@@ -118,10 +118,12 @@ public final class ChunkSystem {
  
-     public static void onChunkTicking(final LevelChunk chunk, final ChunkHolder holder) {
-         chunk.level.getChunkSource().tickingChunks.add(chunk);
+     public static void onChunkEntityTicking(final LevelChunk chunk, final ChunkHolder holder) {
+         chunk.level.getChunkSource().entityTickingChunks.add(chunk);
 +        chunk.getChunkHot().start(); // KioCG
      }
  
-     public static void onChunkNotTicking(final LevelChunk chunk, final ChunkHolder holder) {
-         chunk.level.getChunkSource().tickingChunks.remove(chunk);
+     public static void onChunkNotEntityTicking(final LevelChunk chunk, final ChunkHolder holder) {
+         chunk.level.getChunkSource().entityTickingChunks.remove(chunk);
 +        chunk.getChunkHot().stop(); // KioCG
      }
  
-     public static void onChunkEntityTicking(final LevelChunk chunk, final ChunkHolder holder) {
+     public static ChunkHolder getUnloadingChunkHolder(final ServerLevel level, final int chunkX, final int chunkZ) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 551913ee80cb5a500921726eaaa3b4b4c91be052..d079e77368ef8d770a24107de381e78d0e97cdd4 100644
+index 551913ee80cb5a500921726eaaa3b4b4c91be052..e3f213c979ad684f511d993fa09f1f0c99b5d674 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -90,8 +90,8 @@ index 551913ee80cb5a500921726eaaa3b4b4c91be052..d079e77368ef8d770a24107de381e78d
 +    // KioCG start
 +    private void startChunkHotTick() {
 +        com.kiocg.ChunkHot.nextTick(this.tickCount);
-+        this.getAllLevels().forEach(level -> {
-+            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().tickingChunks.iterator();
++        for (ServerLevel level : this.getAllLevels()) {
++            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().entityTickingChunks.iterator();
 +            try {
 +                while (iterator1.hasNext()) {
 +                    iterator1.next().getChunkHot().start();
@@ -101,12 +101,12 @@ index 551913ee80cb5a500921726eaaa3b4b4c91be052..d079e77368ef8d770a24107de381e78d
 +                    safeIterator.finishedIterating();
 +                }
 +            }
-+        });
++        }
 +    }
 +
 +    private void stopChunkHotTick() {
-+        this.getAllLevels().forEach(level -> {
-+            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().tickingChunks.iterator();
++        for (ServerLevel level : this.getAllLevels()) {
++            Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator1 = level.getChunkSource().entityTickingChunks.iterator();
 +            try {
 +                while (iterator1.hasNext()) {
 +                    iterator1.next().getChunkHot().stop();
@@ -116,7 +116,7 @@ index 551913ee80cb5a500921726eaaa3b4b4c91be052..d079e77368ef8d770a24107de381e78d
 +                    safeIterator.finishedIterating();
 +                }
 +            }
-+        });
++        }
 +    }
 +    // KioCG end
 +
