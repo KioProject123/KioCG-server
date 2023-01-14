@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..c3d168563aa6f3e4bd4313342ba8e993c49ffe34 100644
+index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..9e09b67efd9d76c5c7f622ed103dbc270f4daf93 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -658,6 +658,7 @@ public class ServerPlayer extends Player {
@@ -21,7 +21,7 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..c3d168563aa6f3e4bd4313342ba8e993
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
 -            this.containerMenu.broadcastChanges();
-+            this.containerMenu.broadcastChanges(60); // KioCG
++            this.containerMenu.broadcastChanges(20); // KioCG
              containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
          }
          // Paper end
