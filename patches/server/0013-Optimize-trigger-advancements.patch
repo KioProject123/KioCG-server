@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..9e09b67efd9d76c5c7f622ed103dbc270f4daf93 100644
+index 648a2ace7427683fe90257163e8e6300abb8343c..936c98ea5e94196ae080a81afdab95ce70061c7e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -658,6 +658,7 @@ public class ServerPlayer extends Player {
@@ -16,7 +16,7 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..9e09b67efd9d76c5c7f622ed103dbc27
          CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
      }
  
-@@ -685,7 +686,7 @@ public class ServerPlayer extends Player {
+@@ -684,7 +685,7 @@ public class ServerPlayer extends Player {
  
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
@@ -25,7 +25,7 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..9e09b67efd9d76c5c7f622ed103dbc27
              containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
          }
          // Paper end
-@@ -708,6 +709,7 @@ public class ServerPlayer extends Player {
+@@ -707,6 +708,7 @@ public class ServerPlayer extends Player {
              }
          }
  
@@ -33,7 +33,7 @@ index 24031adb80fca63f8620b9d0c93c4bb3c5f57388..9e09b67efd9d76c5c7f622ed103dbc27
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
-@@ -833,7 +835,7 @@ public class ServerPlayer extends Player {
+@@ -831,7 +833,7 @@ public class ServerPlayer extends Player {
                  this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
              }
  

@@ -6,22 +6,22 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3bad369fc39e15689f7e70009a68f475f5150a49
+index 0000000000000000000000000000000000000000..3029fea0095b0d98e9148a1c837c0bc528fa9605
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
 @@ -0,0 +1,36 @@
 +package com.kiocg;
 +
 +public class ChunkHot {
-+    private static final int TIMES_LENGTH = 100;
-+    private static int index;
++    private static final int TIMES_LENGTH = 5;
++    private static int index = 0;
 +
 +    private final long[] times = new long[TIMES_LENGTH];
 +    private long total;
 +    private long nanos;
 +
-+    public static void nextTick(final int tickCount) {
-+        index = tickCount % TIMES_LENGTH;
++    public static void nextTick() {
++        index = (index + 1) % TIMES_LENGTH;
 +    }
 +
 +    public void start() {
@@ -43,18 +43,18 @@ index 0000000000000000000000000000000000000000..3bad369fc39e15689f7e70009a68f475
 +    }
 +
 +    public long getAverage() {
-+        return total / (long) TIMES_LENGTH;
++        return total / ((long) TIMES_LENGTH * 20L);
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 551913ee80cb5a500921726eaaa3b4b4c91be052..11bdda789c27dedc9e727f5ad6cf0a3707b8c87c 100644
+index 551913ee80cb5a500921726eaaa3b4b4c91be052..809c244f4d0705b33d231c3ac470125e8ed2a2e9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
          ++this.tickCount;
-+        com.kiocg.ChunkHot.nextTick(tickCount); this.startChunkHotTick(); // KioCG
++        if (this.tickCount % 20 == 1) this.startChunkHotTick(); // KioCG
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
              this.lastServerStatus = i;
@@ -62,16 +62,17 @@ index 551913ee80cb5a500921726eaaa3b4b4c91be052..11bdda789c27dedc9e727f5ad6cf0a37
          long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
          new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
          // Paper end
-+        this.stopChunkHotTick(); // KioCG
++        if (this.tickCount % 20 == 0) this.stopChunkHotTick(); // KioCG
          //this.profiler.push("tallying"); // Purpur
          long l = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1495,6 +1497,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1495,6 +1497,17 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
 +    // KioCG start
 +    private void startChunkHotTick() {
++        com.kiocg.ChunkHot.nextTick();
 +        this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().start()));
 +    }
 +
@@ -134,7 +135,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..1894609af81098d3fd82c79219ccb414
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..24031adb80fca63f8620b9d0c93c4bb3c5f57388 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..648a2ace7427683fe90257163e8e6300abb8343c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -145,25 +146,23 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..24031adb80fca63f8620b9d0c93c4bb3
  
      public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
          super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
-@@ -665,6 +666,9 @@ public class ServerPlayer extends Player {
+@@ -665,6 +666,8 @@ public class ServerPlayer extends Player {
          return new ServerItemCooldowns(this);
      }
  
-+    private int tickChunkHot = 0; // KioCG - tick chunk hot
 +    private static boolean bypassStartup = false; // KioCG
 +
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -721,6 +725,46 @@ public class ServerPlayer extends Player {
+@@ -721,6 +724,45 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
 +
 +        // KioCG start
 +        if (bypassStartup) {
-+            if (++tickChunkHot >= 20) {
-+                tickChunkHot = 0;
++            if (this.server.getTickCount() % 20 == 1) {
 +                this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +
 +                if (this.nearbyChunkHot > 330000L) {
