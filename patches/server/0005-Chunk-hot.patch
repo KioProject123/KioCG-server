@@ -6,7 +6,7 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3029fea0095b0d98e9148a1c837c0bc528fa9605
+index 0000000000000000000000000000000000000000..65fca5744ecdf0dc16ecddc5ec8ad34c6296903a
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
 @@ -0,0 +1,36 @@
@@ -14,14 +14,14 @@ index 0000000000000000000000000000000000000000..3029fea0095b0d98e9148a1c837c0bc5
 +
 +public class ChunkHot {
 +    private static final int TIMES_LENGTH = 5;
-+    private static int index = 0;
++    private static int index = -1;
 +
 +    private final long[] times = new long[TIMES_LENGTH];
 +    private long total;
 +    private long nanos;
 +
 +    public static void nextTick() {
-+        index = (index + 1) % TIMES_LENGTH;
++        index = ++index % TIMES_LENGTH;
 +    }
 +
 +    public void start() {
@@ -47,14 +47,14 @@ index 0000000000000000000000000000000000000000..3029fea0095b0d98e9148a1c837c0bc5
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 551913ee80cb5a500921726eaaa3b4b4c91be052..809c244f4d0705b33d231c3ac470125e8ed2a2e9 100644
+index 551913ee80cb5a500921726eaaa3b4b4c91be052..c2a6c57be8ffca3c4acabfbed0e5b353ca19dfa0 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
          ++this.tickCount;
-+        if (this.tickCount % 20 == 1) this.startChunkHotTick(); // KioCG
++        if (this.tickCount % 20 == 1) { com.kiocg.ChunkHot.nextTick(); this.startChunkHotTick(); } // KioCG
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
              this.lastServerStatus = i;
@@ -66,13 +66,12 @@ index 551913ee80cb5a500921726eaaa3b4b4c91be052..809c244f4d0705b33d231c3ac470125e
          //this.profiler.push("tallying"); // Purpur
          long l = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1495,6 +1497,17 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1495,6 +1497,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
 +    // KioCG start
 +    private void startChunkHotTick() {
-+        com.kiocg.ChunkHot.nextTick();
 +        this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().start()));
 +    }
 +
@@ -135,7 +134,7 @@ index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..1894609af81098d3fd82c79219ccb414
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..648a2ace7427683fe90257163e8e6300abb8343c 100644
+index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..3481affc156fead42379cb5198153439da48d679 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -170,10 +169,10 @@ index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..648a2ace7427683fe90257163e8e6300
 +                        this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                    } else {
 +                        this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
-+//                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
-+//                        if (this.getRemainingFireTicks() < fireTicks) {
-+//                            this.setRemainingFireTicks(fireTicks);
-+//                        }
++                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
++                        if (this.getRemainingFireTicks() < fireTicks) {
++                            this.setRemainingFireTicks(fireTicks);
++                        }
 +                    }
 +                }
 +            }
