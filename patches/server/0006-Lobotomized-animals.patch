@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
 Date: Sat, 10 Dec 2022 03:02:01 +0800
-Subject: [PATCH] Lobotomized entity
+Subject: [PATCH] Lobotomized animals
 
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
