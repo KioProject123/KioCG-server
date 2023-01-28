@@ -244,10 +244,10 @@ index 0142aff35dea5bf5aff55e3293fb2d173c97e677..32b5be45f121507905d782e3faf9865b
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 7bd4e95fcaf3855a4fe412b5898a97d7992caad3..a0b0ec5805923a0457139b7df7dc2f1c444a6f93 100644
+index 755c7a34497e50457380a3b86f6ff1cd55bb39f8..f58e7aa449ebbeb5a26469ec2428fc630fb9cc02 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1803,4 +1803,11 @@ public abstract class Mob extends LivingEntity {
+@@ -1807,4 +1807,11 @@ public abstract class Mob extends LivingEntity {
          }
      }
      // Purpur end
