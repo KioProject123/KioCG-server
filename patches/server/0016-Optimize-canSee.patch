@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Thu, 2 Feb 2023 00:28:43 +0800
+Subject: [PATCH] Optimize canSee
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 75965afd7b4bed23a5ecf618c7f91ff5e7ffd92f..8ae6d0d849a3db56ec18f1519b0695262ebd0c72 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -1605,6 +1605,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+                 boolean flag = d1 <= d2 && this.entity.broadcastToPlayer(player);
+ 
+                 // CraftBukkit start - respect vanish API
++                if (flag) // KioCG
+                 if (!player.getBukkitEntity().canSee(this.entity.getBukkitEntity())) {
+                     flag = false;
+                 }
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 5a76c967e2d9c9c1b09e8de33fcde34e25b4646b..f6dbdd73ee2b3fd867069dff0fbc51b0267d9414 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -1868,6 +1868,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+ 
+     @Override
+     public boolean canSee(org.bukkit.entity.Entity entity) {
++        if (this.hiddenEntities.isEmpty()) return true; // KioCG
+         return !this.hiddenEntities.containsKey(entity.getUniqueId());
+     }
+ 
