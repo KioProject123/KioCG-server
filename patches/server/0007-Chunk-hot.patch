@@ -6,10 +6,10 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..65fca5744ecdf0dc16ecddc5ec8ad34c6296903a
+index 0000000000000000000000000000000000000000..cb438161c2385f9fdbb22755fc9ecb93d345dc86
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,35 @@
 +package com.kiocg;
 +
 +public class ChunkHot {
@@ -30,7 +30,6 @@ index 0000000000000000000000000000000000000000..65fca5744ecdf0dc16ecddc5ec8ad34c
 +    }
 +
 +    public void stop() {
-+        times[index] = Math.min(times[index], 1000000L);
 +        total += times[index];
 +    }
 +
@@ -39,7 +38,7 @@ index 0000000000000000000000000000000000000000..65fca5744ecdf0dc16ecddc5ec8ad34c
 +    }
 +
 +    public void stopTickingAndCount() {
-+        times[index] += System.nanoTime() - nanos;
++        times[index] += Math.min(System.nanoTime() - nanos, 30000L);
 +    }
 +
 +    public long getAverage() {
