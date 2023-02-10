@@ -6,11 +6,13 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..cb438161c2385f9fdbb22755fc9ecb93d345dc86
+index 0000000000000000000000000000000000000000..04b147b744ce76bcf0542e08f9219d8a8f9aeae2
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,42 @@
 +package com.kiocg;
++
++import org.bukkit.Bukkit;
 +
 +public class ChunkHot {
 +    private static final int TIMES_LENGTH = 5;
@@ -38,7 +40,12 @@ index 0000000000000000000000000000000000000000..cb438161c2385f9fdbb22755fc9ecb93
 +    }
 +
 +    public void stopTickingAndCount() {
-+        times[index] += Math.min(System.nanoTime() - nanos, 30000L);
++        final long nano = System.nanoTime() - nanos;
++        if (nano < 50000L) {
++            times[index] += nano;
++        } else {
++            Bukkit.getLogger().warning("It's too hot: " + nano);
++        }
 +    }
 +
 +    public long getAverage() {
