@@ -5,14 +5,14 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b396a329e753f42b3878736b6b14bafda02d3744..1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d 100644
+index b396a329e753f42b3878736b6b14bafda02d3744..5885a752aa9657444263d0eb34af4abca6b8f46f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -730,6 +730,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
              org.spigotmc.ActivationRange.activateEntities(this); // Spigot
              //timings.entityTick.startTiming(); // Spigot // Purpur
              this.entityTickList.forEach((entity) -> {
-+                if (entity.activatedPriorityReset == false) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体
++                if (!entity.activatedPriorityReset && gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体
                  entity.activatedPriorityReset = false; // Pufferfish - DAB
                  if (!entity.isRemoved()) {
                      if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
