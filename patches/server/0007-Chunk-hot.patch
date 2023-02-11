@@ -6,13 +6,11 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..04b147b744ce76bcf0542e08f9219d8a8f9aeae2
+index 0000000000000000000000000000000000000000..f58b2dde35c109a7e4fad7807f86e3f4f673ab72
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,42 @@
+@@ -0,0 +1,35 @@
 +package com.kiocg;
-+
-+import org.bukkit.Bukkit;
 +
 +public class ChunkHot {
 +    private static final int TIMES_LENGTH = 5;
@@ -40,12 +38,7 @@ index 0000000000000000000000000000000000000000..04b147b744ce76bcf0542e08f9219d8a
 +    }
 +
 +    public void stopTickingAndCount() {
-+        final long nano = System.nanoTime() - nanos;
-+        if (nano < 50000L) {
-+            times[index] += nano;
-+        } else {
-+            Bukkit.getLogger().warning("It's too hot: " + nano);
-+        }
++        times[index] += Math.min(System.nanoTime() - nanos, 1000000L);
 +    }
 +
 +    public long getAverage() {
@@ -102,7 +95,7 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1595afa0ed28d6c784a6ee76dadaecc4ed10fa0d..1894609af81098d3fd82c79219ccb4147e0cccaf 100644
+index 5885a752aa9657444263d0eb34af4abca6b8f46f..781ecfafc553441005bba3a88e8b3dde237014fc 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1280,6 +1280,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
