@@ -135,58 +135,14 @@ index 830326496e2f961682daadc7a7859247042b4cdd..becea4b9d23aaf50f5757aa439f46b52
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 698a0ac71cf9fb409d609a81cc2958121260a46d..11fbf275836bbdcbc41ddd3e2a8ca331cc20e00b 100644
+index 698a0ac71cf9fb409d609a81cc2958121260a46d..253f3947079d47b89ed0d6c6369d3bf6ea60ddf8 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -673,7 +673,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
- 
-     @Nullable
-     private static Container getSourceContainer(Level world, Hopper hopper) {
--        return HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
-+        return HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ(), hopper); // KioCG
-     }
- 
-     public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper) {
-@@ -691,9 +691,17 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-         return HopperBlockEntity.getContainerAt(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, true); // Paper
-     }
- 
-+    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) { return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity); } // KioCG
-     public static Container getContainerAt(Level world, double x, double y, double z) { return getContainerAt(world, x, y, z, false); } // Paper - overload to default false
-     @Nullable
-     private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) {
-+    // KioCG start
-+        return getContainerAt(world, x, y, z, optimizeEntities, false);
-+    }
-+
-+    @Nullable
-+    private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities, boolean optimizeHopper) {
-+    // KioCG end
-         Object object = null;
-         BlockPos blockposition = new BlockPos(x, y, z);
-         if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -713,12 +721,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -713,6 +713,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  
--        if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
-+        // KioCG start
-+        else {
-+            // if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
-+        boolean ignoreOccludingBlocks = world.paperConfig().hopper.ignoreOccludingBlocks && iblockdata.isCollisionShapeFullBlock(world, blockposition);
-+        if (!optimizeEntities || !ignoreOccludingBlocks) {
-+        // KioCG end
++        else // KioCG
+         if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
              List<Entity> list = world.getEntities((Entity) null, new AABB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelector.CONTAINER_ENTITY_SELECTOR);
  
-             if (!list.isEmpty()) {
-                 object = (Container) list.get(world.random.nextInt(list.size()));
-             }
-+        // KioCG start
-+        }
-+        if (object == null && optimizeHopper && (ignoreOccludingBlocks || block instanceof net.minecraft.world.level.block.BaseRailBlock)) {
-+            return new net.minecraft.world.level.block.ComposterBlock.EmptyContainer(world, blockposition);
-+        }
-+        // KioCG end
-         }
- 
-         return (Container) object;
