@@ -5,7 +5,7 @@ Subject: [PATCH] Reduce item flow speed
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..3f39661eb002a2d8621d85cf715231e87b3e9756 100644
+index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..9dac998c1a4a6b70f77ca75da82c198b5605015f 100644
 --- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 @@ -236,7 +236,7 @@ public class ItemEntity extends Entity {
@@ -17,3 +17,16 @@ index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..3f39661eb002a2d8621d85cf715231e8
      }
  
      private void setUnderLavaMovement() {
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+index 7f3a7a769afec8449547c26453112064b9bcb04a..67ace85b1e43111ea97fc2f6700ccf37c79c129b 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+@@ -518,7 +518,7 @@ public class FishingHook extends Projectile {
+ 
+                     // Paper start, entity item can be null, so we need to check against this
+                     if (entityitem != null) {
+-                        entityitem.setDeltaMovement(d0 * 0.1D, d1 * 0.1D + Math.sqrt(Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2)) * 0.08D, d2 * 0.1D);
++                        entityitem.setDeltaMovement(d0 * 0.125D, d1 * 0.1D + Math.sqrt(Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2)) * 0.08D, d2 * 0.125D); // KioCG - 修复物品初始速度
+                         this.level.addFreshEntity(entityitem);
+                     }
+                     // Paper end
