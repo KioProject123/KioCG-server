@@ -13,7 +13,7 @@ index 0000000000000000000000000000000000000000..f58b2dde35c109a7e4fad7807f86e3f4
 +package com.kiocg;
 +
 +public class ChunkHot {
-+    private static final int TIMES_LENGTH = 5;
++    private static final int TIMES_LENGTH = 10;
 +    private static int index = -1;
 +
 +    private final long[] times = new long[TIMES_LENGTH];

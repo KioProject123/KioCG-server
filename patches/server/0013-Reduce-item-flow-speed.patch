@@ -13,7 +13,7 @@ index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..3f39661eb002a2d8621d85cf715231e8
          Vec3 vec3d = this.getDeltaMovement();
  
 -        this.setDeltaMovement(vec3d.x * 0.9900000095367432D, vec3d.y + (double) (vec3d.y < 0.05999999865889549D ? 5.0E-4F : 0.0F), vec3d.z * 0.9900000095367432D);
-+        this.setDeltaMovement(vec3d.x * 0.8899999856948853D, vec3d.y + (double) (vec3d.y < 0.05999999865889549D ? 5.0E-4F : 0.0F), vec3d.z * 0.8899999856948853D); // KioCG - 降低物品流速
++        this.setDeltaMovement(vec3d.x * 0.7900000214576721D, vec3d.y + (double) (vec3d.y < 0.05999999865889549D ? 5.0E-4F : 0.0F), vec3d.z * 0.7900000214576721D); // KioCG - 降低物品流速
      }
  
      private void setUnderLavaMovement() {
