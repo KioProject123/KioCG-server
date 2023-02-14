@@ -135,7 +135,7 @@ index 830326496e2f961682daadc7a7859247042b4cdd..becea4b9d23aaf50f5757aa439f46b52
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 698a0ac71cf9fb409d609a81cc2958121260a46d..11fbf275836bbdcbc41ddd3e2a8ca331cc20e00b 100644
+index 698a0ac71cf9fb409d609a81cc2958121260a46d..f27a1445258f2c239572adba20e4fa062b84e2ae 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -673,7 +673,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -147,12 +147,11 @@ index 698a0ac71cf9fb409d609a81cc2958121260a46d..11fbf275836bbdcbc41ddd3e2a8ca331
      }
  
      public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper) {
-@@ -691,9 +691,17 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-         return HopperBlockEntity.getContainerAt(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, true); // Paper
+@@ -692,8 +692,16 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
-+    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) { return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity); } // KioCG
      public static Container getContainerAt(Level world, double x, double y, double z) { return getContainerAt(world, x, y, z, false); } // Paper - overload to default false
++    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) { return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity); } // KioCG
      @Nullable
      private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) {
 +    // KioCG start
