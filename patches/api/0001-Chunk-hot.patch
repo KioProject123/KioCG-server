@@ -5,13 +5,13 @@ Subject: [PATCH] Chunk hot
 
 
 diff --git a/src/main/java/org/bukkit/Chunk.java b/src/main/java/org/bukkit/Chunk.java
-index e1e1bc868019f715370490719ef887e0eee3ddec..037d511ce2917442b97f1031d178d93735bb3308 100644
+index eccc357cabd8317afc5666c3347936d50eb34015..19e16ce3886b34ea506d6adeae92db8589bf7073 100644
 --- a/src/main/java/org/bukkit/Chunk.java
 +++ b/src/main/java/org/bukkit/Chunk.java
-@@ -284,4 +284,6 @@ public interface Chunk extends PersistentDataHolder {
-      * @return if the block is contained within
+@@ -291,4 +291,6 @@ public interface Chunk extends PersistentDataHolder {
+      * @return if the biome is contained within
       */
-     boolean contains(@NotNull BlockData block);
+     boolean contains(@NotNull Biome biome);
 +
 +    long getChunkHot(); // KioCG
  }
