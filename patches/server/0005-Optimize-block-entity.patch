@@ -62,10 +62,10 @@ index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb39
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670dab49571 100644
+index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806a14c4871 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-@@ -57,6 +57,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -58,6 +58,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
      private int lastTick = MinecraftServer.currentTick;
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
      private int maxStack = 64;
@@ -73,7 +73,7 @@ index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670
  
      public void onOpen(CraftHumanEntity who) {
          this.transaction.add(who);
-@@ -147,6 +148,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -148,6 +149,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
      }
  
      public static void serverTick(Level world, BlockPos pos, BlockState state, BrewingStandBlockEntity blockEntity) {
@@ -81,7 +81,7 @@ index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670
          ItemStack itemstack = (ItemStack) blockEntity.items.get(4);
  
          if (blockEntity.fuel <= 0 && itemstack.is(Items.BLAZE_POWDER)) {
-@@ -175,6 +177,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -176,6 +178,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
          blockEntity.lastTick = MinecraftServer.currentTick;
  
          if (flag1) {
@@ -89,7 +89,7 @@ index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670
              blockEntity.brewTime -= elapsedTicks;
              boolean flag2 = blockEntity.brewTime <= 0; // == -> <=
              // CraftBukkit end
-@@ -326,6 +329,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -331,6 +334,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
              this.items.set(slot, stack);
          }
  
@@ -98,10 +98,10 @@ index 55006724ccec9f3de828ec18693728e9741ff65f..f8fcfc7611b9bc57d007acadad3e6670
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 830326496e2f961682daadc7a7859247042b4cdd..becea4b9d23aaf50f5757aa439f46b524d57fbaa 100644
+index 01d8f1c985223eec83beb4a84a710d1bf8d70849..9679e8df19f3fbdd961fe041fd902147f531e00b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -120,6 +120,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -122,6 +122,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
  
      }
  
@@ -126,7 +126,7 @@ index 830326496e2f961682daadc7a7859247042b4cdd..becea4b9d23aaf50f5757aa439f46b52
      public static void particleTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
          RandomSource randomsource = world.random;
          int i;
-@@ -243,6 +261,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -249,6 +267,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
      public void dowse() {
          if (this.level != null) {
              this.markUpdated();

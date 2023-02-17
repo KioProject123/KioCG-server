@@ -5,7 +5,7 @@ Subject: [PATCH] conf: brand server to petal
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d5b7458f6b79addf1a12eb82443ba5bdbe2ea5d3..2ed422781ef195f4d5816358fbdd09ef3fcb4475 100644
+index f25c0557cf984b97e0ab361f579eccbf46f82170..136132883915e0653154058134ef70e88bd500a6 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -7,7 +7,7 @@ plugins {
@@ -17,7 +17,7 @@ index d5b7458f6b79addf1a12eb82443ba5bdbe2ea5d3..2ed422781ef195f4d5816358fbdd09ef
      // Pufferfish start
      implementation("io.papermc.paper:paper-mojangapi:1.19.3-R0.1-SNAPSHOT") {
          exclude("io.papermc.paper", "paper-api")
-@@ -83,7 +83,7 @@ tasks.jar {
+@@ -84,7 +84,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -113,10 +113,10 @@ index cea4447aad2d64db56a76e4ba180dc7326d2e13b..551913ee80cb5a500921726eaaa3b4b4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 398dd8cf321cd2f0ba68a80e18014bb020138f78..a62d69da177265fe309da4b4a99664c12a82cc6b 100644
+index 076d6733c87d040b9da33c6845c63194f3b93ef4..5f127b7ecf378c56ff8eb9286a48665d01e129e6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -262,7 +262,7 @@ import javax.annotation.Nullable; // Paper
+@@ -261,7 +261,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
