@@ -304,6 +304,28 @@ index aed1d9ccffe471b6c2a1d52d2d3d097f6431318b..6eed1a51e5e0de2bc63cafa0ffbe6eec
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
          // Pufferfish end
+diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+index a2ad029160065baa395cfe20fa40881d8252fcb3..f48c34dfb1ebbbe77031eccb17772f91b772f252 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
++++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+@@ -113,6 +113,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+             return level.purpurConfig.milkClearsBeneficialEffects && canDrinkMilk && this.level.isDay() && entityvillagertrader.isInvisible(); // Paper - Add more WanderingTrader API // Purpur
+         }));
+         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
++        // KioCG start
++        /*
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
+@@ -120,6 +122,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 0.5D, 0.5D));
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 0.5D, 0.5D));
+         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 0.5D, 0.5D));
++        */
++        // KioCG end
+         this.goalSelector.addGoal(1, new PanicGoal(this, 0.5D));
+         this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
+         this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
 index 665625c69b93a2568b1f2218a0db39da435d8c99..b71292905e45ba0e2afae2b871d2993de8e669b1 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
