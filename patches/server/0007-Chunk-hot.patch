@@ -6,7 +6,7 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f58b2dde35c109a7e4fad7807f86e3f4f673ab72
+index 0000000000000000000000000000000000000000..daa106753347fd45882629ed9dad1efe3e3b005f
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
 @@ -0,0 +1,35 @@
@@ -133,7 +133,7 @@ index 5885a752aa9657444263d0eb34af4abca6b8f46f..781ecfafc553441005bba3a88e8b3dde
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8570b4a863c0ef058463e1a5eef5f381ca7317cb..3481affc156fead42379cb5198153439da48d679 100644
+index 225a0641816965b7daf0626228dabbc6628b6269..3f5df08bcd4a2bf270566e9c36007b25c7df12f1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -273,6 +273,7 @@ public class ServerPlayer extends Player {
@@ -258,8 +258,40 @@ index 755c7a34497e50457380a3b86f6ff1cd55bb39f8..f58e7aa449ebbeb5a26469ec2428fc63
 +    }
 +    // KioCG end
  }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
+index b315bcd383598f7be371feed459da962c13a55f2..6c1d9519c0b62da4a211911eddb65324b7186dfe 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
++++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
+@@ -215,4 +215,11 @@ public class TraderLlama extends Llama {
+             super.start();
+         }
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return !this.canDespawn();
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+index a2ad029160065baa395cfe20fa40881d8252fcb3..bfc2a3dd73004fcc30865be9b078e2e1844fb494 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
++++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
+@@ -344,4 +344,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+             return !pos.closerToCenterThan(this.trader.position(), proximityDistance);
+         }
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index a667401600fc47efa9efa2964ea4099cddc7167a..4821ed0a0db33626ebe485aa2c97634fec857e52 100644
+index 0c632cd0cb932a4cfaf2288c9d109325d5287537..389cd48ab1265aafcbd4578c475c751428da3fb0 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -2451,4 +2451,11 @@ public abstract class Player extends LivingEntity {
@@ -275,7 +307,7 @@ index a667401600fc47efa9efa2964ea4099cddc7167a..4821ed0a0db33626ebe485aa2c97634f
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index d01d3b752f89df479ff985dd34043191fd5d59a4..45479af9bc492771355f041e8e5fb0e8566fd994 100644
+index 7e620e7ea23943a8639a437d7937da2784b59f60..e2f3bedfd1dc7f94d5c77bccf417fe391d7e0e36 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -305,4 +305,11 @@ public abstract class Projectile extends Entity {
@@ -334,7 +366,7 @@ index 19faa8f5f891c1ffbed0af8391dee8202433c447..a3503375133e5ed14dc7092bd403f226
          } catch (StackOverflowError ex) {
              world.lastPhysicsProblem = new BlockPos(pos);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
-index f7e19bb7d2ff8f8aaf061cec16462913d77c10d5..845f43a90ae727b27e3f2ad8d83786566b6bb491 100644
+index edb726d7db0c2e1c276458c997bbfed9b76b69d4..bdbb02c2209fe251756bbaba08b17ccd0fd5e09a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftChunk.java
 @@ -94,6 +94,13 @@ public class CraftChunk implements Chunk {
