@@ -275,10 +275,10 @@ index b315bcd383598f7be371feed459da962c13a55f2..6c1d9519c0b62da4a211911eddb65324
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index a2ad029160065baa395cfe20fa40881d8252fcb3..bfc2a3dd73004fcc30865be9b078e2e1844fb494 100644
+index f48c34dfb1ebbbe77031eccb17772f91b772f252..0925cef3493efbd2182f12beb4f5a8c0faf6b8f6 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -344,4 +344,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -348,4 +348,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return !pos.closerToCenterThan(this.trader.position(), proximityDistance);
          }
      }
