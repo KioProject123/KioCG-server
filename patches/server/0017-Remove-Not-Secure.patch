@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Thu, 23 Feb 2023 05:20:59 +0800
+Subject: [PATCH] Remove Not Secure
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index c2a6c57be8ffca3c4acabfbed0e5b353ca19dfa0..53cc042a391302174a2e6ea3b2be7cb70c7ac266 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -2640,6 +2640,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         String s1 = params.decorate(message).getString();
+ 
+         if (prefix != null) {
++            if (!"Not Secure".equals(prefix)) // KioCG
+             MinecraftServer.LOGGER.info("[{}] {}", prefix, s1);
+         } else {
+             MinecraftServer.LOGGER.info("{}", s1);
