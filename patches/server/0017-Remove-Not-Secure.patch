@@ -5,14 +5,15 @@ Subject: [PATCH] Remove Not Secure
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c2a6c57be8ffca3c4acabfbed0e5b353ca19dfa0..53cc042a391302174a2e6ea3b2be7cb70c7ac266 100644
+index c2a6c57be8ffca3c4acabfbed0e5b353ca19dfa0..6ad26ce3a86240fff8e44713629e158c92ac2c9c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2640,6 +2640,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2639,7 +2639,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public void logChatMessage(Component message, ChatType.Bound params, @Nullable String prefix) {
          String s1 = params.decorate(message).getString();
  
-         if (prefix != null) {
-+            if (!"Not Secure".equals(prefix)) // KioCG
+-        if (prefix != null) {
++        if (prefix != null && !"Not Secure".equals(prefix)) { // KioCG
              MinecraftServer.LOGGER.info("[{}] {}", prefix, s1);
          } else {
              MinecraftServer.LOGGER.info("{}", s1);
