@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Thu, 24 Nov 2022 21:36:11 +0800
+Date: Wed, 1 Mar 2023 19:36:27 +0800
 Subject: [PATCH] Optimize block entity
 
 
@@ -135,10 +135,10 @@ index 01d8f1c985223eec83beb4a84a710d1bf8d70849..9679e8df19f3fbdd961fe041fd902147
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 698a0ac71cf9fb409d609a81cc2958121260a46d..f27a1445258f2c239572adba20e4fa062b84e2ae 100644
+index 034a0665f56fca37a48972671cebc6ec249db120..c62cc8e557adfb6ce63e528af10d6f5a01977831 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -673,7 +673,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -683,7 +683,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
      @Nullable
      private static Container getSourceContainer(Level world, Hopper hopper) {
@@ -147,24 +147,31 @@ index 698a0ac71cf9fb409d609a81cc2958121260a46d..f27a1445258f2c239572adba20e4fa06
      }
  
      public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper) {
-@@ -692,8 +692,16 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -706,9 +706,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         // Paper start - add optimizeEntities parameter
+         return getContainerAt(world, x, y, z, false);
      }
- 
-     public static Container getContainerAt(Level world, double x, double y, double z) { return getContainerAt(world, x, y, z, false); } // Paper - overload to default false
-+    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) { return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity); } // KioCG
-     @Nullable
-     private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities) {
 +    // KioCG start
++    @Nullable
++    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) {
++        return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity);
++    }
++    // KioCG end
++
+     @Nullable
+     private static Container getContainerAt(Level world, double x, double y, double z, final boolean optimizeEntities) {
+         // Paper end - add optimizeEntities parameter
++        // KioCG start
 +        return getContainerAt(world, x, y, z, optimizeEntities, false);
 +    }
 +
 +    @Nullable
-+    private static Container getContainerAt(Level world, double x, double y, double z, boolean optimizeEntities, boolean optimizeHopper) {
-+    // KioCG end
++    private static Container getContainerAt(Level world, double x, double y, double z, final boolean optimizeEntities, final boolean optimizeHopper) {
++        // KioCG end
          Object object = null;
          BlockPos blockposition = new BlockPos(x, y, z);
          if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -713,12 +721,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -728,12 +742,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  
