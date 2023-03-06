@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Tue, 7 Mar 2023 03:56:11 +0800
+Subject: [PATCH] Expand multishot
+
+
+diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
+index c4942deb963064c61d4ab95c27ed341a6648dcc8..686b61eed0db3fd6a9774a61c91203b33b2cdcf2 100644
+--- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
++++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
+@@ -319,6 +319,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
+                     CrossbowItem.shootProjectile(world, entity, hand, stack, itemstack1, afloat[i], flag, speed, divergence, -10.0F);
+                 } else if (i == 2) {
+                     CrossbowItem.shootProjectile(world, entity, hand, stack, itemstack1, afloat[i], flag, speed, divergence, 10.0F);
++                    // KioCG start
++                } else {
++                    RandomSource random = entity.getRandom();
++                    float afloat0 = 1.0F / (random.nextFloat() * 0.5F + 1.8F) + (random.nextFloat() * 0.2F + 0.43F);
++                    float simulated0 = random.nextFloat() * (random.nextBoolean() ? -10.0F : 10.0F);
++                    CrossbowItem.shootProjectile(world, entity, hand, stack, itemstack1, afloat0, flag, speed, divergence, simulated0);
++                    // KioCG end
+                 }
+             }
+         }
