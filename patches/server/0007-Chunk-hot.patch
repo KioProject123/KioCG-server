@@ -216,7 +216,7 @@ index 11a6f5b9e726453979d4c718c32a44024e1b8a08..f2202483b14f7c3121c49c26371c07ac
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1ae7ef3d94d4d3d8413a5419eeb9fadad89d2f8d..4a5a97f8a9c03a25cef42a9f38b2c5d6b35f0221 100644
+index 1ae7ef3d94d4d3d8413a5419eeb9fadad89d2f8d..8177f50a70b3761ca11010745de710e10939ce66 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -4746,4 +4746,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -224,7 +224,7 @@ index 1ae7ef3d94d4d3d8413a5419eeb9fadad89d2f8d..4a5a97f8a9c03a25cef42a9f38b2c5d6
      }
      // Purpur end
 +
-+    public boolean shouldTickHot() { return true; } // KioCG
++    public boolean shouldTickHot() { return this.tickCount > 20*10 && this.isAlive(); } // KioCG
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LightningBolt.java b/src/main/java/net/minecraft/world/entity/LightningBolt.java
 index 0142aff35dea5bf5aff55e3293fb2d173c97e677..32b5be45f121507905d782e3faf9865bc09d8d9a 100644
@@ -243,7 +243,7 @@ index 0142aff35dea5bf5aff55e3293fb2d173c97e677..32b5be45f121507905d782e3faf9865b
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 755c7a34497e50457380a3b86f6ff1cd55bb39f8..f58e7aa449ebbeb5a26469ec2428fc630fb9cc02 100644
+index 755c7a34497e50457380a3b86f6ff1cd55bb39f8..8152592b65a9081178f73fd300dd8844d16a4ad2 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1807,4 +1807,11 @@ public abstract class Mob extends LivingEntity {
@@ -254,12 +254,12 @@ index 755c7a34497e50457380a3b86f6ff1cd55bb39f8..f58e7aa449ebbeb5a26469ec2428fc63
 +    // KioCG start
 +    @Override
 +    public boolean shouldTickHot() {
-+        return !this.removeWhenFarAway(0.0) || this.isPersistenceRequired() || this.requiresCustomPersistence();
++        return super.shouldTickHot() && (!this.removeWhenFarAway(0.0) || this.isPersistenceRequired() || this.requiresCustomPersistence());
 +    }
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-index b315bcd383598f7be371feed459da962c13a55f2..6c1d9519c0b62da4a211911eddb65324b7186dfe 100644
+index b315bcd383598f7be371feed459da962c13a55f2..0b46e5c7645e9fe56aa585ccb3e794771629f4b5 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
 @@ -215,4 +215,11 @@ public class TraderLlama extends Llama {
@@ -270,7 +270,7 @@ index b315bcd383598f7be371feed459da962c13a55f2..6c1d9519c0b62da4a211911eddb65324
 +    // KioCG start
 +    @Override
 +    public boolean shouldTickHot() {
-+        return !this.canDespawn();
++        return super.shouldTickHot() && !this.canDespawn();
 +    }
 +    // KioCG end
  }
