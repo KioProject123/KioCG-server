@@ -274,6 +274,22 @@ index b315bcd383598f7be371feed459da962c13a55f2..6c1d9519c0b62da4a211911eddb65324
 +    }
 +    // KioCG end
  }
+diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+index 9c3db8f774e5c11df18d2c317c874e8ac26e7f8e..215b33e79f19e8ffe00e080422025cf198bc97d0 100644
+--- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
++++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+@@ -645,4 +645,11 @@ public class ItemEntity extends Entity {
+     public float getVisualRotationYInDegrees() {
+         return 180.0F - this.getSpin(0.5F) / 6.2831855F * 360.0F;
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return false;
++    }
++    // KioCG end
+ }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 index f48c34dfb1ebbbe77031eccb17772f91b772f252..0925cef3493efbd2182f12beb4f5a8c0faf6b8f6 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
