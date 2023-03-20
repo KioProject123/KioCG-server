@@ -6,10 +6,10 @@ Subject: [PATCH] PaperPR Optimize VarInts
 https://github.com/PaperMC/Paper/pull/8418
 
 diff --git a/src/main/java/net/minecraft/network/FriendlyByteBuf.java b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
-index 314318a21b6fa9e827945d8996c6ed0f9679a4eb..78731378ae7f1ae694853561ffc0d464d0ba796b 100644
+index 1f4b64a5f812376c499c98cb4be62469bd0b7dbe..1f4320d8243cc64b86892c23c601d14101d5a7ad 100644
 --- a/src/main/java/net/minecraft/network/FriendlyByteBuf.java
 +++ b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
-@@ -96,6 +96,18 @@ public class FriendlyByteBuf extends ByteBuf {
+@@ -105,6 +105,18 @@ public class FriendlyByteBuf extends ByteBuf {
      }
  
      public static int getVarIntSize(int value) {
@@ -28,7 +28,7 @@ index 314318a21b6fa9e827945d8996c6ed0f9679a4eb..78731378ae7f1ae694853561ffc0d464
          for (int j = 1; j < 5; ++j) {
              if ((value & -1 << j * 7) == 0) {
                  return j;
-@@ -568,6 +580,21 @@ public class FriendlyByteBuf extends ByteBuf {
+@@ -615,6 +627,21 @@ public class FriendlyByteBuf extends ByteBuf {
      }
  
      public FriendlyByteBuf writeVarInt(int value) {

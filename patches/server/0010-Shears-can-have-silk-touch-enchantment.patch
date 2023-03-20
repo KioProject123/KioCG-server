@@ -5,10 +5,10 @@ Subject: [PATCH] Shears can have silk touch enchantment
 
 
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
-index a19dd0946f853193ff32b2b560db27534b8b4abf..c3b06f11e6120c3910cc8a4e01c77f9642e531c4 100644
+index fc2c35f57436371cb0111aedfd289ac95d506d07..a09bd528218d44630300fcf8f263e7b164d7051d 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
-@@ -111,6 +111,14 @@ public enum EnchantmentCategory {
+@@ -135,6 +135,14 @@ public enum EnchantmentCategory {
              return WEAPON.canEnchant(item) || item instanceof net.minecraft.world.item.ShearsItem;
          }
      // Purpur end
@@ -24,7 +24,7 @@ index a19dd0946f853193ff32b2b560db27534b8b4abf..c3b06f11e6120c3910cc8a4e01c77f96
  
      public abstract boolean canEnchant(Item item);
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
-index 965004d95759fea1e68a84413110e1286f939b2d..261b83ddc69617388adda75d3b41128964279123 100644
+index c4245ecf24066c708beb434a3b610fc7c6b07044..84550504d647224cb9e8559cf40aa6e98af10dc8 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/UntouchingEnchantment.java
 @@ -7,6 +7,13 @@ public class UntouchingEnchantment extends Enchantment {

@@ -5,10 +5,10 @@ Subject: [PATCH] Expand multishot
 
 
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index c4942deb963064c61d4ab95c27ed341a6648dcc8..686b61eed0db3fd6a9774a61c91203b33b2cdcf2 100644
+index 310e03d8cc07f95927d9806fc80a4215283d2ef5..aee91083d2620c2d81332de46c3706a9cdfe0ece 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-@@ -319,6 +319,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
+@@ -320,6 +320,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
                      CrossbowItem.shootProjectile(world, entity, hand, stack, itemstack1, afloat[i], flag, speed, divergence, -10.0F);
                  } else if (i == 2) {
                      CrossbowItem.shootProjectile(world, entity, hand, stack, itemstack1, afloat[i], flag, speed, divergence, 10.0F);

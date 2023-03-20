@@ -5,10 +5,10 @@ Subject: [PATCH] Linear achievement system
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-index ce42e91a95ccd42deff65e1942b918e9d789001b..2a949c7eb006ea323c809efe583c9b5ad7f20d5c 100644
+index 3919d9c193abcfd8b97dfb0ceb38638440f60fbe..198247790b746e4db115f3131f977d6e0e38767c 100644
 --- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
 +++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-@@ -285,6 +285,13 @@ public class PlayerAdvancements {
+@@ -237,6 +237,13 @@ public class PlayerAdvancements {
              }
              // Paper end
              this.unregisterListeners(advancement);
@@ -22,7 +22,7 @@ index ce42e91a95ccd42deff65e1942b918e9d789001b..2a949c7eb006ea323c809efe583c9b5a
              this.progressChanged.add(advancement);
              flag = true;
              if (!flag1 && advancementprogress.isDone()) {
-@@ -330,6 +337,18 @@ public class PlayerAdvancements {
+@@ -287,6 +294,18 @@ public class PlayerAdvancements {
      }
  
      private void registerListeners(Advancement advancement) {

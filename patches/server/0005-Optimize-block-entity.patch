@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Wed, 1 Mar 2023 19:36:27 +0800
+Date: Tue, 21 Mar 2023 05:07:19 +0800
 Subject: [PATCH] Optimize block entity
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-index 551bacade8642e6aad17120d8a901bcc293f2eb2..59bb0d62de3321f876e1c9fb984e467f9b4e51c7 100644
+index f8fd3b320494d1c1e8ee3d170f2feebd152230fa..27bee1aa2bc82516f6504e032ecf5232400e156e 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-@@ -281,7 +281,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
+@@ -280,7 +280,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
      @Nullable
      @Override
      public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
@@ -18,10 +18,10 @@ index 551bacade8642e6aad17120d8a901bcc293f2eb2..59bb0d62de3321f876e1c9fb984e467f
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb396a011bec 100644
+index 507b3756238ec3054232b805a9b689be6ea12e25..c7475b254c9d70ce50f2e8f23246b410c3058780 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -84,6 +84,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -85,6 +85,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      public final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
      private final RecipeManager.CachedCheck<Container, ? extends AbstractCookingRecipe> quickCheck;
      public final RecipeType<? extends AbstractCookingRecipe> recipeType; // Paper
@@ -29,7 +29,7 @@ index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb39
  
      protected AbstractFurnaceBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
          super(blockEntityType, pos, state);
-@@ -332,6 +333,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -333,6 +334,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      }
  
      public static void serverTick(Level world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
@@ -37,15 +37,15 @@ index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb39
          boolean flag = blockEntity.isLit();
          boolean flag1 = false;
  
-@@ -361,6 +363,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -362,6 +364,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
          if (!blockEntity.isLit() && (!flag3 || !flag2)) {
              if (!blockEntity.isLit() && blockEntity.cookingProgress > 0) {
-                 blockEntity.cookingProgress = Mth.clamp(blockEntity.cookingProgress - 2, (int) 0, blockEntity.cookingTotalTime);
+                 blockEntity.cookingProgress = Mth.clamp(blockEntity.cookingProgress - 2, 0, blockEntity.cookingTotalTime);
 +                blockEntity.shouldTick = true; // KioCG
              }
          } else {
              Recipe irecipe;
-@@ -415,6 +418,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -416,6 +419,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
                  }
                  // CraftBukkit end
  
@@ -53,7 +53,7 @@ index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb39
                  ++blockEntity.cookingProgress;
                  if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) { // Paper - cook speed multiplier API
                      blockEntity.cookingProgress = 0;
-@@ -599,6 +603,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -600,6 +604,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
              this.setChanged();
          }
  
@@ -62,10 +62,10 @@ index 5ae858b81e6f9903b7296077cf497f62bb8d6995..273bbd1e8c34b0553492156ab32deb39
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806a14c4871 100644
+index c57efcb9a79337ec791e4e8f6671612f0a82b441..7af18eac34f3eb424180f8603b4ccc824b0b3480 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-@@ -58,6 +58,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -59,6 +59,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
      private int lastTick = MinecraftServer.currentTick;
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
      private int maxStack = 64;
@@ -73,7 +73,7 @@ index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806
  
      public void onOpen(CraftHumanEntity who) {
          this.transaction.add(who);
-@@ -148,6 +149,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -149,6 +150,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
      }
  
      public static void serverTick(Level world, BlockPos pos, BlockState state, BrewingStandBlockEntity blockEntity) {
@@ -81,7 +81,7 @@ index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806
          ItemStack itemstack = (ItemStack) blockEntity.items.get(4);
  
          if (blockEntity.fuel <= 0 && itemstack.is(Items.BLAZE_POWDER)) {
-@@ -176,6 +178,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -177,6 +179,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
          blockEntity.lastTick = MinecraftServer.currentTick;
  
          if (flag1) {
@@ -89,7 +89,7 @@ index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806
              blockEntity.brewTime -= elapsedTicks;
              boolean flag2 = blockEntity.brewTime <= 0; // == -> <=
              // CraftBukkit end
-@@ -331,6 +334,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+@@ -332,6 +335,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
              this.items.set(slot, stack);
          }
  
@@ -98,7 +98,7 @@ index 0bab2693b91d5bab222c7db8bc6965ccde954003..eb872c993de510da0465f9c0728da806
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 01d8f1c985223eec83beb4a84a710d1bf8d70849..9679e8df19f3fbdd961fe041fd902147f531e00b 100644
+index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673d6f800cb 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 @@ -122,6 +122,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
@@ -135,21 +135,21 @@ index 01d8f1c985223eec83beb4a84a710d1bf8d70849..9679e8df19f3fbdd961fe041fd902147
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 034a0665f56fca37a48972671cebc6ec249db120..c62cc8e557adfb6ce63e528af10d6f5a01977831 100644
+index cba114f554644a37339c93026630c66c43f524b9..c01c7b1d4750a6ddaad1cb0c6b3d9713f4bd1cea 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -683,7 +683,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
- 
+@@ -713,7 +713,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      @Nullable
      private static Container getSourceContainer(Level world, Hopper hopper) {
--        return HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
-+        return HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ(), hopper); // KioCG
-     }
+         // CraftBukkit start
+-        Container inventory = HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
++        Container inventory = HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ(), hopper); // KioCG
  
-     public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper) {
-@@ -706,9 +706,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         BlockPos blockPosition = BlockPos.containing(hopper.getLevelX(), hopper.getLevelY(), hopper.getLevelZ());
+         CraftBlock hopper1 = CraftBlock.at(world, blockPosition);
+@@ -742,9 +742,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          // Paper start - add optimizeEntities parameter
-         return getContainerAt(world, x, y, z, false);
+         return HopperBlockEntity.getContainerAt(world, x, y, z, false);
      }
 +    // KioCG start
 +    @Nullable
@@ -169,9 +169,9 @@ index 034a0665f56fca37a48972671cebc6ec249db120..c62cc8e557adfb6ce63e528af10d6f5a
 +    private static Container getContainerAt(Level world, double x, double y, double z, final boolean optimizeEntities, final boolean optimizeHopper) {
 +        // KioCG end
          Object object = null;
-         BlockPos blockposition = new BlockPos(x, y, z);
+         BlockPos blockposition = BlockPos.containing(x, y, z);
          if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -728,12 +742,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -764,12 +778,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  

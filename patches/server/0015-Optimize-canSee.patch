@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 21 Mar 2023 04:26:03 +0800
+Date: Tue, 21 Mar 2023 05:35:24 +0800
 Subject: [PATCH] Optimize canSee
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 75965afd7b4bed23a5ecf618c7f91ff5e7ffd92f..8ae6d0d849a3db56ec18f1519b0695262ebd0c72 100644
+index 5d330c938aa0d707460b740ecf5c51d001c89c49..9274122cc3716ec94233ea3b5c63ab2d81329c97 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -1605,6 +1605,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1618,6 +1618,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
                  boolean flag = d1 <= d2 && this.entity.broadcastToPlayer(player);
  
                  // CraftBukkit start - respect vanish API
@@ -17,14 +17,15 @@ index 75965afd7b4bed23a5ecf618c7f91ff5e7ffd92f..8ae6d0d849a3db56ec18f1519b069526
                      flag = false;
                  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 08649f51adb40fa69d45b95c2d13aa918fff41bf..6961d65a184d659b7d60c73aaddc120bd70457f4 100644
+index 350905a8353cbd5bad9dbb05c8d222bfb5f55ae5..926a5f725322b7e088df69393793cab5e342ff39 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1916,6 +1916,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1979,7 +1979,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public boolean canSee(org.bukkit.entity.Entity entity) {
-+        if (this.hiddenEntities.isEmpty()) return true; // KioCG
-         return this.canSee(entity.getUniqueId());
+-        return entity.isVisibleByDefault() ^ this.invertedVisibilityEntities.containsKey(entity.getUniqueId());
++        return entity.isVisibleByDefault() ^ (!this.invertedVisibilityEntities.isEmpty() && this.invertedVisibilityEntities.containsKey(entity.getUniqueId())); // KioCG
      }
  
+     public boolean canSee(UUID uuid) {

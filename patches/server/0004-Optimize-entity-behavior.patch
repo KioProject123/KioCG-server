@@ -1,21 +1,21 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Dec 2022 04:16:10 +0800
+Date: Tue, 21 Mar 2023 05:01:56 +0800
 Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b396a329e753f42b3878736b6b14bafda02d3744..5885a752aa9657444263d0eb34af4abca6b8f46f 100644
+index 69ba84de4880a579c400b6daefdb98b44e9e28e8..23fd9af9b2d177d9d5329b7a532fd77e1ed1fc14 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -730,6 +730,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
              org.spigotmc.ActivationRange.activateEntities(this); // Spigot
              //timings.entityTick.startTiming(); // Spigot // Purpur
              this.entityTickList.forEach((entity) -> {
-+                if (!entity.activatedPriorityReset && gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体
-                 entity.activatedPriorityReset = false; // Pufferfish - DAB
++                //if (!entity.activatedPriorityReset && gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体 //TODO Pufferfish
                  if (!entity.isRemoved()) {
                      if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
+                         entity.discard();
 diff --git a/src/main/java/net/minecraft/world/entity/PathfinderMob.java b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
 index a53466a84973f5e83afc71245b317ab4296e0f9e..d7bb42c9a3cbcbe627b8f72162bc1eabd09fa488 100644
 --- a/src/main/java/net/minecraft/world/entity/PathfinderMob.java
@@ -56,10 +56,10 @@ index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152
          this.setFlags(EnumSet.of(Goal.Flag.MOVE));
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index fd7fc2d6a28110050b2050355897d551737939a7..7572815e2e0ca94f5e65eb61ef51a55390a25057 100644
+index e4a29dd80b85401be54a9be70be26cd782e4f372..da080e83c98bedcffc5b62d712d4138550099a4e 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-@@ -159,7 +159,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+@@ -161,7 +161,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
          this.goalSelector.addGoal(8, new LeapAtTargetGoal(this, 0.3F));
          this.goalSelector.addGoal(9, new OcelotAttackGoal(this));
          this.goalSelector.addGoal(10, new BreedGoal(this, 0.8D));
@@ -75,7 +75,7 @@ index fd7fc2d6a28110050b2050355897d551737939a7..7572815e2e0ca94f5e65eb61ef51a553
          this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 10.0F));
          this.targetSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
          this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, Rabbit.class, false, (Predicate) null));
-@@ -561,7 +568,7 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+@@ -558,7 +565,7 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
  
          @Override
          public boolean canUse() {
@@ -85,7 +85,7 @@ index fd7fc2d6a28110050b2050355897d551737939a7..7572815e2e0ca94f5e65eb61ef51a553
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..469686ecfb6ac5d2e8a24f6ae3b12e6d41514d3d 100644
+index e10871c6a6d99ff8860a536cab53af493e69ffda..923dd959d942544d62ad55aa9db5f2981d36f951 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 @@ -237,9 +237,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
@@ -115,7 +115,7 @@ index f11bca0b0c556aa4d6c32c503c4b5f45c645a3fa..469686ecfb6ac5d2e8a24f6ae3b12e6d
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 006d5fc7c96a47bf57ab26f374143400138b8b17..d6ae00ce910a4a47f0b353bc1a785fccd9196bd4 100644
+index 014f1913a0c358fe51fded46e81ac3549dba92cf..9acc602efde5df94d7f563379494866c3006b059 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -105,6 +105,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
@@ -179,37 +179,35 @@ index 006d5fc7c96a47bf57ab26f374143400138b8b17..d6ae00ce910a4a47f0b353bc1a785fcc
  
          private boolean avoidLlama(Llama llama) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
-index e8f42ad6cc32cb21584d8988fcf3d1e4b6552f0c..6923d126cbec6869396e46b03040e6cf66dea492 100644
+index 6051737b8e16d0790aec73757d13d7862ad74ef4..f7f146457d08e533cfd8ff57273669a1f0a386ef 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
-@@ -263,11 +263,11 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
+@@ -258,9 +258,11 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
          return 0.4F;
      }
  
--    private int behaviorTick = 0; // Pufferfish
-+    private int behaviorTick = this.getRandom().nextInt(90); // Pufferfish // KioCG
++    //private int behaviorTick = this.getRandom().nextInt(90); // Pufferfish // KioCG //TODO Pufferfish
      @Override
      protected void customServerAiStep() {
          //this.level.getProfiler().push("allayBrain"); // Purpur
--        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
-+        if (this.behaviorTick++ % (this.activatedPriority * 30 + 60) < 30) // Pufferfish // KioCG
++        //if (this.behaviorTick++ % (this.activatedPriority * 30 + 60) < 30) // Pufferfish // KioCG //TODO Pufferfish
          this.getBrain().tick((ServerLevel) this.level, this);
          //this.level.getProfiler().pop(); // Purpur
          //this.level.getProfiler().push("allayActivityUpdate"); // Purpur
 diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
-index 616f51445c360188c7a6958e5ea02642c5559ee5..d0b5d970ecc1d91212ceb01d6dd804973553d12f 100644
+index 90e68df605244e6ac52b651b19d26ef057b7feb2..c2c73d3bf7c8255d4723488eb3b24a8d06a5e436 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
-@@ -64,7 +64,7 @@ public class AllayAi {
+@@ -65,7 +65,7 @@ public class AllayAi {
      private static void initIdleActivity(Brain<Allay> brain) {
          brain.addActivityWithConditions(Activity.IDLE, ImmutableList.of(Pair.of(0, GoToWantedItem.create((allay) -> {
              return true;
--        }, 1.75F, true, 32)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of());
-+        }, 1.75F, true, 8 /* KioCG - 降低搜索范围 */)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of()); // KioCG
+-        }, 1.75F, true, 32)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, Predicate.not(AllayAi::hasWantedItem), 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of());
++        }, 1.75F, true, 8 /* KioCG - 降低搜索范围 */)), Pair.of(1, new GoAndGiveItemsToTarget<>(AllayAi::getItemDepositPosition, 2.25F, 20)), Pair.of(2, StayCloseToTarget.create(AllayAi::getItemDepositPosition, Predicate.not(AllayAi::hasWantedItem), 4, 16, 2.25F)), Pair.of(3, SetEntityLookTargetSometimes.create(6.0F, UniformInt.of(30, 60))), Pair.of(4, new RunOne<>(ImmutableList.of(Pair.of(RandomStroll.fly(1.0F), 2), Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2), Pair.of(new DoNothing(30, 60), 1))))), ImmutableSet.of()); // KioCG
      }
  
      public static void updateActivity(Allay allay) {
-@@ -119,7 +119,7 @@ public class AllayAi {
+@@ -125,7 +125,7 @@ public class AllayAi {
                  Entity entity = serverLevel.getEntity(optional.get());
                  if (entity instanceof ServerPlayer) {
                      ServerPlayer serverPlayer = (ServerPlayer)entity;
@@ -219,10 +217,10 @@ index 616f51445c360188c7a6958e5ea02642c5559ee5..d0b5d970ecc1d91212ceb01d6dd80497
                      }
                  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 0cfe5cb3ce0ac8554bbdb68c6658369306ce634c..935351a7c94f0e6471bcd911868cdb3ca79336c0 100644
+index 9c8713ef3aeb2ff203bd0328d15d80c2d78d09e9..5c4c6cb5168fd82c96ec517afddf880f489bacd0 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-@@ -81,7 +81,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
+@@ -82,7 +82,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
          this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
          this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
          this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -232,7 +230,7 @@ index 0cfe5cb3ce0ac8554bbdb68c6658369306ce634c..935351a7c94f0e6471bcd911868cdb3c
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-index 68e31cf561f3d76bce6fa4324a75594c776f8964..e92a07760a8d9f55a8b177d21a6301bf2d917ea4 100644
+index 21b63bd8fa7bc903f587940a28b15f654900a755..71b6a79aea2f2722777948d7b3f4a459af624f6d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 @@ -147,7 +147,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -245,7 +243,7 @@ index 68e31cf561f3d76bce6fa4324a75594c776f8964..e92a07760a8d9f55a8b177d21a6301bf
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Giant.java b/src/main/java/net/minecraft/world/entity/monster/Giant.java
-index 2511ca42039fa91483a316ae13bb7da54f312f13..7d2f6e0430d950b6e7a37d516f3bcf34f3c6780a 100644
+index 2e535aef221c7d280ae3d8b235ccbb70262a750c..4e4dc0832c14855ba1f8aa8eda640008a9881d77 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Giant.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Giant.java
 @@ -75,9 +75,9 @@ public class Giant extends Monster {
@@ -261,7 +259,7 @@ index 2511ca42039fa91483a316ae13bb7da54f312f13..7d2f6e0430d950b6e7a37d516f3bcf34
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8a9b5d1af 100644
+index f0214bdfca5ccc7bed147bf1642efcdcbce4fcaf..f0cd47710e675c06ee41e5df27f626c3afb00fa6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -163,7 +163,7 @@ public class Zombie extends Monster {
@@ -283,32 +281,30 @@ index ef8cca70661cedecf08a787011342c402eb59a79..2f799458732904d9713bd346e82eddc8
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index aed1d9ccffe471b6c2a1d52d2d3d097f6431318b..6eed1a51e5e0de2bc63cafa0ffbe6eec5f33b216 100644
+index 9d19f6701acd9b5e430263347ee8a9925b9c49c2..39b4b8370627e94718c69ba40cba09c093803339 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -331,7 +331,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -329,6 +329,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Spigot End
  
--    private int behaviorTick = 0; // Pufferfish
-+    private int behaviorTick = this.getRandom().nextInt(100); // Pufferfish // KioCG
++    //private int behaviorTick = this.getRandom().nextInt(100); // Pufferfish // KioCG //TODO Pufferfish
      @Override
      protected void customServerAiStep() { mobTick(false); }
      protected void mobTick(boolean inactive) {
-@@ -347,7 +347,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -344,6 +345,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur end
-         // Pufferfish start
          if (!inactive) {
--            if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur - only use brain if no rider
-+            if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 50 + 50) < 50) // Pufferfish // Purpur - only use brain if no rider // KioCG
+             if ((getRider() == null || !this.isControllable())/* && this.behaviorTick++ % this.activatedPriority == 0*/) // Pufferfish // Purpur - only use brain if no rider TODO: uncomment when including Pufferfish
++            //if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 50 + 50) < 50) // Pufferfish // Purpur - only use brain if no rider // KioCG //TODO Pufferfish
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
-          }
-         // Pufferfish end
+         }
+         // Purpur start
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index a2ad029160065baa395cfe20fa40881d8252fcb3..f48c34dfb1ebbbe77031eccb17772f91b772f252 100644
+index 076326de62f395cb932dae33e73703a7ee7c84a7..81e56d544f736ea9fae5997a09ac0a656961f364 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -113,6 +113,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -116,6 +116,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return level.purpurConfig.milkClearsBeneficialEffects && canDrinkMilk && this.level.isDay() && entityvillagertrader.isInvisible(); // Paper - Add more WanderingTrader API // Purpur
          }));
          this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
@@ -317,7 +313,7 @@ index a2ad029160065baa395cfe20fa40881d8252fcb3..f48c34dfb1ebbbe77031eccb17772f91
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
-@@ -120,6 +122,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -123,6 +125,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 0.5D, 0.5D));
@@ -327,10 +323,10 @@ index a2ad029160065baa395cfe20fa40881d8252fcb3..f48c34dfb1ebbbe77031eccb17772f91
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 665625c69b93a2568b1f2218a0db39da435d8c99..b71292905e45ba0e2afae2b871d2993de8e669b1 100644
+index 8fc2a9942875d38bc0e6ff021e6458f5b9239715..0f88b008b7c60d97c8820246c5fef0ab77de9327 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -207,14 +207,14 @@ public class ActivationRange
+@@ -203,14 +203,14 @@ public class ActivationRange
              if (!player.level.purpurConfig.idleTimeoutTickNearbyEntities && player.isAfk()) continue; // Purpur
              // Paper start
              int worldHeight = world.getHeight();
@@ -353,7 +349,7 @@ index 665625c69b93a2568b1f2218a0db39da435d8c99..b71292905e45ba0e2afae2b871d2993d
              // Paper end
  
              // Paper start
-@@ -297,6 +297,7 @@ public class ActivationRange
+@@ -274,6 +274,7 @@ public class ActivationRange
              return 100; // Paper
          }
          // Paper start
@@ -361,7 +357,7 @@ index 665625c69b93a2568b1f2218a0db39da435d8c99..b71292905e45ba0e2afae2b871d2993d
          if ( !entity.isOnGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
          {
              return 100;
-@@ -306,6 +307,11 @@ public class ActivationRange
+@@ -283,6 +284,11 @@ public class ActivationRange
          {
              if ( (!entity.isOnGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
@@ -373,7 +369,7 @@ index 665625c69b93a2568b1f2218a0db39da435d8c99..b71292905e45ba0e2afae2b871d2993d
                  return 10; // Paper
              }
          } else if ( !( (AbstractArrow) entity ).inGround )
-@@ -397,7 +403,7 @@ public class ActivationRange
+@@ -374,7 +380,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
