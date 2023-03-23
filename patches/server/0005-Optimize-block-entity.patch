@@ -135,10 +135,10 @@ index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index cba114f554644a37339c93026630c66c43f524b9..c01c7b1d4750a6ddaad1cb0c6b3d9713f4bd1cea 100644
+index 746b71ea96ecc441afd45cc779a1777c15d58ff2..9677865c5ccdb459c0182b2192bd5781d53cafb6 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -713,7 +713,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -746,7 +746,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      @Nullable
      private static Container getSourceContainer(Level world, Hopper hopper) {
          // CraftBukkit start
@@ -147,7 +147,7 @@ index cba114f554644a37339c93026630c66c43f524b9..c01c7b1d4750a6ddaad1cb0c6b3d9713
  
          BlockPos blockPosition = BlockPos.containing(hopper.getLevelX(), hopper.getLevelY(), hopper.getLevelZ());
          CraftBlock hopper1 = CraftBlock.at(world, blockPosition);
-@@ -742,9 +742,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -775,9 +775,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          // Paper start - add optimizeEntities parameter
          return HopperBlockEntity.getContainerAt(world, x, y, z, false);
      }
@@ -171,7 +171,7 @@ index cba114f554644a37339c93026630c66c43f524b9..c01c7b1d4750a6ddaad1cb0c6b3d9713
          Object object = null;
          BlockPos blockposition = BlockPos.containing(x, y, z);
          if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -764,12 +778,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -797,12 +811,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  

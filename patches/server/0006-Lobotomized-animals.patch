@@ -59,10 +59,10 @@ index 0000000000000000000000000000000000000000..fd30c4e370d725979df69e83a8b61f67
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e00cdef947bd529125387df194b2fb6e354b4805..c3e04db6de888758fbdbc054789af2ef40def4cf 100644
+index f9d5fcd86228f8d9d1da3090ea56c6164ed47145..0b3c66f34018119abe38fc3187752604652148ba 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -304,6 +304,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -303,6 +303,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -270,7 +270,7 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..45ea353564e3497e1c9303a8fdb881f6
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 41598e4ed94fb07e6a4a9aae6156bce4498594d5..6e30a39108cd888ccd34d1eefb5d28a87937c74e 100644
+index d47dc0c3fe8c2b80d7b7eb828a12af6eb32145e4..cc6f91976582f9ec2f25d250ef21dd060f2e9bdb 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
 @@ -1108,6 +1108,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -306,7 +306,7 @@ index 41598e4ed94fb07e6a4a9aae6156bce4498594d5..6e30a39108cd888ccd34d1eefb5d28a8
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index c90c1b3f63606d1c6593e4739fe0af750bd5e51f..2d4b68de1a098c86dd22f1a4be96f16fad7df3e0 100644
+index e291a64d9f74b65c897e6ff00d5ac2b378c04aa9..a75a1d839685d675f2aa5c154b0614e07902a35e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,7 +139,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -318,8 +318,8 @@ index c90c1b3f63606d1c6593e4739fe0af750bd5e51f..2d4b68de1a098c86dd22f1a4be96f16f
 +    private boolean isLobotomized = false; @Override public boolean isLobotomized() { return this.lobotomized.isLobotomized(); } // Purpur // KioCG - 使用更好的检测
      private int notLobotomizedCount = 0; // Purpur
  
-     public Villager(EntityType<? extends Villager> entityType, Level world) {
-@@ -239,6 +240,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public long nextGolemPanic = -1; // Pufferfish
+@@ -241,6 +242,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Purpur end
  
@@ -343,7 +343,7 @@ index c90c1b3f63606d1c6593e4739fe0af750bd5e51f..2d4b68de1a098c86dd22f1a4be96f16f
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -337,7 +355,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -339,7 +357,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level.purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
@@ -352,16 +352,16 @@ index c90c1b3f63606d1c6593e4739fe0af750bd5e51f..2d4b68de1a098c86dd22f1a4be96f16f
          } else {
              // clean up state for API
              this.isLobotomized = false;
-@@ -349,7 +367,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
-             this.getBrain().tick((ServerLevel) this.level, this); // Paper
-         }
+@@ -352,7 +370,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+          }
+         // Pufferfish end
          // Purpur start
 -        else if (this.isLobotomized && shouldRestock()) {
 +        else if (this.lobotomized.isLobotomized() && shouldRestock()) { // KioCG - 使用更好的检测
              // make sure we restock if needed when lobotomized
              restock();
          }
-@@ -657,6 +675,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -660,6 +678,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -370,7 +370,7 @@ index c90c1b3f63606d1c6593e4739fe0af750bd5e51f..2d4b68de1a098c86dd22f1a4be96f16f
      }
  
      @Override
-@@ -697,6 +717,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -700,6 +720,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  

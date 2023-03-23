@@ -18,7 +18,7 @@ index 74238a87d1ff3391aac5812b24b84af228baeaa4..6cc5ceadb5ca74bcd2b89c12eaf588c2
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index a5312007294cdb4ef6d3bbad3083acfac11a456d..1f0b572f74de89f0164be4658b94f05de5d596c1 100644
+index ae3c1bd67c144fe971d4df6df2ca171b431b6fc5..22da021fd17f8b5e61b448f1ebfa79efc69970d8 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -461,7 +461,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -31,10 +31,10 @@ index a5312007294cdb4ef6d3bbad3083acfac11a456d..1f0b572f74de89f0164be4658b94f05d
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 70b52346a42daaa82a56d324ad3290971692da6d..091b3913ad5f1cba12b2f4dee301b91b857ec9db 100644
+index 8d7c33e16f9eaec2120c5aad75172ff656d1bd17..27a98873f73bc1e6de7df43983a1431794a95e48 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -412,7 +412,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -411,7 +411,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level.getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {
@@ -62,7 +62,7 @@ index 651c156dc8a5aad04d461add02e22147af657d07..9601092b5057396dd48bf47e2c639075
          }
          // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 66363a97b5f3962df46c926da0e3940c4042edfd..05ec0ab32117a294586227559f8ef8461ebed2ac 100644
+index 34fa428268a863e8e36b6340a482ec67f1199efb..9459fb5e73e5da0d31e32576a1110b972d87eef0 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 @@ -228,7 +228,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
