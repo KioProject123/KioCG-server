@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 24 Mar 2023 13:46:25 +0800
+Subject: [PATCH] Change FeedbackForwardingSender Name
+
+
+diff --git a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
+index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46ca4727ce5 100644
+--- a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
++++ b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
+@@ -49,7 +49,7 @@ public final class FeedbackForwardingSender extends ServerCommandSender {
+ 
+     @Override
+     public String getName() {
+-        return "FeedbackForwardingSender";
++        return "MOSS"; // KioCG
+     }
+ 
+     @Override
