@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Mon, 27 Mar 2023 00:34:47 +0800
+Subject: [PATCH] Check any loaded plugins for dependencies
+
+https://github.com/PaperMC/Paper/pull/9005/files
+
+diff --git a/src/main/java/io/papermc/paper/plugin/entrypoint/dependency/DependencyUtil.java b/src/main/java/io/papermc/paper/plugin/entrypoint/dependency/DependencyUtil.java
+index bfa258faf17ca6118aeddfa4e95bbd082bcd1390..c106c26ccd673e46c5ae9415096923b66efd8af2 100644
+--- a/src/main/java/io/papermc/paper/plugin/entrypoint/dependency/DependencyUtil.java
++++ b/src/main/java/io/papermc/paper/plugin/entrypoint/dependency/DependencyUtil.java
+@@ -2,6 +2,7 @@ package io.papermc.paper.plugin.entrypoint.dependency;
+ 
+ import com.google.common.graph.MutableGraph;
+ import io.papermc.paper.plugin.configuration.PluginMeta;
++import io.papermc.paper.plugin.manager.PaperPluginManagerImpl;
+ import io.papermc.paper.plugin.provider.PluginProvider;
+ import io.papermc.paper.plugin.provider.configuration.LoadOrderConfiguration;
+ import org.bukkit.plugin.PluginDescriptionFile;
+@@ -65,7 +66,7 @@ public class DependencyUtil {
+     public static List<String> validateSimple(PluginMeta meta, Map<String, PluginProvider<?>> toLoad) {
+         List<String> missingDependencies = new ArrayList<>();
+         for (String hardDependency : meta.getPluginDependencies()) {
+-            if (!toLoad.containsKey(hardDependency)) {
++            if (!toLoad.containsKey(hardDependency) && !PaperPluginManagerImpl.getInstance().isPluginEnabled(hardDependency)) {
+                 missingDependencies.add(hardDependency);
+             }
+         }
