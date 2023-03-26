@@ -133,7 +133,7 @@ index 25e16d53c93e38551f66b969b93ec2b0555db87d..30546d1ea588a46e4b15cf072fafbbd5
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6cc5ceadb5ca74bcd2b89c12eaf588c29897650f..4dab6070d838dabde933f9db6c72c5e83a3e3ba9 100644
+index 2aa25304d97e84490eb5b888a45c6d658a1d48b1..6daa1f5066820020b797580e74b218d5597b8b3b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -279,6 +279,7 @@ public class ServerPlayer extends Player {
@@ -216,10 +216,10 @@ index fa724cd34a7c469ca12068e64295cd00ad215a3c..9b68f7dc44911795565577e4a218e104
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b49c60217eb5f1e2872827f944c45886ffb27bef..28c3e8d5dba1110dd2e05a0ddcf846e0d90b9c0d 100644
+index 3c10c719f6172161a2dcc6592a0a1492e9b3d7c1..5d09b8808d87d90ceb0e3146b7e55ca9da4888a4 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4827,4 +4827,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4833,4 +4833,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
@@ -243,7 +243,7 @@ index 558c14af6415681909f9e3a15f303ce4d0ec1395..3e973ed77f7b77e52b2f24009d1b54eb
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 55ff6951ef01efde4b639090f2b83ab38217b314..0431e459957283b1f86bc02b8a923f211a3ef42b 100644
+index ceab30c3caec346671c3d326eeaed9907ccd50cb..14b663830d99ca4719b8853f0d5c9ed041231121 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1833,4 +1833,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
