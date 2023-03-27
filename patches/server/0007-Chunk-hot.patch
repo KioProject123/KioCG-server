@@ -133,10 +133,10 @@ index 25e16d53c93e38551f66b969b93ec2b0555db87d..30546d1ea588a46e4b15cf072fafbbd5
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 2aa25304d97e84490eb5b888a45c6d658a1d48b1..6daa1f5066820020b797580e74b218d5597b8b3b 100644
+index f5520b83d150178f77a03a828079455f346eb2ea..d53a8dffd5377bc71400976985014869849c9fd9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -279,6 +279,7 @@ public class ServerPlayer extends Player {
+@@ -280,6 +280,7 @@ public class ServerPlayer extends Player {
      private boolean ramBar = false; // Purpur
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
@@ -144,7 +144,7 @@ index 2aa25304d97e84490eb5b888a45c6d658a1d48b1..6daa1f5066820020b797580e74b218d5
  
      public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
          super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
-@@ -671,6 +672,8 @@ public class ServerPlayer extends Player {
+@@ -672,6 +673,8 @@ public class ServerPlayer extends Player {
          return new ServerItemCooldowns(this);
      }
  
@@ -153,7 +153,7 @@ index 2aa25304d97e84490eb5b888a45c6d658a1d48b1..6daa1f5066820020b797580e74b218d5
      @Override
      public void tick() {
          // CraftBukkit start
-@@ -727,6 +730,45 @@ public class ServerPlayer extends Player {
+@@ -728,6 +731,45 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -291,10 +291,10 @@ index 0012b7c60729d1a6622e22d8483143de18007dd7..308a63aa2e05be33ec806a1385b095fe
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index f96524c4a5d3c51b1ab6d990b30055ad5d8bfaac..a5fca142c784fe99e3bc942f3d9b448035b695f1 100644
+index d055cfc257cc7282170ba67c848af3e6c5f2ec1f..ee915b1c853f4012d260c83621e492409d8f89b1 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -2473,4 +2473,11 @@ public abstract class Player extends LivingEntity {
+@@ -2479,4 +2479,11 @@ public abstract class Player extends LivingEntity {
              return this.message;
          }
      }

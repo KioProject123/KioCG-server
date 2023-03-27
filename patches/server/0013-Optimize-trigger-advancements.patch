@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 4dab6070d838dabde933f9db6c72c5e83a3e3ba9..b258cecd7c1ab9fcd911f5055962b0d01a4b5a05 100644
+index d53a8dffd5377bc71400976985014869849c9fd9..954ac0194c5480d90f7dca8e90c8b0801680a934 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -664,6 +664,7 @@ public class ServerPlayer extends Player {
+@@ -665,6 +665,7 @@ public class ServerPlayer extends Player {
  
      @Override
      protected void onInsideBlock(BlockState state) {
@@ -16,7 +16,7 @@ index 4dab6070d838dabde933f9db6c72c5e83a3e3ba9..b258cecd7c1ab9fcd911f5055962b0d0
          CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
      }
  
-@@ -690,7 +691,7 @@ public class ServerPlayer extends Player {
+@@ -691,7 +692,7 @@ public class ServerPlayer extends Player {
  
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
@@ -25,7 +25,7 @@ index 4dab6070d838dabde933f9db6c72c5e83a3e3ba9..b258cecd7c1ab9fcd911f5055962b0d0
              containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
          }
          // Paper end
-@@ -713,6 +714,7 @@ public class ServerPlayer extends Player {
+@@ -714,6 +715,7 @@ public class ServerPlayer extends Player {
              }
          }
  
@@ -33,7 +33,7 @@ index 4dab6070d838dabde933f9db6c72c5e83a3e3ba9..b258cecd7c1ab9fcd911f5055962b0d0
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
-@@ -837,7 +839,7 @@ public class ServerPlayer extends Player {
+@@ -838,7 +840,7 @@ public class ServerPlayer extends Player {
                  this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
              }
  

@@ -5,10 +5,10 @@ Subject: [PATCH] Override upstream patches
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 74238a87d1ff3391aac5812b24b84af228baeaa4..6cc5ceadb5ca74bcd2b89c12eaf588c29897650f 100644
+index 8a4be66f967dfd6b57ab542ae9b06c840647486d..f5520b83d150178f77a03a828079455f346eb2ea 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2090,7 +2090,7 @@ public class ServerPlayer extends Player {
+@@ -2101,7 +2101,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
