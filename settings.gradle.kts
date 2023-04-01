@@ -1,9 +1,10 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 }
 
-rootProject.name = "petal"
-include("petal-api", "petal-server")
+rootProject.name = "kiocg"
+
+include("kiocg-api", "kiocg-server")

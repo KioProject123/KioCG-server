@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
 Date: Thu, 23 Mar 2023 16:46:39 +0800
-Subject: [PATCH] conf: brand server to petal
+Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
@@ -13,7 +13,7 @@ index 22470f0ab8354a9f31a0f195f3fe80f2f5ee2f0e..630bf623ca5f5266f2bbeb2222b15617
  
  dependencies {
 -    implementation(project(":purpur-api")) // Purpur
-+    implementation(project(":petal-api")) // Purpur // petal
++    implementation(project(":kiocg-api")) // Purpur // KioCG
      implementation("io.papermc.paper:paper-mojangapi:1.19.4-R0.1-SNAPSHOT") // Purpur
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
@@ -22,7 +22,7 @@ index 22470f0ab8354a9f31a0f195f3fe80f2f5ee2f0e..630bf623ca5f5266f2bbeb2222b15617
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
 -            "Implementation-Version" to "git-Purpur-$implementationVersion", // Pufferfish // Purpur
-+            "Implementation-Version" to "git-petal-$implementationVersion", // Pufferfish // Purpur // petal
++            "Implementation-Version" to "git-kiocg-$implementationVersion", // Pufferfish // Purpur // KioCG
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
@@ -35,7 +35,7 @@ index 99597258e8e88cd9e2c901c4ac3ff7faeeabee2b..e8ecfa1c935860423182d7f2b1679cbf
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Pufferfish // Purpur
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/host.bloom.petal/petal-api/pom.properties"); // Pufferfish // Purpur // petal
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.kiocg.purpurfork/kiocg-api/pom.properties"); // Pufferfish // Purpur // KioCG
          Properties properties = new Properties();
  
          if (stream != null) {
