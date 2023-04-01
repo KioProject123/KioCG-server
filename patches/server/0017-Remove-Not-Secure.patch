@@ -1,19 +1,19 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Thu, 23 Feb 2023 05:20:59 +0800
+Date: Sun, 2 Apr 2023 07:49:16 +0800
 Subject: [PATCH] Remove Not Secure
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 310b3acb490f839a5f433371781d004e6a13686e..276952a880f246040bed58e614107bdc18413853 100644
+index 7cd537847c701fd2de1f8c7bbacf38e71c499720..570c9072be8ce4d7eb0338b06ce465d5194cbd2e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2659,7 +2659,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-     public void logChatMessage(Component message, ChatType.Bound params, @Nullable String prefix) {
-         String s1 = params.decorate(message).getString();
+@@ -2661,7 +2661,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         // Paper start
+         net.kyori.adventure.text.Component s1 = io.papermc.paper.adventure.PaperAdventure.asAdventure(params.decorate(message));
  
 -        if (prefix != null) {
 +        if (prefix != null && !"Not Secure".equals(prefix)) { // KioCG
-             MinecraftServer.LOGGER.info("[{}] {}", prefix, s1);
+             MinecraftServer.COMPONENT_LOGGER.info("[{}] {}", prefix, s1);
          } else {
-             MinecraftServer.LOGGER.info("{}", s1);
+             MinecraftServer.COMPONENT_LOGGER.info("{}", s1);

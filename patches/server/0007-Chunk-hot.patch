@@ -46,10 +46,10 @@ index 0000000000000000000000000000000000000000..daa106753347fd45882629ed9dad1efe
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 2cc20cc768bbbd386972c426d3a131af33612294..310b3acb490f839a5f433371781d004e6a13686e 100644
+index 46b9aed8ab46bd4bfdcf44a392ffc34e26da0f5f..7cd537847c701fd2de1f8c7bbacf38e71c499720 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1420,6 +1420,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
          ++this.tickCount;
@@ -57,7 +57,7 @@ index 2cc20cc768bbbd386972c426d3a131af33612294..310b3acb490f839a5f433371781d004e
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
              this.lastServerStatus = i;
-@@ -1459,6 +1460,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1460,6 +1461,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
          new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
          // Paper end
@@ -65,7 +65,7 @@ index 2cc20cc768bbbd386972c426d3a131af33612294..310b3acb490f839a5f433371781d004e
          //this.profiler.push("tallying"); // Purpur
          long j = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1476,6 +1478,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1477,6 +1479,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
