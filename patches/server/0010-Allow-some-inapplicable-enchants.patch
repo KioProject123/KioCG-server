@@ -1,9 +1,21 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
 Date: Wed, 16 Nov 2022 22:37:53 +0800
-Subject: [PATCH] Shears can have silk touch enchantment
+Subject: [PATCH] Allow some inapplicable enchants
 
 
+diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+index 09b202aea81de2844cc2ddefed39097eb0b69fbd..6f08e3f2780a16680de3bef70e4fe60c39e60314 100644
+--- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+@@ -226,6 +226,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+ 
+                             i2 = l1 == i2 ? i2 + 1 : Math.max(i2, l1);
+                             boolean flag3 = canDoUnsafeEnchants || (org.purpurmc.purpur.PurpurConfig.allowUnsafeEnchants && org.purpurmc.purpur.PurpurConfig.allowInapplicableEnchants) || enchantment.canEnchant(itemstack); // Purpur
++                            flag3 = flag3 || enchantment instanceof net.minecraft.world.item.enchantment.BindingCurseEnchantment && net.minecraft.world.item.enchantment.EnchantmentCategory.VANISHABLE.canEnchant(itemstack.getItem()); // KioCG
+                             boolean flag4 = true; // Purpur
+ 
+                             if (this.player.getAbilities().instabuild || itemstack.is(Items.ENCHANTED_BOOK)) {
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
 index fc2c35f57436371cb0111aedfd289ac95d506d07..a09bd528218d44630300fcf8f263e7b164d7051d 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java

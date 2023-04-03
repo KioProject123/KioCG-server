@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
 Date: Sun, 2 Apr 2023 07:49:16 +0800
-Subject: [PATCH] Remove Not Secure
+Subject: [PATCH] Remove NotSecure prefix
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
