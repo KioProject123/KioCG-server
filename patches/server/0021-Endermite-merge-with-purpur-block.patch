@@ -1,0 +1,102 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Mon, 3 Apr 2023 19:24:04 +0800
+Subject: [PATCH] Endermite merge with purpur block
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
+index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..41b8288712928ea96ad836ffb7185ceaac524f9b 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
+@@ -84,7 +84,7 @@ public class Endermite extends Monster {
+         this.goalSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+         this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level));
+         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
++        this.goalSelector.addGoal(3, new EndermiteMergeWithPurpurBlockGoal(this)); // KioCG
+         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+         this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
+@@ -189,4 +189,82 @@ public class Endermite extends Monster {
+     public MobType getMobType() {
+         return MobType.ARTHROPOD;
+     }
++
++    // KioCG start
++    private static class EndermiteMergeWithPurpurBlockGoal extends net.minecraft.world.entity.ai.goal.RandomStrollGoal {
++
++        @javax.annotation.Nullable
++        private net.minecraft.core.Direction selectedDirection;
++        private boolean doMerge;
++
++        public EndermiteMergeWithPurpurBlockGoal(Endermite endermite) {
++            super(endermite, 1.0D, 10);
++            this.setFlags(java.util.EnumSet.of(net.minecraft.world.entity.ai.goal.Goal.Flag.MOVE));
++        }
++
++        @Override
++        public boolean canUse() {
++            if (this.mob.getTarget() != null) {
++                return false;
++            } else if (!this.mob.getNavigation().isDone()) {
++                return false;
++            } else {
++                RandomSource randomsource = this.mob.getRandom();
++
++                if ((this.mob.level.purpurConfig.silverfishBypassMobGriefing || this.mob.level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) && randomsource.nextInt(reducedTickDelay(10)) == 0) { // Purpur
++                    this.selectedDirection = net.minecraft.core.Direction.getRandom(randomsource);
++                    BlockPos blockposition = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.selectedDirection);
++                    BlockState iblockdata = this.mob.level.getBlockState(blockposition);
++
++                    if (iblockdata.is(net.minecraft.world.level.block.Blocks.PURPUR_BLOCK)) {
++                        this.doMerge = true;
++                        return true;
++                    }
++                }
++
++                this.doMerge = false;
++                return super.canUse();
++            }
++        }
++
++        @Override
++        public boolean canContinueToUse() {
++            return this.doMerge ? false : super.canContinueToUse();
++        }
++
++        @Override
++        public void start() {
++            if (!this.doMerge) {
++                super.start();
++            } else {
++                Level world = this.mob.level;
++                BlockPos blockposition = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.selectedDirection);
++                BlockState iblockdata = world.getBlockState(blockposition);
++
++                if (iblockdata.is(net.minecraft.world.level.block.Blocks.PURPUR_BLOCK)) {
++                    // CraftBukkit start
++                    if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(this.mob, blockposition, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState()).isCancelled()) {
++                        return;
++                    }
++                    // CraftBukkit end
++                    world.setBlock(blockposition, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
++
++                    Shulker entityshulker = (Shulker) EntityType.SHULKER.create(world);
++                    if (entityshulker != null) {
++                        entityshulker.moveTo(net.minecraft.world.phys.Vec3.atLowerCornerOf(blockposition));
++                        if (this.mob.hasCustomName()) {
++                            entityshulker.setCustomName(this.mob.getCustomName());
++                            entityshulker.setCustomNameVisible(this.mob.isCustomNameVisible());
++                        }
++                        world.addFreshEntity(entityshulker, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SILVERFISH_BLOCK);
++                    }
++
++                    this.mob.spawnAnim();
++                    this.mob.discard();
++                }
++
++            }
++        }
++    }
++    // KioCG end
+ }
