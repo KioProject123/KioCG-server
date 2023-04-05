@@ -6,41 +6,73 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..daa106753347fd45882629ed9dad1efe3e3b005f
+index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c6822587d5f6
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,67 @@
 +package com.kiocg;
 +
 +public class ChunkHot {
++    // 热度统计总区间数量
 +    private static final int TIMES_LENGTH = 10;
++    // 当前统计区间下标
 +    private static int index = -1;
 +
++    // 热度统计区间
 +    private final long[] times = new long[TIMES_LENGTH];
++    // 存放临时的区间数值
++    // 用于修正正在统计的当前区间热度没有计入总值的问题
++    private long temp;
++    // 所有区间的热度总值
 +    private long total;
++
++    // 用于每个具体统计的计算
 +    private long nanos;
 +
++    /**
++     * 更新区间下标
++     */
 +    public static void nextTick() {
 +        index = ++index % TIMES_LENGTH;
 +    }
 +
++    /**
++     * 开始统计一个新区间
++     */
 +    public void start() {
-+        total -= times[index];
++        temp = times[index];
 +        times[index] = 0L;
 +    }
 +
++    /**
++     * 结束当前区间的统计
++     * 将统计值更新入热度总值
++     */
 +    public void stop() {
++        total -= temp;
 +        total += times[index];
 +    }
 +
++    /**
++     * 开始一个具体统计
++     */
 +    public void startTicking() {
 +        nanos = System.nanoTime();
 +    }
 +
++    /**
++     * 结束一个具体统计
++     * 将统计值计入当前热度区间
++     */
 +    public void stopTickingAndCount() {
++        // 定义一个具体统计的最大值为 1,000,000
++        // 有时候某个具体统计的计算值会在某1刻飙升，可能是由于保存数据到磁盘？
 +        times[index] += Math.min(System.nanoTime() - nanos, 1000000L);
 +    }
 +
++    /**
++     * @return 获取区块热度平均值
++     */
 +    public long getAverage() {
 +        return total / ((long) TIMES_LENGTH * 20L);
 +    }
