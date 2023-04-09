@@ -5,7 +5,7 @@ Subject: [PATCH] Override upstream patches
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8a4be66f967dfd6b57ab542ae9b06c840647486d..f5520b83d150178f77a03a828079455f346eb2ea 100644
+index be8bb3f48971e76a3637b9da0706281f352c318b..19a92d5010a4677e5cc91264d9f8e8141e166acf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2101,7 +2101,7 @@ public class ServerPlayer extends Player {
@@ -18,10 +18,10 @@ index 8a4be66f967dfd6b57ab542ae9b06c840647486d..f5520b83d150178f77a03a828079455f
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 21211e2790cd667ec389353fb90fb700f33421cc..e50b021968a0a816c49b2aaffc4f56fc2f4c176e 100644
+index 177090697e42fcca84dbfdf04ca5118a2c5e7be2..b3a3f55973b26424ac75754b6d50af4baaac0db5 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -462,7 +462,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -463,7 +463,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) (this.server.getPlayerIdleTimeout() * 1000 * 60) && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
              // Purpur start
@@ -31,7 +31,7 @@ index 21211e2790cd667ec389353fb90fb700f33421cc..e50b021968a0a816c49b2aaffc4f56fc
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 8d7c33e16f9eaec2120c5aad75172ff656d1bd17..27a98873f73bc1e6de7df43983a1431794a95e48 100644
+index b67660cda74a4754d1701e746aca99bde868c150..506d9c10be799bc78c2a542edc3e3dc40a6af7c0 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -411,7 +411,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
