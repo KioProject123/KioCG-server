@@ -77,6 +77,55 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +        return total / ((long) TIMES_LENGTH * 20L);
 +    }
 +}
+diff --git a/src/main/java/com/kiocg/command/ChunkHotCommand.java b/src/main/java/com/kiocg/command/ChunkHotCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..efa9338af3ec845b18e2d081e23c023330d9962d
+--- /dev/null
++++ b/src/main/java/com/kiocg/command/ChunkHotCommand.java
+@@ -0,0 +1,31 @@
++package com.kiocg.command;
++
++import com.mojang.brigadier.CommandDispatcher;
++import net.minecraft.commands.CommandSourceStack;
++import net.minecraft.commands.Commands;
++import net.minecraft.commands.arguments.EntityArgument;
++import net.minecraft.server.level.ServerPlayer;
++import org.purpurmc.purpur.PurpurConfig;
++
++import java.util.Collection;
++import java.util.Collections;
++
++public class ChunkHotCommand {
++    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
++        dispatcher.register(Commands.literal("chunkhot")
++                .requires((listener) -> listener.hasPermission(2))
++                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
++                .then(Commands.argument("targets", EntityArgument.players())
++                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))
++                )
++        ).setPermission("bukkit.command.chunkhot");
++    }
++
++    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
++        for (ServerPlayer player : targets) {
++            String output = String.format("<green>[<aqua>豆渣子<green>] <gold>%s 所在区块的热度: %s", player.getGameProfile().getName(), player.getLevel().getChunkAt(player.blockPosition()).getChunkHot().getAverage());
++            sender.sendSuccess(output, false);
++        }
++        return targets.size();
++    }
++}
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index 08bed4f01a27162902aa63bb8d35a9159fdcfc4e..2bdef9b077b50644ee471beee17a8c0e33fcf053 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -230,6 +230,7 @@ public class Commands {
+             org.purpurmc.purpur.command.CompassCommand.register(this.dispatcher); // Purpur
+             org.purpurmc.purpur.command.RamBarCommand.register(this.dispatcher); // Purpur
+             org.purpurmc.purpur.command.RamCommand.register(this.dispatcher); // Purpur
++            com.kiocg.command.ChunkHotCommand.register(this.dispatcher); // KioCG
+         }
+ 
+         if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index beb05039926e1fb7a656dfcd0c503f82db67fc46..c5be7658eb925c868065fa7d8ebf19dc5cc33d08 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
