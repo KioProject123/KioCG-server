@@ -5,7 +5,7 @@ Subject: [PATCH] Endermite merge with purpur block
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..41b8288712928ea96ad836ffb7185ceaac524f9b 100644
+index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..507f58d5c2b6930f2501db0073fd22c3eb7e890a 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 @@ -84,7 +84,7 @@ public class Endermite extends Monster {
@@ -17,7 +17,7 @@ index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..41b8288712928ea96ad836ffb7185cea
          this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
          this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-@@ -189,4 +189,82 @@ public class Endermite extends Monster {
+@@ -189,4 +189,90 @@ public class Endermite extends Monster {
      public MobType getMobType() {
          return MobType.ARTHROPOD;
      }
@@ -89,6 +89,14 @@ index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..41b8288712928ea96ad836ffb7185cea
 +                            entityshulker.setCustomNameVisible(this.mob.isCustomNameVisible());
 +                        }
 +                        world.addFreshEntity(entityshulker, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SILVERFISH_BLOCK);
++
++                        // find attachable surface
++                        net.minecraft.core.Direction enumdirection = entityshulker.findAttachableSurface(blockposition);
++                        if (enumdirection != null) {
++                            entityshulker.setAttachFace(enumdirection);
++                        } else {
++                            entityshulker.teleportSomewhere();
++                        }
 +                    }
 +
 +                    this.mob.spawnAnim();
