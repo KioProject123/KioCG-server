@@ -6,11 +6,13 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c6822587d5f6
+index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe66d6abbe1
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,86 @@
 +package com.kiocg;
++
++import java.util.Arrays;
 +
 +public class ChunkHot {
 +    // 热度统计总区间数量
@@ -28,6 +30,8 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +
 +    // 用于每个具体统计的计算
 +    private long nanos;
++    // 当前统计是否进行中
++    private boolean isStarted;
 +
 +    /**
 +     * 更新区间下标
@@ -40,6 +44,7 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +     * 开始统计一个新区间
 +     */
 +    public void start() {
++        isStarted = true;
 +        temp = times[index];
 +        times[index] = 0L;
 +    }
@@ -49,6 +54,7 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +     * 将统计值更新入热度总值
 +     */
 +    public void stop() {
++        isStarted = false;
 +        total -= temp;
 +        total += times[index];
 +    }
@@ -57,6 +63,7 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +     * 开始一个具体统计
 +     */
 +    public void startTicking() {
++        if (!isStarted) return;
 +        nanos = System.nanoTime();
 +    }
 +
@@ -65,9 +72,21 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +     * 将统计值计入当前热度区间
 +     */
 +    public void stopTickingAndCount() {
++        if (!isStarted) return;
 +        // 定义一个具体统计的最大值为 1,000,000
 +        // 有时候某个具体统计的计算值会在某1刻飙升，可能是由于保存数据到磁盘？
 +        times[index] += Math.min(System.nanoTime() - nanos, 1000000L);
++    }
++
++    /**
++     * 清空统计 (当区块卸载时)
++     */
++    public void clear() {
++        isStarted = false;
++        Arrays.fill(times, 0L);
++        temp = 0L;
++        total = 0L;
++        nanos = 0L;
 +    }
 +
 +    /**
@@ -164,7 +183,7 @@ index beb05039926e1fb7a656dfcd0c503f82db67fc46..c5be7658eb925c868065fa7d8ebf19dc
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719b9cfc68f 100644
+index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..90b4302660a620feb0736ea2436113cd86c7b4c7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -74,6 +74,7 @@ public class ServerChunkCache extends ChunkSource {
@@ -175,6 +194,15 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..00929affdaefdc0c9f86236fc0e47719
  
      private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
      
+@@ -115,6 +116,8 @@ public class ServerChunkCache extends ChunkSource {
+         if (cachedChunk != null && cachedChunk.coordinateKey == chunk.coordinateKey) {
+             this.lastLoadedChunks[cacheKey] = null;
+         }
++
++        chunk.getChunkHot().clear(); // KioCG
+     }
+ 
+     public final LevelChunk getChunkAtIfLoadedMainThread(int x, int z) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
 index 8236af6676d4bbb239b30ee5a5443b90c041425f..5fcc20cdddeb06170c0885a8e241784d6ab1300d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
