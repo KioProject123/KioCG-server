@@ -98,7 +98,7 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +}
 diff --git a/src/main/java/com/kiocg/command/ChunkHotCommand.java b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..5491d766bc4d7f8579da14c315082d5dca55aea3
+index 0000000000000000000000000000000000000000..84236b4d05dbfc42401f1d83f43806d8998f76ee
 --- /dev/null
 +++ b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 @@ -0,0 +1,31 @@
@@ -109,7 +109,6 @@ index 0000000000000000000000000000000000000000..5491d766bc4d7f8579da14c315082d5d
 +import net.minecraft.commands.Commands;
 +import net.minecraft.commands.arguments.EntityArgument;
 +import net.minecraft.server.level.ServerPlayer;
-+import org.purpurmc.purpur.PurpurConfig;
 +
 +import java.util.Collection;
 +import java.util.Collections;
@@ -117,12 +116,13 @@ index 0000000000000000000000000000000000000000..5491d766bc4d7f8579da14c315082d5d
 +public class ChunkHotCommand {
 +    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(Commands.literal("chunkhot")
-+                .requires((listener) -> listener.hasPermission(2))
++                .requires((listener) -> listener.hasPermission(2, "bukkit.command.chunkhot"))
 +                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
 +                .then(Commands.argument("targets", EntityArgument.players())
++                        .requires(listener -> listener.hasPermission(2, "bukkit.command.chunkhot.other"))
 +                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))
 +                )
-+        ).setPermission("bukkit.command.chunkhot");
++        );
 +    }
 +
 +    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
@@ -183,7 +183,7 @@ index beb05039926e1fb7a656dfcd0c503f82db67fc46..c5be7658eb925c868065fa7d8ebf19dc
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..90b4302660a620feb0736ea2436113cd86c7b4c7 100644
+index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..a1eb76be7c367b90c51e3d2b35ca51acef21e063 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -74,6 +74,7 @@ public class ServerChunkCache extends ChunkSource {
