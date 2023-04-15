@@ -79,7 +79,7 @@ index 0000000000000000000000000000000000000000..ac04978b1792279a4aaf31cb7a12c682
 +}
 diff --git a/src/main/java/com/kiocg/command/ChunkHotCommand.java b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..efa9338af3ec845b18e2d081e23c023330d9962d
+index 0000000000000000000000000000000000000000..5491d766bc4d7f8579da14c315082d5dca55aea3
 --- /dev/null
 +++ b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 @@ -0,0 +1,31 @@
@@ -108,7 +108,7 @@ index 0000000000000000000000000000000000000000..efa9338af3ec845b18e2d081e23c0233
 +
 +    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
 +        for (ServerPlayer player : targets) {
-+            String output = String.format("<green>[<aqua>豆渣子<green>] <gold>%s 所在区块的热度: %s", player.getGameProfile().getName(), player.getLevel().getChunkAt(player.blockPosition()).getChunkHot().getAverage());
++            String output = String.format("<green>[<aqua>豆渣子<green>] <gold>区块%s的热度: %s", player.chunkPosition(), player.getLevel().getChunkAt(player.blockPosition()).getChunkHot().getAverage());
 +            sender.sendSuccess(output, false);
 +        }
 +        return targets.size();
