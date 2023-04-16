@@ -6,7 +6,7 @@ Subject: [PATCH] Lobotomized animals
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fd30c4e370d725979df69e83a8b61f67840c8daf
+index 0000000000000000000000000000000000000000..dc651c43e391783615b4ade1e7a4b3619bab89b0
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
 @@ -0,0 +1,48 @@
@@ -33,7 +33,7 @@ index 0000000000000000000000000000000000000000..fd30c4e370d725979df69e83a8b61f67
 +        if ((livingEntity.getId() + livingEntity.tickCount) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
 +            // 扩展到半砖高度 (希望不会出问题!)
-+            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getY() + 0.5000001D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
++            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getBoundingBox().minY + 0.5000001D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
 +        }
 +        return this.isLobotomized;
 +    }
@@ -59,7 +59,7 @@ index 0000000000000000000000000000000000000000..fd30c4e370d725979df69e83a8b61f67
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index f9d5fcd86228f8d9d1da3090ea56c6164ed47145..0b3c66f34018119abe38fc3187752604652148ba 100644
+index 14f86549fc257af9126d2513301089cfdc8152cb..cdcbdcf8f3b0f7700698ff8d03416a34e0b1c91f 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -303,6 +303,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -306,7 +306,7 @@ index d47dc0c3fe8c2b80d7b7eb828a12af6eb32145e4..cc6f91976582f9ec2f25d250ef21dd06
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index e291a64d9f74b65c897e6ff00d5ac2b378c04aa9..3df3394f3fb21981cb2b9ba941b58502f73e929e 100644
+index a10ef5e6c8a2488f65a4cf9141f8d717cc57837c..58b2dca778941279fb8775d9471436a4aa3b6fde 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,7 +139,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
