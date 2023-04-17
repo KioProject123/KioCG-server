@@ -204,7 +204,7 @@ index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..a1eb76be7c367b90c51e3d2b35ca51ac
  
      public final LevelChunk getChunkAtIfLoadedMainThread(int x, int z) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8236af6676d4bbb239b30ee5a5443b90c041425f..ea78b67d76cc6e2f301e1e7b4b3ccc3d44850a21 100644
+index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794c51ed345 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1279,6 +1279,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -249,7 +249,7 @@ index 8236af6676d4bbb239b30ee5a5443b90c041425f..ea78b67d76cc6e2f301e1e7b4b3ccc3d
 +    private long chunkHotStartingTime = Long.MAX_VALUE;
 +
 +    public boolean chunkHotStarted() {
-+        return this.chunkHotStartingTime > getGameTime();
++        return this.getGameTime() > this.chunkHotStartingTime;
 +    }
 +    // KioCG end
 +
@@ -260,12 +260,12 @@ index 8236af6676d4bbb239b30ee5a5443b90c041425f..ea78b67d76cc6e2f301e1e7b4b3ccc3d
  
                  ServerLevel.this.players.add(entityplayer);
                  ServerLevel.this.updateSleepingPlayerList();
-+                if (chunkHotStartingTime == Long.MAX_VALUE) chunkHotStartingTime = getGameTime() + 30L * 20L; // KioCG
++                if (ServerLevel.this.chunkHotStartingTime == Long.MAX_VALUE) chunkHotStartingTime = ServerLevel.this.getGameTime() + 30L * 20L; // KioCG
              }
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 19a92d5010a4677e5cc91264d9f8e8141e166acf..1b669d74686dc9eca95e65e0efbe8e8b31a0e6d0 100644
+index 19a92d5010a4677e5cc91264d9f8e8141e166acf..6b25ece038120c92a7607f2f4d57493127de3230 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -280,6 +280,7 @@ public class ServerPlayer extends Player {
@@ -282,8 +282,8 @@ index 19a92d5010a4677e5cc91264d9f8e8141e166acf..1b669d74686dc9eca95e65e0efbe8e8b
          // Purpur end
 +
 +        // KioCG start
-+        if (((ServerLevel) this.level).chunkHotStarted() && this.server.getTickCount() % 20 == 1) {
-+            this.nearbyChunkHot = this.refreshNearbyChunkHot();
++        if (this.server.getTickCount() % 20 == 1) {
++            this.nearbyChunkHot = ((ServerLevel) this.level).chunkHotStarted() ? this.refreshNearbyChunkHot() : 0L;
 +
 +            if (this.nearbyChunkHot > 330000L) {
 +                if (this.isAfk) {
