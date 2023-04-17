@@ -265,7 +265,7 @@ index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 19a92d5010a4677e5cc91264d9f8e8141e166acf..6b25ece038120c92a7607f2f4d57493127de3230 100644
+index 19a92d5010a4677e5cc91264d9f8e8141e166acf..8cd07b0adaf4f77a5df7f5bf3775d81f9c37cb51 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -280,6 +280,7 @@ public class ServerPlayer extends Player {
@@ -276,7 +276,7 @@ index 19a92d5010a4677e5cc91264d9f8e8141e166acf..6b25ece038120c92a7607f2f4d574931
  
      public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
          super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
-@@ -728,6 +729,41 @@ public class ServerPlayer extends Player {
+@@ -728,6 +729,43 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -285,14 +285,16 @@ index 19a92d5010a4677e5cc91264d9f8e8141e166acf..6b25ece038120c92a7607f2f4d574931
 +        if (this.server.getTickCount() % 20 == 1) {
 +            this.nearbyChunkHot = ((ServerLevel) this.level).chunkHotStarted() ? this.refreshNearbyChunkHot() : 0L;
 +
-+            if (this.nearbyChunkHot > 330000L) {
++            if (this.nearbyChunkHot > 300000L) {
 +                if (this.isAfk) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
 +                    this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
-+                    int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
-+                    if (this.getRemainingFireTicks() < fireTicks) {
-+                        this.setRemainingFireTicks(fireTicks);
++                    if (this.nearbyChunkHot > 330000L) {
++                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
++                        if (this.getRemainingFireTicks() < fireTicks) {
++                            this.setRemainingFireTicks(fireTicks);
++                        }
 +                    }
 +                }
 +            }
