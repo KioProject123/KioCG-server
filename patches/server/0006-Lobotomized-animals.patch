@@ -6,10 +6,10 @@ Subject: [PATCH] Lobotomized animals
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..dc651c43e391783615b4ade1e7a4b3619bab89b0
+index 0000000000000000000000000000000000000000..4e8618fbf056fd2e0d20102ca3053451b84bb88c
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
-@@ -0,0 +1,48 @@
+@@ -0,0 +1,51 @@
 +package com.kiocg.entity;
 +
 +import net.minecraft.core.BlockPos;
@@ -29,11 +29,14 @@ index 0000000000000000000000000000000000000000..dc651c43e391783615b4ade1e7a4b361
 +    }
 +
 +    public boolean checkLobotomized(LivingEntity livingEntity) {
++        if (!livingEntity.isOnGround()) {
++            return this.isLobotomized = false;
++        }
 +        int interval = livingEntity.getLevel().purpurConfig.villagerLobotomizeCheckInterval;
 +        if ((livingEntity.getId() + livingEntity.tickCount) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
 +            // 扩展到半砖高度 (希望不会出问题!)
-+            this.isLobotomized = livingEntity.isOnGround() && !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getBoundingBox().minY + 0.5000001D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
++            this.isLobotomized = !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getBoundingBox().minY + 0.5000001D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
 +        }
 +        return this.isLobotomized;
 +    }
@@ -204,7 +207,7 @@ index 6d127ed3da899851ca95b2be6792e2abca1aca12..364c1c0b5d2b89c6b0d4125bf72efa52
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..f71d3ec222a4743d52066f44d088e1cc2e654ab9 100644
+index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..15f12a93835c2ff4dea7700cfb3b80ac487fe87b 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -39,6 +39,7 @@ public abstract class Animal extends AgeableMob {
@@ -225,14 +228,14 @@ index 2ac88f06ebb79e515cd9934ac1e3e2c8003d9e3c..f71d3ec222a4743d52066f44d088e1cc
 +    // KioCG start
 +    @Override
 +    public void travel(net.minecraft.world.phys.Vec3 vec3) {
-+        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
++        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || (this.tickCount + this.getId()) % 100 == 0) {
 +            super.travel(vec3);
 +        }
 +    }
 +
 +    @Override
 +    public boolean isCollidable(boolean ignoreClimbing) {
-+        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 20 == 0) {
++        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 100 < 4) {
 +            return super.isCollidable(ignoreClimbing);
 +        }
 +        return false;
@@ -306,7 +309,7 @@ index d47dc0c3fe8c2b80d7b7eb828a12af6eb32145e4..cc6f91976582f9ec2f25d250ef21dd06
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index a10ef5e6c8a2488f65a4cf9141f8d717cc57837c..58b2dca778941279fb8775d9471436a4aa3b6fde 100644
+index a10ef5e6c8a2488f65a4cf9141f8d717cc57837c..33a840c61f9f633eeec7453c628c130fd3399396 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,7 +139,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -326,14 +329,14 @@ index a10ef5e6c8a2488f65a4cf9141f8d717cc57837c..58b2dca778941279fb8775d9471436a4
 +    // KioCG start
 +    @Override
 +    public void travel(net.minecraft.world.phys.Vec3 vec3) {
-+        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 100 == 0) {
++        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || (this.tickCount + this.getId()) % 100 == 0) {
 +            super.travel(vec3);
 +        }
 +    }
 +
 +    @Override
 +    public boolean isCollidable(boolean ignoreClimbing) {
-+        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 20 == 0) {
++        if (!this.isLobotomized() || !this.passengers.isEmpty() || this.lastHurtByPlayer != null || this.lastHurtByMob != null || net.minecraft.server.MinecraftServer.currentTick % 100 < 4) {
 +            return super.isCollidable(ignoreClimbing);
 +        }
 +        return false;
