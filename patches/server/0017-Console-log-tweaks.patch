@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sun, 2 Apr 2023 07:49:16 +0800
+Subject: [PATCH] Console log tweaks
+
+
+diff --git a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
+index 951a7df30bd70bb3051c04f592529d560be6948e..69e0667e9d4f99cd26b54e4898c9ea21a5f51ab1 100644
+--- a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
++++ b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
+@@ -353,7 +353,7 @@ public final class ChatProcessor {
+ 
+         private void sendToServer(final ChatType.Bound chatType, final @Nullable Function<Audience, net.minecraft.network.chat.Component> msgFunction) {
+             final PlayerChatMessage toConsoleMessage = msgFunction == null ? ChatProcessor.this.message : ChatProcessor.this.message.withUnsignedContent(msgFunction.apply(ChatProcessor.this.server.console));
+-            ChatProcessor.this.server.logChatMessage(toConsoleMessage.decoratedContent(), chatType, ChatProcessor.this.server.getPlayerList().verifyChatTrusted(toConsoleMessage) ? null : "Not Secure");
++            ChatProcessor.this.server.logChatMessage(toConsoleMessage.decoratedContent(), chatType, ChatProcessor.this.server.getPlayerList().verifyChatTrusted(toConsoleMessage) ? null : null); // KioCG
+         }
+     }
+ 
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 582467e3419c23446b20d3076fbfce22115250a8..1d91e7e96c609a24b96e74a08a9e25ab8e91717f 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -180,7 +180,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         }
+ 
+         // Paper start - detect running as root
+-        if (io.papermc.paper.util.ServerEnvironment.userIsRootOrAdmin()) {
++        if (false && io.papermc.paper.util.ServerEnvironment.userIsRootOrAdmin()) { // KioCG
+             DedicatedServer.LOGGER.warn("****************************");
+             DedicatedServer.LOGGER.warn("YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.");
+             DedicatedServer.LOGGER.warn("YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.");
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 33d4c1af86382cc3343d5db42283b27f69f52374..1f27a9ce779f2ea86e45b75a5e8316fcb0577abd 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -1433,7 +1433,7 @@ public abstract class PlayerList {
+         // Paper end
+         boolean flag = this.verifyChatTrusted(message);
+ 
+-        this.server.logChatMessage((unsignedFunction == null ? message.decoratedContent() : unsignedFunction.apply(this.server.console)), params, flag ? null : "Not Secure"); // Paper
++        this.server.logChatMessage((unsignedFunction == null ? message.decoratedContent() : unsignedFunction.apply(this.server.console)), params, flag ? null : null); // Paper // KioCG
+         OutgoingChatMessage outgoingchatmessage = OutgoingChatMessage.create(message);
+         boolean flag1 = false;
+ 

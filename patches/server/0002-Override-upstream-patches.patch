@@ -4,8 +4,21 @@ Date: Sat, 15 Apr 2023 22:06:11 +0800
 Subject: [PATCH] Override upstream patches
 
 
+diff --git a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
+index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46ca4727ce5 100644
+--- a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
++++ b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
+@@ -49,7 +49,7 @@ public final class FeedbackForwardingSender extends ServerCommandSender {
+ 
+     @Override
+     public String getName() {
+-        return "FeedbackForwardingSender";
++        return "MOSS"; // KioCG
+     }
+ 
+     @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index be8bb3f48971e76a3637b9da0706281f352c318b..19a92d5010a4677e5cc91264d9f8e8141e166acf 100644
+index 784f210d58b8702e0ad5bfe046d6389f65570956..709b7ff667871269370b12760d0ea61acae91f29 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2101,7 +2101,7 @@ public class ServerPlayer extends Player {
