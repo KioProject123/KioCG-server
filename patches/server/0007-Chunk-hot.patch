@@ -289,7 +289,7 @@ index 19a92d5010a4677e5cc91264d9f8e8141e166acf..8cd07b0adaf4f77a5df7f5bf3775d81f
 +                if (this.isAfk) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
-+                    this.sendActionBarMessage("<red><italic>你所在的区块太热辣!");
++                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
 +                    if (this.nearbyChunkHot > 330000L) {
 +                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
 +                        if (this.getRemainingFireTicks() < fireTicks) {
