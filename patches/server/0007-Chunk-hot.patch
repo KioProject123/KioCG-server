@@ -6,13 +6,11 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe66d6abbe1
+index 0000000000000000000000000000000000000000..e7dae2d8496ffd888dfb1e7b4256b3896360cec6
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,86 @@
+@@ -0,0 +1,73 @@
 +package com.kiocg;
-+
-+import java.util.Arrays;
 +
 +public class ChunkHot {
 +    // 热度统计总区间数量
@@ -31,7 +29,7 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +    // 用于每个具体统计的计算
 +    private long nanos;
 +    // 当前统计是否进行中
-+    private boolean isStarted;
++    private boolean started = false;
 +
 +    /**
 +     * 更新区间下标
@@ -44,7 +42,7 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +     * 开始统计一个新区间
 +     */
 +    public void start() {
-+        isStarted = true;
++        started = true;
 +        temp = times[index];
 +        times[index] = 0L;
 +    }
@@ -54,7 +52,7 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +     * 将统计值更新入热度总值
 +     */
 +    public void stop() {
-+        isStarted = false;
++        started = false;
 +        total -= temp;
 +        total += times[index];
 +    }
@@ -63,7 +61,7 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +     * 开始一个具体统计
 +     */
 +    public void startTicking() {
-+        if (!isStarted) return;
++        if (!started) return;
 +        nanos = System.nanoTime();
 +    }
 +
@@ -72,21 +70,10 @@ index 0000000000000000000000000000000000000000..eac536dc5ab0a1e44d1a61c655fecfe6
 +     * 将统计值计入当前热度区间
 +     */
 +    public void stopTickingAndCount() {
-+        if (!isStarted) return;
++        if (!started) return;
 +        // 定义一个具体统计的最大值为 1,000,000
 +        // 有时候某个具体统计的计算值会在某1刻飙升，可能是由于保存数据到磁盘？
 +        times[index] += Math.min(System.nanoTime() - nanos, 1000000L);
-+    }
-+
-+    /**
-+     * 清空统计 (当区块卸载时)
-+     */
-+    public void clear() {
-+        isStarted = false;
-+        Arrays.fill(times, 0L);
-+        temp = 0L;
-+        total = 0L;
-+        nanos = 0L;
 +    }
 +
 +    /**
@@ -146,7 +133,7 @@ index 08bed4f01a27162902aa63bb8d35a9159fdcfc4e..2bdef9b077b50644ee471beee17a8c0e
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index beb05039926e1fb7a656dfcd0c503f82db67fc46..c5be7658eb925c868065fa7d8ebf19dc5cc33d08 100644
+index beb05039926e1fb7a656dfcd0c503f82db67fc46..d0eefe0f71da22e7c27075b113fd792cdba688a6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -165,44 +152,35 @@ index beb05039926e1fb7a656dfcd0c503f82db67fc46..c5be7658eb925c868065fa7d8ebf19dc
          //this.profiler.push("tallying"); // Purpur
          long j = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1477,6 +1479,16 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1477,6 +1479,28 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
 +    // KioCG start
++    private final Map<com.kiocg.ChunkHot, Boolean> tickingChunkHots = new java.util.WeakHashMap<>();
++
 +    private void startChunkHotTick() {
-+        this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().start()));
++        this.getAllLevels().forEach(level -> {
++            for (net.minecraft.server.level.ChunkHolder chunkHolder : io.papermc.paper.chunk.system.ChunkSystem.getVisibleChunkHolders(level)) {
++                net.minecraft.world.level.chunk.LevelChunk chunk = chunkHolder.getTickingChunk();
++                if (chunk == null) {
++                    continue;
++                }
++                chunk.getChunkHot().start();
++                tickingChunkHots.put(chunk.getChunkHot(), true);
++            }
++        });
 +    }
 +
 +    private void stopChunkHotTick() {
-+        this.getAllLevels().forEach(level -> level.getChunkSource().getLoadedChunkMap().values().forEach(chunk -> chunk.getChunkHot().stop()));
++        tickingChunkHots.keySet().forEach(com.kiocg.ChunkHot::stop);
++        tickingChunkHots.clear();
 +    }
 +    // KioCG end
 +
      private ServerStatus buildServerStatus() {
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
-diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 0ae45cf5a084fd412305e8b2f5dabe608b4eb1c1..a1eb76be7c367b90c51e3d2b35ca51acef21e063 100644
---- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-+++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -74,6 +74,7 @@ public class ServerChunkCache extends ChunkSource {
-     // Paper start
-     final com.destroystokyo.paper.util.concurrent.WeakSeqLock loadedChunkMapSeqLock = new com.destroystokyo.paper.util.concurrent.WeakSeqLock();
-     final it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> loadedChunkMap = new it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<>(8192, 0.5f);
-+    public it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap<LevelChunk> getLoadedChunkMap() { return this.loadedChunkMap; } // KioCG
- 
-     private final LevelChunk[] lastLoadedChunks = new LevelChunk[4 * 4];
-     
-@@ -115,6 +116,8 @@ public class ServerChunkCache extends ChunkSource {
-         if (cachedChunk != null && cachedChunk.coordinateKey == chunk.coordinateKey) {
-             this.lastLoadedChunks[cacheKey] = null;
-         }
-+
-+        chunk.getChunkHot().clear(); // KioCG
-     }
- 
-     public final LevelChunk getChunkAtIfLoadedMainThread(int x, int z) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
 index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794c51ed345 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
@@ -265,7 +243,7 @@ index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 19a92d5010a4677e5cc91264d9f8e8141e166acf..8cd07b0adaf4f77a5df7f5bf3775d81f9c37cb51 100644
+index 709b7ff667871269370b12760d0ea61acae91f29..0ada91a25ba1fce7373f228080a10ff808830e19 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -280,6 +280,7 @@ public class ServerPlayer extends Player {
