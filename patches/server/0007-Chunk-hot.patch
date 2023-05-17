@@ -6,11 +6,13 @@ Subject: [PATCH] Chunk hot
 
 diff --git a/src/main/java/com/kiocg/ChunkHot.java b/src/main/java/com/kiocg/ChunkHot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e7dae2d8496ffd888dfb1e7b4256b3896360cec6
+index 0000000000000000000000000000000000000000..80ccbe11768b3da176987c31be13bc35b9d85200
 --- /dev/null
 +++ b/src/main/java/com/kiocg/ChunkHot.java
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,86 @@
 +package com.kiocg;
++
++import java.util.Arrays;
 +
 +public class ChunkHot {
 +    // 热度统计总区间数量
@@ -77,6 +79,17 @@ index 0000000000000000000000000000000000000000..e7dae2d8496ffd888dfb1e7b4256b389
 +    }
 +
 +    /**
++     * 清空统计 (当区块卸载时)
++     */
++    public void clear() {
++        started = false;
++        Arrays.fill(times, 0L);
++        temp = 0L;
++        total = 0L;
++        nanos = 0L;
++    }
++
++    /**
 +     * @return 获取区块热度平均值
 +     */
 +    public long getAverage() {
@@ -133,7 +146,7 @@ index 08bed4f01a27162902aa63bb8d35a9159fdcfc4e..2bdef9b077b50644ee471beee17a8c0e
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index beb05039926e1fb7a656dfcd0c503f82db67fc46..d0eefe0f71da22e7c27075b113fd792cdba688a6 100644
+index beb05039926e1fb7a656dfcd0c503f82db67fc46..960d6388e5d981a2422a39f12f19ef201c8915d1 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -152,29 +165,27 @@ index beb05039926e1fb7a656dfcd0c503f82db67fc46..d0eefe0f71da22e7c27075b113fd792c
          //this.profiler.push("tallying"); // Purpur
          long j = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1477,6 +1479,28 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1477,6 +1479,26 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
 +    // KioCG start
-+    private final Map<com.kiocg.ChunkHot, Boolean> tickingChunkHots = new java.util.WeakHashMap<>();
-+
 +    private void startChunkHotTick() {
 +        this.getAllLevels().forEach(level -> {
-+            for (net.minecraft.server.level.ChunkHolder chunkHolder : io.papermc.paper.chunk.system.ChunkSystem.getVisibleChunkHolders(level)) {
-+                net.minecraft.world.level.chunk.LevelChunk chunk = chunkHolder.getTickingChunk();
-+                if (chunk == null) {
-+                    continue;
-+                }
-+                chunk.getChunkHot().start();
-+                tickingChunkHots.put(chunk.getChunkHot(), true);
++            final Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator = level.getChunkSource().tickingChunks.unsafeIterator();
++            while (iterator.hasNext()) {
++                iterator.next().getChunkHot().start();
 +            }
 +        });
 +    }
 +
 +    private void stopChunkHotTick() {
-+        tickingChunkHots.keySet().forEach(com.kiocg.ChunkHot::stop);
-+        tickingChunkHots.clear();
++        this.getAllLevels().forEach(level -> {
++            final Iterator<net.minecraft.world.level.chunk.LevelChunk> iterator = level.getChunkSource().tickingChunks.unsafeIterator();
++            while (iterator.hasNext()) {
++                iterator.next().getChunkHot().stop();
++            }
++        });
 +    }
 +    // KioCG end
 +
@@ -422,7 +433,7 @@ index 220690cbd6552b06626f4edf5c71bed5cf1f12c4..99cc8781ef49eb7aa23f84091b648252
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index e9d92bf484fb0d2fcb66a7c424eced109bfa031d..513a384139f4a331091893b8e49ca1c5d0d68c81 100644
+index e9d92bf484fb0d2fcb66a7c424eced109bfa031d..c63214b6487a8609a116b2bd2074b1086bd02637 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -87,6 +87,7 @@ public class LevelChunk extends ChunkAccess {
@@ -433,7 +444,15 @@ index e9d92bf484fb0d2fcb66a7c424eced109bfa031d..513a384139f4a331091893b8e49ca1c5
  
      // Pufferfish start - instead of using a random every time the chunk is ticked, define when lightning strikes preemptively
      private int lightningTick;
-@@ -1319,6 +1320,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -893,6 +894,7 @@ public class LevelChunk extends ChunkAccess {
+     }
+ 
+     public void onChunkNotTicking(io.papermc.paper.chunk.system.scheduling.NewChunkHolder chunkHolder) {
++        this.chunkHot.clear(); // KioCG
+         io.papermc.paper.chunk.system.ChunkSystem.onChunkNotTicking(this, chunkHolder.vanillaChunkHolder);
+     }
+ 
+@@ -1319,6 +1321,7 @@ public class LevelChunk extends ChunkAccess {
  
                          //gameprofilerfiller.push(this::getType); // Purpur
                          //this.blockEntity.tickTimer.startTiming(); // Spigot // Purpur
@@ -441,7 +460,7 @@ index e9d92bf484fb0d2fcb66a7c424eced109bfa031d..513a384139f4a331091893b8e49ca1c5
                          BlockState iblockdata = LevelChunk.this.getBlockState(blockposition);
  
                          if (this.blockEntity.getType().isValid(iblockdata)) {
-@@ -1341,6 +1343,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -1341,6 +1344,7 @@ public class LevelChunk extends ChunkAccess {
                          // Spigot start
                      } finally {
                          //this.blockEntity.tickTimer.stopTiming(); // Purpur
