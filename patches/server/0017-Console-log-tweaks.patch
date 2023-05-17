@@ -18,10 +18,10 @@ index 951a7df30bd70bb3051c04f592529d560be6948e..69e0667e9d4f99cd26b54e4898c9ea21
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 582467e3419c23446b20d3076fbfce22115250a8..1d91e7e96c609a24b96e74a08a9e25ab8e91717f 100644
+index 6ecc75621867390738e804e06ac284524664473d..544711f88ac63fd5d4e7f1cec9f09b9089155cda 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -180,7 +180,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -181,7 +181,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          }
  
          // Paper start - detect running as root
@@ -31,10 +31,10 @@ index 582467e3419c23446b20d3076fbfce22115250a8..1d91e7e96c609a24b96e74a08a9e25ab
              DedicatedServer.LOGGER.warn("YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.");
              DedicatedServer.LOGGER.warn("YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.");
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 33d4c1af86382cc3343d5db42283b27f69f52374..1f27a9ce779f2ea86e45b75a5e8316fcb0577abd 100644
+index c27e455321951e76e4818fec0e64301f5620dbf6..429b0585abcfd30d1374077462c73f547c556538 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1433,7 +1433,7 @@ public abstract class PlayerList {
+@@ -1435,7 +1435,7 @@ public abstract class PlayerList {
          // Paper end
          boolean flag = this.verifyChatTrusted(message);
  

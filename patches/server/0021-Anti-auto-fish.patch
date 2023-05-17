@@ -5,10 +5,10 @@ Subject: [PATCH] Anti auto fish
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index d77410588a1c10d8ac902f21a8bd7e35f74fecd2..94c6ec5bc8c46205dd881f992eea3a26394104c9 100644
+index bcb0f3fd09ed064b64dc6495302b40828d906837..37d35ef16117e05cdab6f0fbc67a937b70924212 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-@@ -322,7 +322,10 @@ public class FishingHook extends Projectile {
+@@ -328,7 +328,10 @@ public class FishingHook extends Projectile {
              if (this.nibble <= 0) {
                  this.timeUntilLured = 0;
                  this.timeUntilHooked = 0;
@@ -20,7 +20,7 @@ index d77410588a1c10d8ac902f21a8bd7e35f74fecd2..94c6ec5bc8c46205dd881f992eea3a26
                  // CraftBukkit start
                  PlayerFishEvent playerFishEvent = new PlayerFishEvent((Player) this.getPlayerOwner().getBukkitEntity(), null, (FishHook) this.getBukkitEntity(), PlayerFishEvent.State.FAILED_ATTEMPT);
                  this.level.getCraftServer().getPluginManager().callEvent(playerFishEvent);
-@@ -373,7 +376,11 @@ public class FishingHook extends Projectile {
+@@ -379,7 +382,11 @@ public class FishingHook extends Projectile {
                      worldserver.sendParticles(ParticleTypes.BUBBLE, this.getX(), d3, this.getZ(), (int) (1.0F + this.getBbWidth() * 20.0F), (double) this.getBbWidth(), 0.0D, (double) this.getBbWidth(), 0.20000000298023224D);
                      worldserver.sendParticles(ParticleTypes.FISHING, this.getX(), d3, this.getZ(), (int) (1.0F + this.getBbWidth() * 20.0F), (double) this.getBbWidth(), 0.0D, (double) this.getBbWidth(), 0.20000000298023224D);
                      this.nibble = Mth.nextInt(this.random, 20, 40);

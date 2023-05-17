@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46c
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 784f210d58b8702e0ad5bfe046d6389f65570956..709b7ff667871269370b12760d0ea61acae91f29 100644
+index 82402be7bbbf04388339c6a471946a72f09dfe3b..a11e19fed3b3514c1ae7099fbc37f171bfad05d7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2101,7 +2101,7 @@ public class ServerPlayer extends Player {
+@@ -2103,7 +2103,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -31,10 +31,10 @@ index 784f210d58b8702e0ad5bfe046d6389f65570956..709b7ff667871269370b12760d0ea61a
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7254d62f3713113027eba29853e9d975eab15f7f..5fbbc410c9c00beb3772f5e854fa62b006cd363c 100644
+index af8cb1f1f0c128923495f51e4828003133ce766b..8ae05ab021237e799d813d969033d4801c468c65 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -463,7 +463,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -464,7 +464,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) (this.server.getPlayerIdleTimeout() * 1000 * 60) && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
              // Purpur start

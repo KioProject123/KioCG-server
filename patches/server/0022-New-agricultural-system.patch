@@ -5,10 +5,10 @@ Subject: [PATCH] New agricultural system
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/CropBlock.java b/src/main/java/net/minecraft/world/level/block/CropBlock.java
-index 74620e6aee75334498d903c616c090caa615f0b4..863443a11f7614eb04946cd9bf7e32856c706c1e 100644
+index 3415cbb1def0700b5998a8a1db2e48146f4c2c1e..3f59766696509b893fc5cc643aadd41c35b45755 100644
 --- a/src/main/java/net/minecraft/world/level/block/CropBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CropBlock.java
-@@ -90,7 +90,17 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
+@@ -94,7 +94,17 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
  
                  if (random.nextFloat() < (modifier / (100.0f * (Math.floor((25.0F / f) + 1))))) { // Spigot - SPIGOT-7159: Better modifier resolution
                      // Spigot end

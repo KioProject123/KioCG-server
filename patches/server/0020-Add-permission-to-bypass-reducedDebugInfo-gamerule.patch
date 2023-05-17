@@ -5,10 +5,10 @@ Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 1f27a9ce779f2ea86e45b75a5e8316fcb0577abd..2231a44cf6e87b4859629f8af9669ff8e41f65f5 100644
+index 429b0585abcfd30d1374077462c73f547c556538..39b7e5f8f3a9bab9f1ec30afbc61cd8e773f2b6f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -273,7 +273,7 @@ public abstract class PlayerList {
+@@ -275,7 +275,7 @@ public abstract class PlayerList {
          ServerGamePacketListenerImpl playerconnection = new ServerGamePacketListenerImpl(this.server, connection, player);
          GameRules gamerules = worldserver1.getGameRules();
          boolean flag = gamerules.getBoolean(GameRules.RULE_DO_IMMEDIATE_RESPAWN);
@@ -17,7 +17,7 @@ index 1f27a9ce779f2ea86e45b75a5e8316fcb0577abd..2231a44cf6e87b4859629f8af9669ff8
  
          // Spigot - view distance
          playerconnection.send(new ClientboundLoginPacket(player.getId(), worlddata.isHardcore(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), this.server.levelKeys(), this.synchronizedRegistries, worldserver1.dimensionTypeId(), worldserver1.dimension(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getTargetSendDistance(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getTargetTickViewDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat(), player.getLastDeathLocation())); // Paper - replace old player chunk management
-@@ -1298,7 +1298,7 @@ public abstract class PlayerList {
+@@ -1300,7 +1300,7 @@ public abstract class PlayerList {
          player.getEntityData().refresh(player); // CraftBukkkit - SPIGOT-7218: sync metadata
          player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules

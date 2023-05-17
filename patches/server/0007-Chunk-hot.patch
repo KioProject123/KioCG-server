@@ -182,7 +182,7 @@ index beb05039926e1fb7a656dfcd0c503f82db67fc46..d0eefe0f71da22e7c27075b113fd792c
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794c51ed345 100644
+index 0177a8280e0ea093dd80930bd015a1febf008794..a1423c167726e2e39f03a598dd0f63ae284a2d2e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1279,6 +1279,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -243,10 +243,10 @@ index 8236af6676d4bbb239b30ee5a5443b90c041425f..2b781b040fba5524ec27f39e522e2794
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 709b7ff667871269370b12760d0ea61acae91f29..0ada91a25ba1fce7373f228080a10ff808830e19 100644
+index a11e19fed3b3514c1ae7099fbc37f171bfad05d7..3d62b7eaaad2ae0b8b9ecf70b0c9a96e82206585 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -280,6 +280,7 @@ public class ServerPlayer extends Player {
+@@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
      private boolean ramBar = false; // Purpur
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
@@ -254,7 +254,7 @@ index 709b7ff667871269370b12760d0ea61acae91f29..0ada91a25ba1fce7373f228080a10ff8
  
      public ServerPlayer(MinecraftServer server, ServerLevel world, GameProfile profile) {
          super(world, world.getSharedSpawnPos(), world.getSharedSpawnAngle(), profile);
-@@ -728,6 +729,43 @@ public class ServerPlayer extends Player {
+@@ -730,6 +731,43 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -315,10 +315,10 @@ index fa724cd34a7c469ca12068e64295cd00ad215a3c..9b68f7dc44911795565577e4a218e104
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b2ee73a2ef6042694ca84c27d592e5fb13b4a0fe..2c7d69f1250534f74895153ed47a62bc36c9eb66 100644
+index f31f4ecf8fb07f6cf01eea0aa14f5d454a4ce2a3..b0aba3514c94d2a19b9500b821b71d6ce69356c2 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4833,4 +4833,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4834,4 +4834,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
