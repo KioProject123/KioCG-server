@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 06b0b78d16804b4bf8f6b5bb29b21b0eda57f0fc..6721c949860f6147959af00aa098a983da5aded8 100644
+index 86b8485c0fb1dc5cd79c9e24546dc74459822a48..0177a8280e0ea093dd80930bd015a1febf008794 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -730,6 +730,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -283,7 +283,7 @@ index 36d37e544e342e1bc584374580dbb5c883523204..948af88299ee3fbe671f3316d3d19d9a
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 26857b0e5134f56df47115031727e0ad68216bc6..e291a64d9f74b65c897e6ff00d5ac2b378c04aa9 100644
+index 73cdb6b1793b264e1ec8ff51c4f8274366a7d4d7..a10ef5e6c8a2488f65a4cf9141f8d717cc57837c 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -331,7 +331,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -327,32 +327,9 @@ index a6a4d5203cb5f35306f8225e56681bc25e06beed..0012b7c60729d1a6622e22d8483143de
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index ee64ddb0da23ea1e54d0295324aca5b46a438111..664912558968dde82604b3d05a1593c91ba4b0ef 100644
+index ee64ddb0da23ea1e54d0295324aca5b46a438111..60ba3d6a331f55ff817e08db1adebd1260603253 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -207,14 +207,14 @@ public class ActivationRange
-             if (!player.level.purpurConfig.idleTimeoutTickNearbyEntities && player.isAfk()) continue; // Purpur
-             // Paper start
-             int worldHeight = world.getHeight();
--            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, worldHeight, maxRange );
--            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, worldHeight, miscActivationRange );
--            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, worldHeight, raiderActivationRange );
--            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, worldHeight, animalActivationRange );
--            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, worldHeight, monsterActivationRange );
--            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, worldHeight, waterActivationRange );
--            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, worldHeight, flyingActivationRange );
--            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, worldHeight, villagerActivationRange );
-+            ActivationRange.maxBB = player.getBoundingBox().inflate( maxRange, Math.max(16, maxRange), maxRange ); // KioCG - 减少搜索范围
-+            ActivationType.MISC.boundingBox = player.getBoundingBox().inflate( miscActivationRange, Math.max(16, miscActivationRange), miscActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.RAIDER.boundingBox = player.getBoundingBox().inflate( raiderActivationRange, Math.max(16, raiderActivationRange), raiderActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.ANIMAL.boundingBox = player.getBoundingBox().inflate( animalActivationRange, Math.max(16, animalActivationRange), animalActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.MONSTER.boundingBox = player.getBoundingBox().inflate( monsterActivationRange, Math.max(16, monsterActivationRange), monsterActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.WATER.boundingBox = player.getBoundingBox().inflate( waterActivationRange, Math.max(16, waterActivationRange), waterActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.FLYING_MONSTER.boundingBox = player.getBoundingBox().inflate( flyingActivationRange, Math.max(16, flyingActivationRange), flyingActivationRange ); // KioCG - 减少搜索范围
-+            ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, Math.max(16, villagerActivationRange), villagerActivationRange ); // KioCG - 减少搜索范围
-             // Paper end
- 
-             // Paper start
 @@ -298,6 +298,7 @@ public class ActivationRange
              return 100; // Paper
          }
