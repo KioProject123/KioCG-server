@@ -326,10 +326,10 @@ index fa724cd34a7c469ca12068e64295cd00ad215a3c..9b68f7dc44911795565577e4a218e104
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index f31f4ecf8fb07f6cf01eea0aa14f5d454a4ce2a3..b0aba3514c94d2a19b9500b821b71d6ce69356c2 100644
+index e71eca3ddbbeb3168dd73433b6d6ffe9f6755f77..5db6eb46fd26b6013b50baf011107874f8437102 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4834,4 +4834,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4835,4 +4835,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
@@ -401,7 +401,7 @@ index 0012b7c60729d1a6622e22d8483143de18007dd7..308a63aa2e05be33ec806a1385b095fe
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d055cfc257cc7282170ba67c848af3e6c5f2ec1f..ee915b1c853f4012d260c83621e492409d8f89b1 100644
+index 7edcb5b86f27d05a0526229262e0d3a3e160362b..33dd1435162a88e7eb2f2b090d162cf248878844 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -2479,4 +2479,11 @@ public abstract class Player extends LivingEntity {
@@ -417,10 +417,10 @@ index d055cfc257cc7282170ba67c848af3e6c5f2ec1f..ee915b1c853f4012d260c83621e49240
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 220690cbd6552b06626f4edf5c71bed5cf1f12c4..99cc8781ef49eb7aa23f84091b6482528e806dff 100644
+index 505a60605ff2282f2c460c81464d60a433f41eda..fb3b98fa7019b8b5e312e697b4dd3e456361502d 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-@@ -309,4 +309,11 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -320,4 +320,11 @@ public abstract class Projectile extends Entity implements TraceableEntity {
  
          return entity instanceof Player ? entity.mayInteract(world, pos) : entity == null || world.purpurConfig.projectilesBypassMobGriefing || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
      }

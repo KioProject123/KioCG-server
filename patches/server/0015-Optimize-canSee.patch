@@ -29,10 +29,10 @@ index 97ea9612343e4288decd8daa9327a7e781877a8e..bb640282593227a818399fe0028b0fe5
              if (visible) {
                  // Making visible by default, reset and show to all players
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index f4a341f72d727bbffa4cfcf72eda8ed0c8945c9e..936f2f708aa49660451aab21e445872c094995ee 100644
+index e363891e8ab872ed24c557e3f94110f36c6fb277..75ac080a00426b6e2e6e7a6ffbfe551d156bdf5a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1804,6 +1804,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1805,6 +1805,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void hideEntity(Plugin plugin, org.bukkit.entity.Entity entity) {
@@ -40,7 +40,7 @@ index f4a341f72d727bbffa4cfcf72eda8ed0c8945c9e..936f2f708aa49660451aab21e445872c
          Validate.notNull(plugin, "Plugin cannot be null");
          Validate.isTrue(plugin.isEnabled(), "Plugin attempted to hide player while disabled");
  
-@@ -1891,6 +1892,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1892,6 +1893,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public void showEntity(Plugin plugin, org.bukkit.entity.Entity entity) {
@@ -48,7 +48,7 @@ index f4a341f72d727bbffa4cfcf72eda8ed0c8945c9e..936f2f708aa49660451aab21e445872c
          Validate.notNull(plugin, "Plugin cannot be null");
          // Don't require that plugin be enabled. A plugin must be allowed to call
          // showPlayer during its onDisable() method.
-@@ -2027,7 +2029,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2028,7 +2030,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public boolean canSee(org.bukkit.entity.Entity entity) {

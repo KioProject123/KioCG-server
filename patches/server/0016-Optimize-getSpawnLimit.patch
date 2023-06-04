@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize getSpawnLimit
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e5bac6bc792196226f975e7f3dd8f147fb14dbad..23180c7d71e4d3810b85190caf7b5cade1dbc58d 100644
+index 3f80b16c8d69f284a26b16cf2513a955005bf458..de0d4d68d5e6b933f9af9b3677b43b2a8f41b8b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -280,7 +280,7 @@ public final class CraftServer implements Server {
+@@ -282,7 +282,7 @@ public final class CraftServer implements Server {
      private final EntityMetadataStore entityMetadata = new EntityMetadataStore();
      private final PlayerMetadataStore playerMetadata = new PlayerMetadataStore();
      private final WorldMetadataStore worldMetadata = new WorldMetadataStore();
@@ -18,7 +18,7 @@ index e5bac6bc792196226f975e7f3dd8f147fb14dbad..23180c7d71e4d3810b85190caf7b5cad
      private WarningState warningState = WarningState.DEFAULT;
      public String minimumAPI;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3013aeb442799aba5b2ae45edcb3c2c72a18a740..e902b8f6d8e17480d20262fa42008ce51ad41b71 100644
+index 39a2ff8c34f995ab860aadc24d24136d602af646..270869be682e40172acdbb8643ea6ceb4220a04d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -150,7 +150,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
