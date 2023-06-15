@@ -1,23 +1,23 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Thu, 23 Mar 2023 16:46:39 +0800
+Date: Fri, 16 Jun 2023 05:05:09 +0800
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 9c01005751c0088f560f96401cdfdebbbda4e7ec..f29261df7189f42b7443262a75d1c1d257e24cb2 100644
+index 3030116af88d66c376e794b55a4716381fc7552b..3b478ff93f508c00a4656a491dd197c27177f49b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -7,7 +7,7 @@ plugins {
- }
+@@ -8,7 +8,7 @@ plugins {
  
  dependencies {
--    implementation(project(":purpur-api")) // Purpur
-+    implementation(project(":kiocg-api")) // Purpur // KioCG
-     implementation("io.papermc.paper:paper-mojangapi:1.19.4-R0.1-SNAPSHOT") // Purpur
-     // Paper start
-     implementation("org.jline:jline-terminal-jansi:3.21.0")
-@@ -81,7 +81,7 @@ tasks.jar {
+     // Purpur start
+-    implementation(project(":purpur-api"))
++    implementation(project(":kiocg-api")) // KioCG
+     implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
+         exclude("io.papermc.paper", "paper-api")
+     }
+@@ -86,7 +86,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",

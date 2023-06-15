@@ -18,7 +18,7 @@ index f8fd3b320494d1c1e8ee3d170f2feebd152230fa..27bee1aa2bc82516f6504e032ecf5232
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 5cd7b4e7065070bf9fcc34b621dba2ccba99a573..ab9d3b9f7e4de62ba48ce089163e806424124ac5 100644
+index 997d0fab71eacc6466ffe3bc8f6349e5813d6d49..00c0051120aaa73b779855ab36f4d1dae1e64e3a 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -85,6 +85,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
@@ -135,7 +135,7 @@ index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 9b506bd2ec6e7fd1893dc7801592f011680028d7..5b1dd76caacea581b010eef9d9ebde953aab2b3f 100644
+index 87164ca253447188cfc76073f7c73949cb0b3e03..f4d90c3a127764eb1f16056696022219bc6b3b9b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -746,7 +746,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -147,7 +147,7 @@ index 9b506bd2ec6e7fd1893dc7801592f011680028d7..5b1dd76caacea581b010eef9d9ebde95
  
          BlockPos blockPosition = BlockPos.containing(hopper.getLevelX(), hopper.getLevelY(), hopper.getLevelZ());
          CraftBlock hopper1 = CraftBlock.at(world, blockPosition);
-@@ -775,9 +775,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -793,9 +793,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          // Paper start - add optimizeEntities parameter
          return HopperBlockEntity.getContainerAt(world, x, y, z, false);
      }
@@ -171,7 +171,7 @@ index 9b506bd2ec6e7fd1893dc7801592f011680028d7..5b1dd76caacea581b010eef9d9ebde95
          Object object = null;
          BlockPos blockposition = BlockPos.containing(x, y, z);
          if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -797,12 +811,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -815,12 +829,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
              }
          }
  

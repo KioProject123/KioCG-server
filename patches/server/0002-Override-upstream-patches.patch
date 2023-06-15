@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sat, 15 Apr 2023 22:06:11 +0800
+Date: Fri, 16 Jun 2023 05:11:09 +0800
 Subject: [PATCH] Override upstream patches
 
 
@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46c
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 852266234cf3d63e3b23a71639e40defca91c1b8..b3e2c96d9ae14b3763ff18fa69eee945212a9e56 100644
+index e0e133ab39548b8e671441e3383a6f4df6f6997e..43e4d16af42ca5b0b0389b24f8699d22082eabe7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2103,7 +2103,7 @@ public class ServerPlayer extends Player {
+@@ -2148,7 +2148,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -31,34 +31,34 @@ index 852266234cf3d63e3b23a71639e40defca91c1b8..b3e2c96d9ae14b3763ff18fa69eee945
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index af8cb1f1f0c128923495f51e4828003133ce766b..8ae05ab021237e799d813d969033d4801c468c65 100644
+index e76eaa121f73cc56b0e3445eb976546daef87f99..7f66b75b6906b205e50bc407589680321e8a1021 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -464,7 +464,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
-         if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) (this.server.getPlayerIdleTimeout() * 1000 * 60) && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
+         if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) this.server.getPlayerIdleTimeout() * 1000L * 60L && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
              // Purpur start
 -            this.player.setAfk(true);
 +            //this.player.setAfk(true); // KioCG - 使用插件控制AFK
-             if (!this.player.level.purpurConfig.idleTimeoutKick || (!Boolean.parseBoolean(System.getenv("PURPUR_FORCE_IDLE_KICK")) && kickPermissionCache.getUnchecked(this.player.getBukkitEntity()))) {
+             if (!this.player.level().purpurConfig.idleTimeoutKick || (!Boolean.parseBoolean(System.getenv("PURPUR_FORCE_IDLE_KICK")) && kickPermissionCache.getUnchecked(this.player.getBukkitEntity()))) {
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index b67660cda74a4754d1701e746aca99bde868c150..506d9c10be799bc78c2a542edc3e3dc40a6af7c0 100644
+index ba975b2fae383863ec731211f99d66731fa922c5..55f0f55e2a8fecfac970c09e58a9c2d1cb1ed0ec 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -411,7 +411,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
-                         double d1 = this.level.getWorldBorder().getDamagePerBlock();
+@@ -429,7 +429,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+                         double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {
--                        if (level.purpurConfig.teleportIfOutsideBorder && this instanceof ServerPlayer) { ((ServerPlayer) this).teleport(io.papermc.paper.util.MCUtil.toLocation(level, ((ServerLevel) level).getSharedSpawnPos())); return; } // Purpur
+-                            if (level().purpurConfig.teleportIfOutsideBorder && this instanceof ServerPlayer serverPlayer) { serverPlayer.teleport(io.papermc.paper.util.MCUtil.toLocation(level(), ((ServerLevel) level()).getSharedSpawnPos())); return; } // Purpur
 +                            // KioCG start
-+                            if (level.purpurConfig.teleportIfOutsideBorder && this instanceof ServerPlayer player) {
-+                                player.teleport(io.papermc.paper.util.MCUtil.toLocation(level, ((ServerLevel) level).getWorldBorder().clampToBounds(player.getX(), player.getY(), player.getZ())).toHighestLocation());
++                            if (level().purpurConfig.teleportIfOutsideBorder && this instanceof ServerPlayer serverPlayer) {
++                                serverPlayer.teleport(io.papermc.paper.util.MCUtil.toLocation(level(), ((ServerLevel) level()).getWorldBorder().clampToBounds(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ())).toHighestLocation());
 +                                return;
-+                            }
++                            } // Purpur
 +                            // KioCG end
-                             this.hurt(this.damageSources().inWall(), (float) Math.max(1, Mth.floor(-d0 * d1)));
+                             this.hurt(this.damageSources().outOfBorder(), (float) Math.max(1, Mth.floor(-d0 * d1)));
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
@@ -75,27 +75,27 @@ index 651c156dc8a5aad04d461add02e22147af657d07..9601092b5057396dd48bf47e2c639075
          }
          // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 34fa428268a863e8e36b6340a482ec67f1199efb..9459fb5e73e5da0d31e32576a1110b972d87eef0 100644
+index 7cd368b252fa6ad6956685f68c730c4a2273c10e..e7345c94549e801484e7da7fab8289b5437a59a2 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 @@ -228,7 +228,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
              this.setPumpkin(false);
              this.forceDrops = true; // CraftBukkit
-             if (level.purpurConfig.snowGolemDropsPumpkin) // Purpur
+             if (level().purpurConfig.snowGolemDropsPumpkin) // Purpur
 -            for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur
 +            // for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur // KioCG - fix dupe
              this.spawnAtLocation(new ItemStack(Items.CARVED_PUMPKIN), 1.7F);
              this.forceDrops = false; // CraftBukkit
          }
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 7ade5cd93b3d7b7259bf3246a8b74b0b31407817..09b202aea81de2844cc2ddefed39097eb0b69fbd 100644
+index cb4a1cd39f12d90d30dd95efa2de58f57d9c6ee0..4c47f54e8defd9cf16b0136cf66a6d1225579e1c 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -322,6 +322,7 @@ public class AnvilMenu extends ItemCombinerMenu {
-                                 name = name.replace("&" + match, "\u00a7" + match.toLowerCase(java.util.Locale.ROOT));
+@@ -328,6 +328,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+                                     name = name.replace("&" + match, "\u00a7" + match.toLowerCase(java.util.Locale.ROOT));
+                                 }
+                                 //name = name.replaceAll("(?i)&([l-or])", "\u00a7$1");
++                                name = name.replaceAll("(?i)&#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])", "\u00a7x\u00a7$1\u00a7$2\u00a7$3\u00a7$4\u00a7$5\u00a7$6"); // KioCG
                              }
-                             //name = name.replaceAll("(?i)&([0-9a-fr])", "\u00a7$1");
-+                            name = name.replaceAll("(?i)&#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])", "\u00a7x\u00a7$1\u00a7$2\u00a7$3\u00a7$4\u00a7$5\u00a7$6"); // KioCG
                          }
-                         if (player.hasPermission("purpur.anvil.format")) {
-                             java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
+                         net.kyori.adventure.text.Component component;

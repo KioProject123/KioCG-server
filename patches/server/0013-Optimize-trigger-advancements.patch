@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sun, 8 Jan 2023 23:44:46 +0800
+Date: Fri, 16 Jun 2023 05:23:19 +0800
 Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index d1921a2be8e96fab7c3e75d0d7f300fea17f2f46..7905e6bf72ac37d2b55f6393af51b7df19209095 100644
+index dd85a4c6b52355497a2f435e9f44720e4d05e8b5..7a4d9f159067b8d993d1545f5dd56ae34dee87a7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -667,6 +667,7 @@ public class ServerPlayer extends Player {
+@@ -708,6 +708,7 @@ public class ServerPlayer extends Player {
  
      @Override
      protected void onInsideBlock(BlockState state) {
@@ -16,16 +16,16 @@ index d1921a2be8e96fab7c3e75d0d7f300fea17f2f46..7905e6bf72ac37d2b55f6393af51b7df
          CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
      }
  
-@@ -691,7 +692,7 @@ public class ServerPlayer extends Player {
+@@ -732,7 +733,7 @@ public class ServerPlayer extends Player {
  
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
 -            this.containerMenu.broadcastChanges();
 +            this.containerMenu.broadcastChanges(20); // KioCG
-             containerUpdateDelay = level.paperConfig().tickRates.containerUpdate;
+             containerUpdateDelay = this.level().paperConfig().tickRates.containerUpdate;
          }
          // Paper end
-@@ -714,6 +715,7 @@ public class ServerPlayer extends Player {
+@@ -755,6 +756,7 @@ public class ServerPlayer extends Player {
              }
          }
  
@@ -33,7 +33,7 @@ index d1921a2be8e96fab7c3e75d0d7f300fea17f2f46..7905e6bf72ac37d2b55f6393af51b7df
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
-@@ -836,7 +838,7 @@ public class ServerPlayer extends Player {
+@@ -877,7 +879,7 @@ public class ServerPlayer extends Player {
                  this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
              }
  
@@ -43,7 +43,7 @@ index d1921a2be8e96fab7c3e75d0d7f300fea17f2f46..7905e6bf72ac37d2b55f6393af51b7df
              }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 20b328704981c088597359fe18c1d67c339c1c0f..ec2c5a10445eb0e580af2890a0560eae3208dbe4 100644
+index 9ca261c9f21279558961649cb4849ac379d67573..16416e487b0f7f279f4d8187dae8a5cf5b2b58f1 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 @@ -233,6 +233,12 @@ public abstract class AbstractContainerMenu {

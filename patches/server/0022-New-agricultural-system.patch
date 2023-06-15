@@ -5,7 +5,7 @@ Subject: [PATCH] New agricultural system
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/CropBlock.java b/src/main/java/net/minecraft/world/level/block/CropBlock.java
-index 3415cbb1def0700b5998a8a1db2e48146f4c2c1e..3f59766696509b893fc5cc643aadd41c35b45755 100644
+index f1016932cba6905c9cd474daeae648b2dcc1f32d..4479c981ef6e3d9187dd1c30027d9f02b4d6305c 100644
 --- a/src/main/java/net/minecraft/world/level/block/CropBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CropBlock.java
 @@ -94,7 +94,17 @@ public class CropBlock extends BushBlock implements BonemealableBlock {
@@ -27,10 +27,10 @@ index 3415cbb1def0700b5998a8a1db2e48146f4c2c1e..3f59766696509b893fc5cc643aadd41c
              }
          }
 diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-index 69cc276fecd4cac51d38bd3cc7de490ad0ae8ace..46a8e1a51b7e537780219bda599619716df20cda 100644
+index 2b1bd583d9c7f049bfb798aa38ef021a881267e9..a6d3e1a34212cc053e14550afb6a7938a9a690df 100644
 --- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-@@ -85,8 +85,8 @@ public class FarmBlock extends Block {
+@@ -86,8 +86,8 @@ public class FarmBlock extends Block {
      public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
          int i = (Integer) state.getValue(FarmBlock.MOISTURE);
  
@@ -39,7 +39,7 @@ index 69cc276fecd4cac51d38bd3cc7de490ad0ae8ace..46a8e1a51b7e537780219bda59961971
 +        if (!world.isRainingAt(pos.above())) { // KioCG - 农业拓展
 +            if (i > 0 && !FarmBlock.isUnderCrops(world, pos)) { // KioCG - 农业拓展
                  org.bukkit.craftbukkit.event.CraftEventFactory.handleMoistureChangeEvent(world, pos, (BlockState) state.setValue(FarmBlock.MOISTURE, i - 1), 2); // CraftBukkit
-             } else if (!FarmBlock.isUnderCrops(world, pos)) {
+             } else if (!FarmBlock.shouldMaintainFarmland(world, pos)) {
                  FarmBlock.turnToDirt((Entity) null, state, world, pos);
 diff --git a/src/main/java/net/minecraft/world/level/block/StemBlock.java b/src/main/java/net/minecraft/world/level/block/StemBlock.java
 index d95d5cd224b229fc34e271b56ca1dc9be13d6268..f59f2acb99879be3ffbda233f03189c896d91788 100644

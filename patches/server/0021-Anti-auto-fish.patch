@@ -5,7 +5,7 @@ Subject: [PATCH] Anti auto fish
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index bcb0f3fd09ed064b64dc6495302b40828d906837..37d35ef16117e05cdab6f0fbc67a937b70924212 100644
+index b8c238287e0639b578170c6fec0d4db5a1a59fe7..572ec93af2b9406fbb4a9724a99a4517b667be62 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 @@ -328,7 +328,10 @@ public class FishingHook extends Projectile {
@@ -19,7 +19,7 @@ index bcb0f3fd09ed064b64dc6495302b40828d906837..37d35ef16117e05cdab6f0fbc67a937b
 +                // KioCG end - 防止自动钓鱼
                  // CraftBukkit start
                  PlayerFishEvent playerFishEvent = new PlayerFishEvent((Player) this.getPlayerOwner().getBukkitEntity(), null, (FishHook) this.getBukkitEntity(), PlayerFishEvent.State.FAILED_ATTEMPT);
-                 this.level.getCraftServer().getPluginManager().callEvent(playerFishEvent);
+                 this.level().getCraftServer().getPluginManager().callEvent(playerFishEvent);
 @@ -379,7 +382,11 @@ public class FishingHook extends Projectile {
                      worldserver.sendParticles(ParticleTypes.BUBBLE, this.getX(), d3, this.getZ(), (int) (1.0F + this.getBbWidth() * 20.0F), (double) this.getBbWidth(), 0.0D, (double) this.getBbWidth(), 0.20000000298023224D);
                      worldserver.sendParticles(ParticleTypes.FISHING, this.getX(), d3, this.getZ(), (int) (1.0F + this.getBbWidth() * 20.0F), (double) this.getBbWidth(), 0.0D, (double) this.getBbWidth(), 0.20000000298023224D);

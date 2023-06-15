@@ -5,10 +5,10 @@ Subject: [PATCH] Shears can have silk touch enchantment
 
 
 diff --git a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
-index 5eb81fcc18b8fdec5a0e4c699525281fa6ad4d78..5031673fc552c91419720cda9271a14136628f20 100644
+index 45f5493eebfecf56b7c0ef4659c078dfc62c0612..512a7a6eddf3b3ac80316427e74f58a9b602c8df 100644
 --- a/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
 +++ b/src/main/java/org/bukkit/enchantments/EnchantmentTarget.java
-@@ -250,6 +250,18 @@ public enum EnchantmentTarget {
+@@ -249,6 +249,18 @@ public enum EnchantmentTarget {
              return WEAPON.includes(item) || item.equals(Material.SHEARS);
          }
          // Purpur end

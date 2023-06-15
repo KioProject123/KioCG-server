@@ -5,12 +5,12 @@ Subject: [PATCH] Endermite merge with purpur block
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-index e6ecc47828fea09c80ed3a4c39f0d85f4d820571..507f58d5c2b6930f2501db0073fd22c3eb7e890a 100644
+index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..12a02fdf47429242cc3a4b77a5070f91cb7b1c43 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 @@ -84,7 +84,7 @@ public class Endermite extends Monster {
          this.goalSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-         this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level));
+         this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
          this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
 -        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 +        this.goalSelector.addGoal(3, new EndermiteMergeWithPurpurBlockGoal(this)); // KioCG

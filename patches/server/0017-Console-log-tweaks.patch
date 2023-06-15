@@ -5,7 +5,7 @@ Subject: [PATCH] Console log tweaks
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
-index 951a7df30bd70bb3051c04f592529d560be6948e..69e0667e9d4f99cd26b54e4898c9ea21a5f51ab1 100644
+index 774fb97912f766589f3548f659618ad554e0503f..0323e182d0c233c2ac907566193df0025e754177 100644
 --- a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
 +++ b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
 @@ -353,7 +353,7 @@ public final class ChatProcessor {
@@ -18,7 +18,7 @@ index 951a7df30bd70bb3051c04f592529d560be6948e..69e0667e9d4f99cd26b54e4898c9ea21
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6ecc75621867390738e804e06ac284524664473d..5ab9a443b65a1f5dc13c22537698b0128e664e1f 100644
+index 12124d6fbc0406bb62bd95a0f7bab68afa43377c..5ceeaa622e7d457f992c304aec21c39362a22e06 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -181,7 +181,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -40,10 +40,10 @@ index 6ecc75621867390738e804e06ac284524664473d..5ab9a443b65a1f5dc13c22537698b012
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ff56981a03b55f9ee1ec8ad36adaf9849b2c914b..b1cd87c85166c6965ccb64c15e5fdf973d8e977e 100644
+index fb3a59fda3d4f5b2bca665b5665df2a355c61a15..bd96ca484dec106211dbd279d3c0b0ebc19f910e 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1435,7 +1435,7 @@ public abstract class PlayerList {
+@@ -1441,7 +1441,7 @@ public abstract class PlayerList {
          // Paper end
          boolean flag = this.verifyChatTrusted(message);
  

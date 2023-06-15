@@ -5,10 +5,10 @@ Subject: [PATCH] Allow some inapplicable enchants
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 09b202aea81de2844cc2ddefed39097eb0b69fbd..6f08e3f2780a16680de3bef70e4fe60c39e60314 100644
+index 4c47f54e8defd9cf16b0136cf66a6d1225579e1c..e2fbbd10521a6c260d6a61d34ca02b802d944ac6 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -226,6 +226,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -229,6 +229,7 @@ public class AnvilMenu extends ItemCombinerMenu {
  
                              i2 = l1 == i2 ? i2 + 1 : Math.max(i2, l1);
                              boolean flag3 = canDoUnsafeEnchants || (org.purpurmc.purpur.PurpurConfig.allowUnsafeEnchants && org.purpurmc.purpur.PurpurConfig.allowInapplicableEnchants) || enchantment.canEnchant(itemstack); // Purpur
