@@ -18,7 +18,7 @@ index f8fd3b320494d1c1e8ee3d170f2feebd152230fa..27bee1aa2bc82516f6504e032ecf5232
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 507b3756238ec3054232b805a9b689be6ea12e25..c7475b254c9d70ce50f2e8f23246b410c3058780 100644
+index 5cd7b4e7065070bf9fcc34b621dba2ccba99a573..ab9d3b9f7e4de62ba48ce089163e806424124ac5 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -85,6 +85,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
@@ -135,7 +135,7 @@ index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 746b71ea96ecc441afd45cc779a1777c15d58ff2..9677865c5ccdb459c0182b2192bd5781d53cafb6 100644
+index 9b506bd2ec6e7fd1893dc7801592f011680028d7..5b1dd76caacea581b010eef9d9ebde953aab2b3f 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -746,7 +746,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
