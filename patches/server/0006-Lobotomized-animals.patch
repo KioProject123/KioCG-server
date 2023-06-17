@@ -6,7 +6,7 @@ Subject: [PATCH] Lobotomized animals
 
 diff --git a/src/main/java/com/kiocg/entity/Lobotomized.java b/src/main/java/com/kiocg/entity/Lobotomized.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..4e8618fbf056fd2e0d20102ca3053451b84bb88c
+index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163dd756a59
 --- /dev/null
 +++ b/src/main/java/com/kiocg/entity/Lobotomized.java
 @@ -0,0 +1,51 @@
@@ -29,14 +29,14 @@ index 0000000000000000000000000000000000000000..4e8618fbf056fd2e0d20102ca3053451
 +    }
 +
 +    public boolean checkLobotomized(LivingEntity livingEntity) {
-+        if (!livingEntity.isOnGround()) {
++        if (!livingEntity.onGround()) {
 +            return this.isLobotomized = false;
 +        }
-+        int interval = livingEntity.getLevel().purpurConfig.villagerLobotomizeCheckInterval;
++        int interval = livingEntity.level().purpurConfig.villagerLobotomizeCheckInterval;
 +        if ((livingEntity.getId() + livingEntity.tickCount) % interval == 0) {
 +            // offset Y for short blocks like dirt_path/farmland
 +            // 扩展到半砖高度 (希望不会出问题!)
-+            this.isLobotomized = !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getBoundingBox().minY + 0.5000001D, livingEntity.getZ()), livingEntity.getLevel(), livingEntity.getBbHeight() <= 1.0F);
++            this.isLobotomized = !canTravelFrom(BlockPos.containing(livingEntity.getX(), livingEntity.getBoundingBox().minY + 0.5000001D, livingEntity.getZ()), livingEntity.level(), livingEntity.getBbHeight() <= 1.0F);
 +        }
 +        return this.isLobotomized;
 +    }

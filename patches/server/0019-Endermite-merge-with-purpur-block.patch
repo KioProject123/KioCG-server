@@ -5,7 +5,7 @@ Subject: [PATCH] Endermite merge with purpur block
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..12a02fdf47429242cc3a4b77a5070f91cb7b1c43 100644
+index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..9ca77ecf46b4eef0a850fd893f94b52d70e92b26 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 @@ -84,7 +84,7 @@ public class Endermite extends Monster {
@@ -43,10 +43,10 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..12a02fdf47429242cc3a4b77a5070f91
 +            } else {
 +                RandomSource randomsource = this.mob.getRandom();
 +
-+                if ((this.mob.level.purpurConfig.silverfishBypassMobGriefing || this.mob.level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) && randomsource.nextInt(reducedTickDelay(10)) == 0) { // Purpur
++                if ((this.mob.level().purpurConfig.silverfishBypassMobGriefing || this.mob.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)) && randomsource.nextInt(reducedTickDelay(10)) == 0) { // Purpur
 +                    this.selectedDirection = net.minecraft.core.Direction.getRandom(randomsource);
 +                    BlockPos blockposition = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.selectedDirection);
-+                    BlockState iblockdata = this.mob.level.getBlockState(blockposition);
++                    BlockState iblockdata = this.mob.level().getBlockState(blockposition);
 +
 +                    if (iblockdata.is(net.minecraft.world.level.block.Blocks.PURPUR_BLOCK)) {
 +                        this.doMerge = true;
@@ -69,7 +69,7 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..12a02fdf47429242cc3a4b77a5070f91
 +            if (!this.doMerge) {
 +                super.start();
 +            } else {
-+                Level world = this.mob.level;
++                Level world = this.mob.level();
 +                BlockPos blockposition = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.selectedDirection);
 +                BlockState iblockdata = world.getBlockState(blockposition);
 +

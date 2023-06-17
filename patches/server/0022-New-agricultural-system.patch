@@ -27,7 +27,7 @@ index f1016932cba6905c9cd474daeae648b2dcc1f32d..4479c981ef6e3d9187dd1c30027d9f02
              }
          }
 diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-index 2b1bd583d9c7f049bfb798aa38ef021a881267e9..a6d3e1a34212cc053e14550afb6a7938a9a690df 100644
+index 2b1bd583d9c7f049bfb798aa38ef021a881267e9..506712a3e229c1a2d6fb4cc7c1de1994b260fd81 100644
 --- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 @@ -86,8 +86,8 @@ public class FarmBlock extends Block {
@@ -37,7 +37,7 @@ index 2b1bd583d9c7f049bfb798aa38ef021a881267e9..a6d3e1a34212cc053e14550afb6a7938
 -        if (!FarmBlock.isNearWater(world, pos) && !world.isRainingAt(pos.above())) {
 -            if (i > 0) {
 +        if (!world.isRainingAt(pos.above())) { // KioCG - 农业拓展
-+            if (i > 0 && !FarmBlock.isUnderCrops(world, pos)) { // KioCG - 农业拓展
++            if (i > 0 && !FarmBlock.shouldMaintainFarmland(world, pos)) { // KioCG - 农业拓展
                  org.bukkit.craftbukkit.event.CraftEventFactory.handleMoistureChangeEvent(world, pos, (BlockState) state.setValue(FarmBlock.MOISTURE, i - 1), 2); // CraftBukkit
              } else if (!FarmBlock.shouldMaintainFarmland(world, pos)) {
                  FarmBlock.turnToDirt((Entity) null, state, world, pos);

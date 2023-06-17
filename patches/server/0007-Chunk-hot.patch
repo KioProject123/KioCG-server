@@ -98,7 +98,7 @@ index 0000000000000000000000000000000000000000..80ccbe11768b3da176987c31be13bc35
 +}
 diff --git a/src/main/java/com/kiocg/command/ChunkHotCommand.java b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..84236b4d05dbfc42401f1d83f43806d8998f76ee
+index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8560ceaa6
 --- /dev/null
 +++ b/src/main/java/com/kiocg/command/ChunkHotCommand.java
 @@ -0,0 +1,31 @@
@@ -127,7 +127,7 @@ index 0000000000000000000000000000000000000000..84236b4d05dbfc42401f1d83f43806d8
 +
 +    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
 +        for (ServerPlayer player : targets) {
-+            String output = String.format("<green>[<aqua>豆渣子<green>] <gold>区块%s的热度: %s", player.chunkPosition(), player.getLevel().getChunkAt(player.blockPosition()).getChunkHot().getAverage());
++            String output = String.format("<green>[<aqua>豆渣子<green>] <gold>区块%s的热度: %s", player.chunkPosition(), player.level().getChunkAt(player.blockPosition()).getChunkHot().getAverage());
 +            sender.sendSuccess(output, false);
 +        }
 +        return targets.size();
@@ -254,7 +254,7 @@ index a2444baf2212624a0468f208616f482d6747b754..899576a768f0520527e965efdd73de66
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 43e4d16af42ca5b0b0389b24f8699d22082eabe7..dd85a4c6b52355497a2f435e9f44720e4d05e8b5 100644
+index 43e4d16af42ca5b0b0389b24f8699d22082eabe7..bf148fb49e3b5b75ad9c63df69dfe1c973463695 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -272,7 +272,7 @@ index 43e4d16af42ca5b0b0389b24f8699d22082eabe7..dd85a4c6b52355497a2f435e9f44720e
 +
 +        // KioCG start
 +        if (this.server.getTickCount() % 20 == 1) {
-+            this.nearbyChunkHot = ((ServerLevel) this.level).chunkHotStarted() ? this.refreshNearbyChunkHot() : 0L;
++            this.nearbyChunkHot = ((ServerLevel) this.level()).chunkHotStarted() ? this.refreshNearbyChunkHot() : 0L;
 +
 +            if (this.nearbyChunkHot > 300000L) {
 +                if (this.isAfk) {
@@ -291,7 +291,7 @@ index 43e4d16af42ca5b0b0389b24f8699d22082eabe7..dd85a4c6b52355497a2f435e9f44720e
 +    }
 +
 +    private long refreshNearbyChunkHot() {
-+        net.minecraft.world.level.chunk.LevelChunk chunk = this.getLevel().getChunkAt(this.blockPosition());
++        net.minecraft.world.level.chunk.LevelChunk chunk = this.level().getChunkAt(this.blockPosition());
 +        int x = chunk.locX;
 +        int z = chunk.locZ;
 +        net.minecraft.world.level.Level world = chunk.getLevel();
