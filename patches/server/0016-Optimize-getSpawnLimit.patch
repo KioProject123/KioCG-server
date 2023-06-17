@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize getSpawnLimit
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3f22bdb85465f7b0f0082715fdd524f6905a0344..a7b70e3225238c1266eeec257a39f3102c472dd2 100644
+index 7a388f0e57bc05634be64b16fa66acdb416ac849..c11a7b88569b27616f3c05efc55c43d4384c4c0b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -284,7 +284,7 @@ public final class CraftServer implements Server {
