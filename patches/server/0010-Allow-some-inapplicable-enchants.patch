@@ -5,7 +5,7 @@ Subject: [PATCH] Allow some inapplicable enchants
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 4c47f54e8defd9cf16b0136cf66a6d1225579e1c..e2fbbd10521a6c260d6a61d34ca02b802d944ac6 100644
+index 858c6b427fb836552637b9b6d88ac3b45e3d6dad..1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -229,6 +229,7 @@ public class AnvilMenu extends ItemCombinerMenu {

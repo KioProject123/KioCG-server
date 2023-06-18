@@ -88,14 +88,14 @@ index 7cd368b252fa6ad6956685f68c730c4a2273c10e..e7345c94549e801484e7da7fab8289b5
              this.forceDrops = false; // CraftBukkit
          }
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index cb4a1cd39f12d90d30dd95efa2de58f57d9c6ee0..4c47f54e8defd9cf16b0136cf66a6d1225579e1c 100644
+index cb4a1cd39f12d90d30dd95efa2de58f57d9c6ee0..858c6b427fb836552637b9b6d88ac3b45e3d6dad 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -328,6 +328,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -320,6 +320,7 @@ public class AnvilMenu extends ItemCombinerMenu {
                                      name = name.replace("&" + match, "\u00a7" + match.toLowerCase(java.util.Locale.ROOT));
                                  }
-                                 //name = name.replaceAll("(?i)&([l-or])", "\u00a7$1");
+                                 //name = name.replaceAll("(?i)&([0-9a-fr])", "\u00a7$1");
 +                                name = name.replaceAll("(?i)&#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])", "\u00a7x\u00a7$1\u00a7$2\u00a7$3\u00a7$4\u00a7$5\u00a7$6"); // KioCG
                              }
-                         }
-                         net.kyori.adventure.text.Component component;
+                             if (player.hasPermission("purpur.anvil.format")) {
+                                 java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
