@@ -40,10 +40,10 @@ index 12124d6fbc0406bb62bd95a0f7bab68afa43377c..5ceeaa622e7d457f992c304aec21c393
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index fb3a59fda3d4f5b2bca665b5665df2a355c61a15..bd96ca484dec106211dbd279d3c0b0ebc19f910e 100644
+index ebcdf6aee72b817b9bbba8f8d580eae1876fc6e5..ed6f5ee5a7963e3fd402dd6d2d3a54caf350511b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1441,7 +1441,7 @@ public abstract class PlayerList {
+@@ -1442,7 +1442,7 @@ public abstract class PlayerList {
          // Paper end
          boolean flag = this.verifyChatTrusted(message);
  

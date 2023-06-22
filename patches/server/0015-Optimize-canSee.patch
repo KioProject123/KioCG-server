@@ -17,10 +17,10 @@ index 85c28c0fd8bcbcf6ed6e4205fd217f251c55c92b..556a1c3bb82e28823345eaa2649d10ee
                      flag = false;
                  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 37739d0a58fa60f79462c577531d3e4b5e47b2ba..b1034979d4252577f83be91cb7b9932dfbbb45d8 100644
+index edd9fb7154d1082b3fe6d7b6e470f4f4c5459e4b..0ff2ffcd1b360d7a63df13a491049336038e875a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1001,6 +1001,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1016,6 +1016,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
  
      @Override
      public void setVisibleByDefault(boolean visible) {

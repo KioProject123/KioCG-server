@@ -5,7 +5,7 @@ Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index bd96ca484dec106211dbd279d3c0b0ebc19f910e..6128b766d6da114503d23e7fbac35d2671b46e86 100644
+index ed6f5ee5a7963e3fd402dd6d2d3a54caf350511b..33ab32f9d3476cdbfa1360597fbdfbe4014ae78d 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -282,7 +282,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index bd96ca484dec106211dbd279d3c0b0ebc19f910e..6128b766d6da114503d23e7fbac35d26
  
          // Spigot - view distance
          playerconnection.send(new ClientboundLoginPacket(player.getId(), worlddata.isHardcore(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), this.server.levelKeys(), this.synchronizedRegistries, worldserver1.dimensionTypeId(), worldserver1.dimension(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), this.getMaxPlayers(), worldserver1.getWorld().getSendViewDistance(), worldserver1.getWorld().getSimulationDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat(), player.getLastDeathLocation(), player.getPortalCooldown())); // Paper - replace old player chunk management
-@@ -1306,7 +1306,7 @@ public abstract class PlayerList {
+@@ -1307,7 +1307,7 @@ public abstract class PlayerList {
          player.getEntityData().refresh(player); // CraftBukkkit - SPIGOT-7218: sync metadata
          player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules
