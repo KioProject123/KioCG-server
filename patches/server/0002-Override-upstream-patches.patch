@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46c
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e0e133ab39548b8e671441e3383a6f4df6f6997e..43e4d16af42ca5b0b0389b24f8699d22082eabe7 100644
+index c9a8556d0aa832f05068c8e14343450d3be159bd..1025c33cf964121ced9dda6408ba37c71553ba06 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2148,7 +2148,7 @@ public class ServerPlayer extends Player {
+@@ -2150,7 +2150,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();

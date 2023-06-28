@@ -254,7 +254,7 @@ index a2444baf2212624a0468f208616f482d6747b754..899576a768f0520527e965efdd73de66
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 43e4d16af42ca5b0b0389b24f8699d22082eabe7..bf148fb49e3b5b75ad9c63df69dfe1c973463695 100644
+index 1025c33cf964121ced9dda6408ba37c71553ba06..b7b1c031029ec06ccf1a061b3c873f4d5a29971a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -326,7 +326,7 @@ index 91e0328f847a2464a1cf65134520244a4cec705f..ef705b1028c9c9ec13f0308d04f50aa0
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 32ec30d916380d2f9cfde35a2406cc3bb4da292d..2e06fdae89709ad47055bd0cb81a04a507fa8a70 100644
+index 4a8b5139cd13639dca0cc6b341ce43203735fcc7..9ae1d61f06e6fefd01278ab0c9d23b5f460577bf 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -5001,4 +5001,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
