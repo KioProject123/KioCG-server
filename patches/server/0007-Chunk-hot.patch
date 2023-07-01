@@ -146,7 +146,7 @@ index 5c0085589b08f199c75ceeab8d0cf25e970a0533..414942961a80ec85b06c9c452703db0c
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1143e2e76ef896ecf54fa0296c66815b6f856740..81bf26151ccc6bd27355ab1abf105110fbcffe6a 100644
+index 6afdf37406d7dae04a7fec94e0c39d5136521730..a2c793182bddb1290285bf04f20adbacde9132bd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1418,6 +1418,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -326,10 +326,10 @@ index 91e0328f847a2464a1cf65134520244a4cec705f..ef705b1028c9c9ec13f0308d04f50aa0
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4a8b5139cd13639dca0cc6b341ce43203735fcc7..9ae1d61f06e6fefd01278ab0c9d23b5f460577bf 100644
+index 2c2d3be539a21fa1f60349810df89b2a677aaa34..916b40214e8a87797a7c4a3280f851e81b85ed43 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5001,4 +5001,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -5002,4 +5002,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
