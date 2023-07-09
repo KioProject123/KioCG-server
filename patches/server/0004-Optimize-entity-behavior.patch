@@ -85,7 +85,7 @@ index 3347b39fa1bc3308aa3b70b4169523885b91a047..f2352275f26c688cc4cd68d1ef722479
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index 8526556c42a411414b322553c295fb430ceffa71..e5dc7152f89c12b1932ebf9ecefbe4f82fcfde8b 100644
+index 0e20d9ed5b25f5aaab68dc3a4fa4e63ced280969..6c3c29ee410ded212ab7d3b848f43e2d815b5700 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 @@ -237,9 +237,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
@@ -115,10 +115,10 @@ index 8526556c42a411414b322553c295fb430ceffa71..e5dc7152f89c12b1932ebf9ecefbe4f8
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index e7558511e0690d80ff444e71b7524d564d68842b..4f27860d1c1ab13b93b7eb4d70f36d70ed80d25c 100644
+index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace3ea9e742 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -105,6 +105,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -106,6 +106,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
  
          @Override
          public boolean canUse() {
@@ -126,7 +126,7 @@ index e7558511e0690d80ff444e71b7524d564d68842b..4f27860d1c1ab13b93b7eb4d70f36d70
              return super.canUse() && !this.wolf.isRabid() && this.toAvoid != null && this.toAvoid.isRabid(); // wolves which are not rabid run away from rabid wolves
          }
  
-@@ -231,7 +232,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -232,7 +233,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
          this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
          this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
@@ -142,7 +142,7 @@ index e7558511e0690d80ff444e71b7524d564d68842b..4f27860d1c1ab13b93b7eb4d70f36d70
          this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
          this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-@@ -239,10 +247,24 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -240,10 +248,24 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
          this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
          this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers());
@@ -169,7 +169,7 @@ index e7558511e0690d80ff444e71b7524d564d68842b..4f27860d1c1ab13b93b7eb4d70f36d70
          this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
      }
  
-@@ -733,7 +755,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -720,7 +742,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
  
          @Override
          public boolean canUse() {

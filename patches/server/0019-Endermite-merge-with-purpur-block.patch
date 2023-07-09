@@ -5,7 +5,7 @@ Subject: [PATCH] Endermite merge with purpur block
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..9ca77ecf46b4eef0a850fd893f94b52d70e92b26 100644
+index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..ff985655e1c34ae7cb7d3d2514269c951530e169 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 @@ -84,7 +84,7 @@ public class Endermite extends Monster {
@@ -75,7 +75,7 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..9ca77ecf46b4eef0a850fd893f94b52d
 +
 +                if (iblockdata.is(net.minecraft.world.level.block.Blocks.PURPUR_BLOCK)) {
 +                    // CraftBukkit start
-+                    if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(this.mob, blockposition, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState()).isCancelled()) {
++                    if (!org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(this.mob, blockposition, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState())) {
 +                        return;
 +                    }
 +                    // CraftBukkit end

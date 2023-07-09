@@ -310,10 +310,10 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..b7b1c031029ec06ccf1a061b3c873f4d
  
      public void doTick() {
 diff --git a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
-index 91e0328f847a2464a1cf65134520244a4cec705f..ef705b1028c9c9ec13f0308d04f50aa02181e754 100644
+index 8e4cb2fa787feca47dd4ba2fbb44e6193bac2431..9767474ba334b49e06c6705f252e998fb5b86558 100644
 --- a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
 +++ b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
-@@ -513,4 +513,11 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
+@@ -496,4 +496,11 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
      public EntityDimensions getDimensions(Pose pose) {
          return EntityDimensions.scalable(this.getRadius() * 2.0F, 0.5F);
      }
@@ -326,10 +326,10 @@ index 91e0328f847a2464a1cf65134520244a4cec705f..ef705b1028c9c9ec13f0308d04f50aa0
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2c2d3be539a21fa1f60349810df89b2a677aaa34..916b40214e8a87797a7c4a3280f851e81b85ed43 100644
+index 8fe202c4b49324426568c18baf1461cf4fcd1cbc..1d8cc2ba81779002719a38cb95335196edd1b8ce 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5002,4 +5002,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4985,4 +4985,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
@@ -337,7 +337,7 @@ index 2c2d3be539a21fa1f60349810df89b2a677aaa34..916b40214e8a87797a7c4a3280f851e8
 +    public boolean shouldTickHot() { return this.tickCount > 20*10 && this.isAlive(); } // KioCG
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LightningBolt.java b/src/main/java/net/minecraft/world/entity/LightningBolt.java
-index cdf1899f1e9978fcf58f05b1efb3165e55445f93..e0897abc64b005c7fce760f7c77fd5721ee2d661 100644
+index a01a8ba27534d2b0d544423bc2c48fd29d0a6d64..4cc19dea0cf53d668f78eb418e1e847b8e444d78 100644
 --- a/src/main/java/net/minecraft/world/entity/LightningBolt.java
 +++ b/src/main/java/net/minecraft/world/entity/LightningBolt.java
 @@ -286,4 +286,11 @@ public class LightningBolt extends Entity {

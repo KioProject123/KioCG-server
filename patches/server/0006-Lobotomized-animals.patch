@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Jun 2023 05:20:21 +0800
+Date: Sun, 9 Jul 2023 19:03:15 +0800
 Subject: [PATCH] Lobotomized animals
 
 
@@ -62,10 +62,10 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 5ec52bd517e30b5c461e0ff54add66d59580ef80..5001d886783c36e668b3de768223bbc7e573eeec 100644
+index 9204b625c5337815fb62281845a56db07fddb0d0..bf3c30739ad35cd44c82585dd89fef072b7a324d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -306,6 +306,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -127,10 +127,10 @@ index dc1fb94161b32a103337dccdd89977086a106a46..c8fc20fcdf7cbd0936d5177b60a2a8d3
              return false;
          } else if (this.mob.distanceToSqr(this.lookAt) > (double)(this.lookDistance * this.lookDistance)) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PanicGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/PanicGoal.java
-index 744b8246a79e0119734c44ce485536ddac8b190c..b162b5ecaf3be0316970fb9625447114f2a1452f 100644
+index 3263c816e82285ff943270be21049432ac7f55e9..71cfe89bebf60a904607a21fbc0048e7403b2a2e 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/PanicGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/PanicGoal.java
-@@ -29,6 +29,7 @@ public class PanicGoal extends Goal {
+@@ -27,6 +27,7 @@ public class PanicGoal extends Goal {
  
      @Override
      public boolean canUse() {
@@ -138,14 +138,14 @@ index 744b8246a79e0119734c44ce485536ddac8b190c..b162b5ecaf3be0316970fb9625447114
          if (!this.shouldPanic()) {
              return false;
          } else {
-@@ -81,6 +82,7 @@ public class PanicGoal extends Goal {
+@@ -77,6 +78,7 @@ public class PanicGoal extends Goal {
  
      @Override
      public boolean canContinueToUse() {
 +        if (this.mob.isLobotomized()) return false; // KioCG
-         // CraftBukkit start - introduce a temporary timeout hack until this is fixed properly
-         if ((this.mob.tickCount - this.mob.lastHurtByMobTimestamp) > 100) {
-             this.mob.setLastHurtByMob((LivingEntity) null);
+         return !this.mob.getNavigation().isDone();
+     }
+ 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 index d4389f006c01e9ef1bf9c6b0a6156152ef80828a..88704e619ef0b8696d2fe9e99a68e20d52e661c9 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
@@ -207,10 +207,10 @@ index fdb08ecc19bc4a1bc93cf6b18adcea2bc5573965..0329a6a26977eb47f8124e957ecf94ec
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 15feb1baed21b2ed3fb90d68aa9b2b97aa664b15..7a2ee84a33a82393b8e59c41a1e700278adb6061 100644
+index 8773b1072016a3bbf025959e9ab827704ec17fc6..7a603b141f51d6dbf77dbeba59312e195c3a09fc 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-@@ -40,6 +40,7 @@ public abstract class Animal extends AgeableMob {
+@@ -42,6 +42,7 @@ public abstract class Animal extends AgeableMob {
      @Nullable
      public UUID loveCause;
      public ItemStack breedItem; // CraftBukkit - Add breedItem variable
@@ -218,7 +218,7 @@ index 15feb1baed21b2ed3fb90d68aa9b2b97aa664b15..7a2ee84a33a82393b8e59c41a1e70027
      public abstract int getPurpurBreedTime(); // Purpur
  
      protected Animal(EntityType<? extends Animal> type, Level world) {
-@@ -75,8 +76,31 @@ public abstract class Animal extends AgeableMob {
+@@ -77,8 +78,31 @@ public abstract class Animal extends AgeableMob {
              }
          }
  
@@ -247,10 +247,10 @@ index 15feb1baed21b2ed3fb90d68aa9b2b97aa664b15..7a2ee84a33a82393b8e59c41a1e70027
 +    }
 +    // KioCG end
 +
-     /* CraftBukkit start
-     // Function disabled as it has no special function anymore after
-     // setSitting is disabled.
-@@ -103,6 +127,7 @@ public abstract class Animal extends AgeableMob {
+     @Override
+     public boolean hurt(DamageSource source, float amount) {
+         if (this.isInvulnerableTo(source)) {
+@@ -106,6 +130,7 @@ public abstract class Animal extends AgeableMob {
          if (this.loveCause != null) {
              nbt.putUUID("LoveCause", this.loveCause);
          }
@@ -258,7 +258,7 @@ index 15feb1baed21b2ed3fb90d68aa9b2b97aa664b15..7a2ee84a33a82393b8e59c41a1e70027
  
      }
  
-@@ -116,6 +141,13 @@ public abstract class Animal extends AgeableMob {
+@@ -119,6 +144,13 @@ public abstract class Animal extends AgeableMob {
          super.readAdditionalSaveData(nbt);
          this.inLove = nbt.getInt("InLove");
          this.loveCause = nbt.hasUUID("LoveCause") ? nbt.getUUID("LoveCause") : null;
@@ -273,10 +273,10 @@ index 15feb1baed21b2ed3fb90d68aa9b2b97aa664b15..7a2ee84a33a82393b8e59c41a1e70027
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 2677e7899aa98fc04070f5bbbc40da6117d89efa..4db8caa7b66db6110d66437a9a8290735df6d0ba 100644
+index 6c04c8e7776b2830ac368229da834532e8ce163e..e832ffe2878cc0c2efd04ad798f09a81e4f370c6 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-@@ -1107,6 +1107,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1111,6 +1111,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -284,7 +284,7 @@ index 2677e7899aa98fc04070f5bbbc40da6117d89efa..4db8caa7b66db6110d66437a9a829073
              return Bee.this.hivePos != null && !Bee.this.hasRestriction() && Bee.this.wantsToEnterHive() && !this.hasReachedTarget(Bee.this.hivePos) && Bee.this.level().getBlockState(Bee.this.hivePos).is(BlockTags.BEEHIVES);
          }
  
-@@ -1223,6 +1224,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1227,6 +1228,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -292,7 +292,7 @@ index 2677e7899aa98fc04070f5bbbc40da6117d89efa..4db8caa7b66db6110d66437a9a829073
              return Bee.this.savedFlowerPos != null && !Bee.this.hasRestriction() && this.wantsToGoToKnownFlower() && Bee.this.isFlowerValid(Bee.this.savedFlowerPos) && !Bee.this.closerThan(Bee.this.savedFlowerPos, 2);
          }
  
-@@ -1275,6 +1277,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1279,6 +1281,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -300,7 +300,7 @@ index 2677e7899aa98fc04070f5bbbc40da6117d89efa..4db8caa7b66db6110d66437a9a829073
              return Bee.this.getCropsGrownSincePollination() >= 10 ? false : (Bee.this.random.nextFloat() < 0.3F ? false : Bee.this.hasNectar() && Bee.this.isHiveValid());
          }
  
-@@ -1339,6 +1342,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1343,6 +1346,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canUse() {
