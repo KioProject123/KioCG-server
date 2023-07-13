@@ -1,0 +1,290 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 14 Jul 2023 01:08:38 +0800
+Subject: [PATCH] Vanilla recipe excludes model items
+
+
+diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+index 1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258..c247fa10d59315fc01bff9fbc5217a663786bf7a 100644
+--- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
+@@ -177,7 +177,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+ 
+                 if (itemstack1.isDamageableItem() && itemstack1.getItem().isValidRepairItem(itemstack, itemstack2)) {
+                     k = Math.min(itemstack1.getDamageValue(), itemstack1.getMaxDamage() / 4);
+-                    if (k <= 0) {
++                    if (k <= 0 || itemstack2.hasCustomModelData()) { // KioCG
+                         org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
+                         this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
+                         return;
+diff --git a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
+index fb1d71143a0344432af9dc5c3085e217a2778f10..95669cbda0a1571a82ad560e600d92033c19fc18 100644
+--- a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
+@@ -176,6 +176,7 @@ public class BeaconMenu extends AbstractContainerMenu {
+         if (this.paymentSlot.hasItem()) {
+             // Paper start
+             io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent event = new io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent((org.bukkit.entity.Player) this.player.player.getBukkitEntity(), convert(primary), convert(secondary), this.access.getLocation().getBlock());
++            if (this.paymentSlot.getItem().hasCustomModelData()) event.setCancelled(true); // KioCG
+             if (event.callEvent()) {
+             this.beaconData.set(1, event.getPrimary() == null ? -1 : event.getPrimary().getId());
+             this.beaconData.set(2, event.getSecondary() == null ? -1 : event.getSecondary().getId());
+diff --git a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
+index 819187dbcf468d9278ce33bd97688476aab53f8e..89916ce77557a190ce5134333ddf1ec4a8b1011c 100644
+--- a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
+@@ -154,6 +154,13 @@ public class CartographyTableMenu extends AbstractContainerMenu {
+     }
+ 
+     private void setupResultSlot(ItemStack map, ItemStack item, ItemStack oldResult) {
++        // KioCG start
++        if (map.hasCustomModelData() || item.hasCustomModelData()) {
++            this.resultContainer.removeItemNoUpdate(2);
++            this.broadcastChanges();
++            return;
++        }
++        // KioCG end
+         this.access.execute((world, blockposition) -> {
+             MapItemSavedData worldmap = MapItem.getSavedData(map, world);
+ 
+diff --git a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
+index 389b8cf74066f9cec90b54d86f5ff7661964b585..15b3ce2ea876e7edd44a1d97c635690f937741f7 100644
+--- a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
+@@ -85,6 +85,13 @@ public class CraftingMenu extends RecipeBookMenu<CraftingContainer> {
+ 
+                     if (itemstack1.isItemEnabled(world.enabledFeatures())) {
+                         itemstack = itemstack1;
++                        // KioCG start
++                        if (recipecrafting.getId().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {
++                            if (craftingInventory.hasAnyMatching(itemStack -> !itemStack.isEmpty() && itemStack.hasCustomModelData())) {
++                                itemstack = ItemStack.EMPTY;
++                            }
++                        }
++                        // KioCG end
+                     }
+                 }
+             }
+diff --git a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
+index 1711406996ec4a9cb7b1838bd2446e5cf802e043..349db48afea7c1d4e5906900c4853048a21c948e 100644
+--- a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
+@@ -210,6 +210,12 @@ public class EnchantmentMenu extends AbstractContainerMenu {
+ 
+                     PrepareItemEnchantEvent event = new PrepareItemEnchantEvent(this.player, this.getBukkitView(), this.access.getLocation().getBlock(), item, offers, i);
+                     event.setCancelled(!itemstack.isEnchantable());
++                    // KioCG start
++                    ItemStack itemstack1 = inventory.getItem(1);
++                    if (!itemstack1.isEmpty() && itemstack1.hasCustomModelData()) {
++                        event.setCancelled(true); // KioCG
++                    }
++                    // KioCG end
+                     world.getCraftServer().getPluginManager().callEvent(event);
+ 
+                     if (event.isCancelled()) {
+diff --git a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
+index 23a8522b80475ad29ffb4afd2f4836acda2538e3..218e9db8e3bcdae75a82b8521137c83edfeda614 100644
+--- a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
+@@ -213,6 +213,13 @@ public class GrindstoneMenu extends AbstractContainerMenu {
+ 
+                 i = flag3 ? itemstack.getDamageValue() : itemstack1.getDamageValue();
+                 itemstack2 = flag3 ? itemstack : itemstack1;
++                // KioCG start
++                if (itemstack2.hasCustomModelData()) {
++                    org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareGrindstoneEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
++                    this.broadcastChanges();
++                    return;
++                }
++                // KioCG end
+             }
+             org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareGrindstoneEvent(this.getBukkitView(), this.removeNonCurses(itemstack2, i, b0)); // CraftBukkit
+         } else {
+diff --git a/src/main/java/net/minecraft/world/inventory/LoomMenu.java b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
+index 0a87996a6ab5b4d67c2aa10daadf6174bc647a44..b1f9a3e1870f65414caf8d9a129fca23c323ae90 100644
+--- a/src/main/java/net/minecraft/world/inventory/LoomMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
+@@ -204,6 +204,7 @@ public class LoomMenu extends AbstractContainerMenu {
+             // Paper end
+             return true;
+         } else {
++            ((Player) player.getBukkitEntity()).updateInventory(); // KioCG - 防止客户端不同步
+             return false;
+         }
+     }
+@@ -214,7 +215,7 @@ public class LoomMenu extends AbstractContainerMenu {
+         } else {
+             Item item = stack.getItem();
+ 
+-            if (item instanceof BannerPatternItem) {
++            if (item instanceof BannerPatternItem && !stack.hasCustomModelData()) { // KioCG
+                 BannerPatternItem itembannerpattern = (BannerPatternItem) item;
+ 
+                 return (List) BuiltInRegistries.BANNER_PATTERN.getTag(itembannerpattern.getBannerPattern()).map(ImmutableList::copyOf).orElse(ImmutableList.of());
+@@ -363,6 +364,12 @@ public class LoomMenu extends AbstractContainerMenu {
+         ItemStack itemstack = this.bannerSlot.getItem();
+         ItemStack itemstack1 = this.dyeSlot.getItem();
+         ItemStack itemstack2 = ItemStack.EMPTY;
++        // KioCG start
++        if (itemstack.hasCustomModelData() || itemstack1.hasCustomModelData()) {
++            this.resultSlot.set(ItemStack.EMPTY);
++            return;
++        }
++        // KioCG end
+ 
+         if (!itemstack.isEmpty() && !itemstack1.isEmpty()) {
+             itemstack2 = itemstack.copyWithCount(1);
+diff --git a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
+index 947f7f7e87534872660442947bb24ef5a806a972..edad7ecd65a896f98a12c6434c508fc37cff7f56 100644
+--- a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
+@@ -108,6 +108,13 @@ public class SmithingMenu extends ItemCombinerMenu {
+             if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
+                 this.selectedRecipe = smithingrecipe;
+                 this.resultSlots.setRecipeUsed(smithingrecipe);
++                // KioCG start
++                if (smithingrecipe.getId().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {
++                    if (this.inputSlots.hasAnyMatching(itemStack -> !itemStack.isEmpty() && itemStack.hasCustomModelData())) {
++                        itemstack = ItemStack.EMPTY;
++                    }
++                }
++                // KioCG end
+                 // CraftBukkit start
+                 org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareSmithingEvent(this.getBukkitView(), itemstack);
+                 // CraftBukkit end
+diff --git a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
+index 1b1f814770d1a906ed880df578845be2e9a14f46..684f5af83d3fba73f40b0c7a9617da6be358f291 100644
+--- a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
+@@ -166,6 +166,13 @@ public class StonecutterMenu extends AbstractContainerMenu {
+             this.selectedRecipeIndex.checkAndClearUpdateFlag(); // mark as changed
+             if (this.isValidRecipeIndex(id)) {
+                 io.papermc.paper.event.player.PlayerStonecutterRecipeSelectEvent event = new io.papermc.paper.event.player.PlayerStonecutterRecipeSelectEvent((Player) player.getBukkitEntity(), (org.bukkit.inventory.StonecutterInventory) getBukkitView().getTopInventory(), (org.bukkit.inventory.StonecuttingRecipe) this.getRecipes().get(id).toBukkitRecipe());
++                // KioCG start
++                if (event.getStonecuttingRecipe().getKey().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {
++                    if (this.inputSlot.hasItem() && this.inputSlot.getItem().hasCustomModelData()) {
++                        event.setCancelled(true);
++                    }
++                }
++                // KioCG end
+                 if (!event.callEvent()) {
+                     ((Player) player.getBukkitEntity()).updateInventory();
+                     return false;
+@@ -197,7 +204,7 @@ public class StonecutterMenu extends AbstractContainerMenu {
+     public void slotsChanged(Container inventory) {
+         ItemStack itemstack = this.inputSlot.getItem();
+ 
+-        if (!itemstack.is(this.input.getItem())) {
++        if (!ItemStack.isSameItemSameTags(itemstack, this.input)) { // KioCG - 更准确的判断
+             this.input = itemstack.copy();
+             this.setupRecipeList(inventory, itemstack);
+         }
+diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
+index 9e78c913da090d351d3dbaff3eff7d19fb18c8e4..363b638c2c7842fe0083c78c7a5c45881ae02607 100644
+--- a/src/main/java/net/minecraft/world/item/ItemStack.java
++++ b/src/main/java/net/minecraft/world/item/ItemStack.java
+@@ -880,6 +880,12 @@ public final class ItemStack {
+         return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
+     }
+ 
++    // KioCG start
++    public boolean hasCustomModelData() {
++        return this.tag != null && this.tag.contains("CustomModelData");
++    }
++    // KioCG end
++
+     // Paper start - (this is just a good no conflict location)
+     public org.bukkit.inventory.ItemStack asBukkitMirror() {
+         return CraftItemStack.asCraftMirror(this);
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
+index 00c0051120aaa73b779855ab36f4d1dae1e64e3a..6cb35472deeb16e8f23acfa07818a43bfbb0793c 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
+@@ -382,6 +382,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+                 CraftItemStack fuel = CraftItemStack.asCraftMirror(itemstack);
+ 
+                 FurnaceBurnEvent furnaceBurnEvent = new FurnaceBurnEvent(CraftBlock.at(world, pos), fuel, blockEntity.getBurnDuration(itemstack));
++                if (itemstack.hasCustomModelData()) furnaceBurnEvent.setCancelled(true); // KioCG
+                 world.getCraftServer().getPluginManager().callEvent(furnaceBurnEvent);
+ 
+                 if (furnaceBurnEvent.isCancelled()) {
+@@ -450,6 +451,13 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+ 
+     private static boolean canBurn(RegistryAccess registryManager, @Nullable Recipe<?> recipe, NonNullList<ItemStack> slots, int count) {
+         if (!((ItemStack) slots.get(0)).isEmpty() && recipe != null) {
++            // KioCG start
++            if (recipe.getId().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {
++                if (slots.get(0).hasCustomModelData()) {
++                    return false;
++                }
++            }
++            // KioCG end
+             ItemStack itemstack = recipe.getResultItem(registryManager);
+ 
+             if (itemstack.isEmpty()) {
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
+index 7af18eac34f3eb424180f8603b4ccc824b0b3480..0f34717a30774cee69f9c598501e8b6d94805217 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
+@@ -156,6 +156,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+         if (blockEntity.fuel <= 0 && itemstack.is(Items.BLAZE_POWDER)) {
+             // CraftBukkit start
+             BrewingStandFuelEvent event = new BrewingStandFuelEvent(CraftBlock.at(world, pos), CraftItemStack.asCraftMirror(itemstack), 20);
++            if (itemstack.hasCustomModelData()) event.setCancelled(true); // KioCG
+             world.getCraftServer().getPluginManager().callEvent(event);
+ 
+             if (event.isCancelled()) {
+@@ -241,10 +242,12 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+         } else if (!PotionBrewing.isIngredient(itemstack)) {
+             return false;
+         } else {
++            if (!PotionBrewing.isCustomIngredient(itemstack) && itemstack.hasCustomModelData()) return false; // KioCG
+             for (int i = 0; i < 3; ++i) {
+                 ItemStack itemstack1 = (ItemStack) slots.get(i);
+ 
+                 if (!itemstack1.isEmpty() && PotionBrewing.hasMix(itemstack1, itemstack)) {
++                    if (!PotionBrewing.isCustomInput(itemstack1) && itemstack1.hasCustomModelData()) break; // KioCG
+                     return true;
+                 }
+             }
+@@ -260,7 +263,11 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
+         List<org.bukkit.inventory.ItemStack> brewResults = new ArrayList<>(3);
+ 
+         for (int i = 0; i < 3; ++i) {
+-            brewResults.add(i, CraftItemStack.asCraftMirror(PotionBrewing.mix(itemstack, (ItemStack) nonnulllist.get(i))));
++            // KioCG start
++            ItemStack itemstack1 = (ItemStack) nonnulllist.get(i);
++            boolean isModelItem = !itemstack1.isEmpty() && !PotionBrewing.isCustomInput(itemstack1) && itemstack1.hasCustomModelData();
++            brewResults.add(i, CraftItemStack.asCraftMirror(isModelItem ? itemstack1 : PotionBrewing.mix(itemstack, itemstack1)));
++            // KioCG end
+         }
+ 
+         if (owner != null) {
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
+index 1a86a87ab7566588fa5c0d1ff84dd673d6f800cb..9a699b4c1e0cbd7ffe08531f4ce838dc7c128f39 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
+@@ -78,9 +78,23 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+                         org.bukkit.inventory.ItemStack result = CraftItemStack.asBukkitCopy(itemstack1);
+ 
+                     BlockCookEvent blockCookEvent = new BlockCookEvent(CraftBlock.at(world, pos), source, result, (org.bukkit.inventory.CookingRecipe<?>) recipe.map(CampfireCookingRecipe::toBukkitRecipe).orElse(null)); // Paper
++                        // KioCG start
++                        boolean resetCookingProgress = false;
++                        if (blockCookEvent.getRecipe() != null && blockCookEvent.getRecipe().getKey().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {
++                            if (itemstack.hasCustomModelData()) {
++                                blockCookEvent.setCancelled(true);
++                                resetCookingProgress = true;
++                            }
++                        }
++                        // KioCG end
+                         world.getCraftServer().getPluginManager().callEvent(blockCookEvent);
+ 
+                         if (blockCookEvent.isCancelled()) {
++                            // KioCG start
++                            if (resetCookingProgress) {
++                                campfire.cookingProgress[i] = 0;
++                            }
++                            // KioCG end
+                             return;
+                         }
+ 
