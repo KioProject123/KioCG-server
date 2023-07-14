@@ -310,7 +310,7 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..b7b1c031029ec06ccf1a061b3c873f4d
  
      public void doTick() {
 diff --git a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
-index 8e4cb2fa787feca47dd4ba2fbb44e6193bac2431..9767474ba334b49e06c6705f252e998fb5b86558 100644
+index a178f00744ad2e27c0f35d69803574e5a16ec294..29d5b560a52479dbef6cfd8476b73b30acb0438e 100644
 --- a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
 +++ b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
 @@ -496,4 +496,11 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
