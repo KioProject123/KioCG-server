@@ -305,7 +305,7 @@ index 2ea19f72dd8e86d5821f734c13ac2dc6f53e9c30..427c17635305dc0c31dd376d832e930d
          else if (this.isLobotomized && shouldRestock()) restock();
          // Purpur end
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index ecfb5d8b47c461ae661149f1c7b9bacee226c311..4b2cf9f1d6a9db0d2d0579e5d8d125afd6f0d87f 100644
+index 0e5fae26bf89749e446050c92dc7c23d788f5edb..1f79fbdb812fc903da73a7a9041b8be075fec0a9 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -113,6 +113,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill

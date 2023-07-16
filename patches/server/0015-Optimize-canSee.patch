@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize canSee
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 85c28c0fd8bcbcf6ed6e4205fd217f251c55c92b..556a1c3bb82e28823345eaa2649d10ee96fa5832 100644
+index 906b5b69eec30146e117b7d791e0376fba3e2cae..eb7ecae44e52a36d41eb158172db58dbfabeef43 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -1537,6 +1537,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider

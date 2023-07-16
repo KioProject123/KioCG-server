@@ -385,7 +385,7 @@ index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f02
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 4b2cf9f1d6a9db0d2d0579e5d8d125afd6f0d87f..c42925e58811b51bac431b8943eb0955d3dfc152 100644
+index 1f79fbdb812fc903da73a7a9041b8be075fec0a9..b476826b8eba3a048e5aa3a9a56b830bb3068dee 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -348,4 +348,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
