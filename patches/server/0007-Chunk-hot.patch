@@ -193,7 +193,7 @@ index 6afdf37406d7dae04a7fec94e0c39d5136521730..a2c793182bddb1290285bf04f20adbac
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a2444baf2212624a0468f208616f482d6747b754..899576a768f0520527e965efdd73de662ed0ce29 100644
+index a2444baf2212624a0468f208616f482d6747b754..a49fb975ea3cbcd827a88148fe5265f0c4a5a5a0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1421,6 +1421,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -249,12 +249,12 @@ index a2444baf2212624a0468f208616f482d6747b754..899576a768f0520527e965efdd73de66
  
                  ServerLevel.this.players.add(entityplayer);
                  ServerLevel.this.updateSleepingPlayerList();
-+                if (ServerLevel.this.chunkHotStartingTime == Long.MAX_VALUE) chunkHotStartingTime = ServerLevel.this.getGameTime() + 30L * 20L; // KioCG
++                if (ServerLevel.this.chunkHotStartingTime == Long.MAX_VALUE) chunkHotStartingTime = ServerLevel.this.getGameTime() + 180L * 20L; // KioCG
              }
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1025c33cf964121ced9dda6408ba37c71553ba06..b7b1c031029ec06ccf1a061b3c873f4d5a29971a 100644
+index 1025c33cf964121ced9dda6408ba37c71553ba06..bab81910cc9efac4569f5d0e7b5a319d876ada68 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -279,12 +279,12 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..b7b1c031029ec06ccf1a061b3c873f4d
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
-+                    if (this.nearbyChunkHot > 330000L) {
-+                        int fireTicks = (int) (this.nearbyChunkHot / 100000L) * 20;
-+                        if (this.getRemainingFireTicks() < fireTicks) {
-+                            this.setRemainingFireTicks(fireTicks);
-+                        }
-+                    }
++                }
++            } else if (this.nearbyChunkHot > 250000L) {
++                if (this.isAfk) {
++                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
++                } else {
++                    this.sendActionBarMessage("<gold><italic>你所在的区域有点热.");
 +                }
 +            }
 +        }
