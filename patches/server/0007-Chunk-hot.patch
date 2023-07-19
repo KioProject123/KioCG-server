@@ -254,7 +254,7 @@ index a2444baf2212624a0468f208616f482d6747b754..a49fb975ea3cbcd827a88148fe5265f0
  
              if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1025c33cf964121ced9dda6408ba37c71553ba06..bab81910cc9efac4569f5d0e7b5a319d876ada68 100644
+index 1025c33cf964121ced9dda6408ba37c71553ba06..990fc34d44976af8629e17b56f6383825fa9a02f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -265,7 +265,7 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..bab81910cc9efac4569f5d0e7b5a319d
  
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
      public io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -771,6 +772,43 @@ public class ServerPlayer extends Player {
+@@ -771,6 +772,37 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -280,12 +280,6 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..bab81910cc9efac4569f5d0e7b5a319d
 +                } else {
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
 +                }
-+            } else if (this.nearbyChunkHot > 250000L) {
-+                if (this.isAfk) {
-+                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
-+                } else {
-+                    this.sendActionBarMessage("<gold><italic>你所在的区域有点热.");
-+                }
 +            }
 +        }
 +    }
@@ -296,8 +290,8 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..bab81910cc9efac4569f5d0e7b5a319d
 +        int z = chunk.locZ;
 +        net.minecraft.world.level.Level world = chunk.getLevel();
 +        long total = 0L;
-+        for (int i = x - 3; i <= x + 3; ++i) {
-+            for (int j = z - 3; j <= z + 3; ++j) {
++        for (int i = x - 4; i <= x + 4; ++i) {
++            for (int j = z - 4; j <= z + 4; ++j) {
 +                net.minecraft.world.level.chunk.LevelChunk chunk0 = world.getChunkIfLoaded(i, j);
 +                if (chunk0 != null) {
 +                    total += chunk0.getChunkHot().getAverage();

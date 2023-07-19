@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index bab81910cc9efac4569f5d0e7b5a319d876ada68..3829df496ea05e4a283af1508a15d6316e17107b 100644
+index 990fc34d44976af8629e17b56f6383825fa9a02f..8bba5048400ae1f60697f9c67681c03c13de5f20 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -708,6 +708,7 @@ public class ServerPlayer extends Player {
@@ -33,7 +33,7 @@ index bab81910cc9efac4569f5d0e7b5a319d876ada68..3829df496ea05e4a283af1508a15d631
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
-@@ -877,7 +879,7 @@ public class ServerPlayer extends Player {
+@@ -871,7 +873,7 @@ public class ServerPlayer extends Player {
                  this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
              }
  
