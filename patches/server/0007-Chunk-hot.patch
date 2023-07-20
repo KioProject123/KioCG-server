@@ -193,7 +193,7 @@ index 6afdf37406d7dae04a7fec94e0c39d5136521730..a2c793182bddb1290285bf04f20adbac
          ServerStatus.Players serverping_serverpingplayersample = this.buildPlayerStatus();
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a2444baf2212624a0468f208616f482d6747b754..a49fb975ea3cbcd827a88148fe5265f0c4a5a5a0 100644
+index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66bed6a90d9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1421,6 +1421,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -230,31 +230,8 @@ index a2444baf2212624a0468f208616f482d6747b754..a49fb975ea3cbcd827a88148fe5265f0
              }
          } else {
              passenger.stopRiding();
-@@ -2734,6 +2740,14 @@ public class ServerLevel extends Level implements WorldGenLevel {
-     }
-     // Paper end
- 
-+    // KioCG start
-+    private long chunkHotStartingTime = Long.MAX_VALUE;
-+
-+    public boolean chunkHotStarted() {
-+        return this.getGameTime() > this.chunkHotStartingTime;
-+    }
-+    // KioCG end
-+
-     private final class EntityCallbacks implements LevelCallback<Entity> {
- 
-         EntityCallbacks() {}
-@@ -2767,6 +2781,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
- 
-                 ServerLevel.this.players.add(entityplayer);
-                 ServerLevel.this.updateSleepingPlayerList();
-+                if (ServerLevel.this.chunkHotStartingTime == Long.MAX_VALUE) chunkHotStartingTime = ServerLevel.this.getGameTime() + 180L * 20L; // KioCG
-             }
- 
-             if (entity instanceof Mob) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1025c33cf964121ced9dda6408ba37c71553ba06..990fc34d44976af8629e17b56f6383825fa9a02f 100644
+index 1025c33cf964121ced9dda6408ba37c71553ba06..56c60ed9b1246ec15bbcf1ccd6c6f2b3f37dec39 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -272,7 +249,7 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..990fc34d44976af8629e17b56f638382
 +
 +        // KioCG start
 +        if (this.server.getTickCount() % 20 == 1) {
-+            this.nearbyChunkHot = ((ServerLevel) this.level()).chunkHotStarted() ? this.refreshNearbyChunkHot() : 0L;
++            this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +
 +            if (this.nearbyChunkHot > 300000L) {
 +                if (this.isAfk) {
@@ -298,7 +275,7 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..990fc34d44976af8629e17b56f638382
 +                }
 +            }
 +        }
-+        return total;
++        return (long) (total * 0.85);
 +        // KioCG end
      }
  
