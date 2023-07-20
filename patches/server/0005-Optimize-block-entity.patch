@@ -196,3 +196,16 @@ index 87164ca253447188cfc76073f7c73949cb0b3e03..f4d90c3a127764eb1f16056696022219
          }
  
          return (Container) object;
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index c17b04880b4032984b43dd4fbe1c08f96112abac..be47393d973a88809330d2120a0e72bbf2fd9064 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -682,7 +682,7 @@ public class LevelChunk extends ChunkAccess {
+             } else {
+                 ServerLevel worldserver = (ServerLevel) world;
+ 
+-                return this.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING) && worldserver.areEntitiesLoaded(ChunkPos.asLong(pos));
++                return this.getFullStatus().isOrAfter(FullChunkStatus.ENTITY_TICKING) && worldserver.areEntitiesLoaded(ChunkPos.asLong(pos)); // KioCG - use ENTITY_TICKING
+             }
+         }
+     }
