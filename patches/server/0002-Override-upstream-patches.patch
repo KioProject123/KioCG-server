@@ -31,7 +31,7 @@ index c9a8556d0aa832f05068c8e14343450d3be159bd..1025c33cf964121ced9dda6408ba37c7
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 1c2824d48fc516e45a99821ee18e0246d31651a8..028a50f4e4b36e4fd21feb5f37402caa549c5381 100644
+index 87ba51562d9c513dbe6e662020fcbc80e24055ba..dc11b457c03dd76f17993e102facc0417068caac 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -464,7 +464,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
