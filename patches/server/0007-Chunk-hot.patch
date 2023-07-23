@@ -275,7 +275,7 @@ index 1025c33cf964121ced9dda6408ba37c71553ba06..56c60ed9b1246ec15bbcf1ccd6c6f2b3
 +                }
 +            }
 +        }
-+        return (long) (total * 0.85);
++        return total;
 +        // KioCG end
      }
  
