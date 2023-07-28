@@ -5,7 +5,7 @@ Subject: [PATCH] Vanilla recipe excludes model items
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258..c247fa10d59315fc01bff9fbc5217a663786bf7a 100644
+index 1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258..74058f0d328e5ad9d411d2bef67e0fbf7a33aa64 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -177,7 +177,7 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -14,6 +14,15 @@ index 1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258..c247fa10d59315fc01bff9fbc5217a66
                      k = Math.min(itemstack1.getDamageValue(), itemstack1.getMaxDamage() / 4);
 -                    if (k <= 0) {
 +                    if (k <= 0 || itemstack2.hasCustomModelData()) { // KioCG
+                         org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
+                         this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
+                         return;
+@@ -192,7 +192,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+ 
+                     this.repairItemCountCost = i1;
+                 } else {
+-                    if (!flag && (!itemstack1.is(itemstack2.getItem()) || !itemstack1.isDamageableItem())) {
++                    if (!flag && (!itemstack1.is(itemstack2.getItem()) || !itemstack1.isDamageableItem() || itemstack2.hasCustomModelData())) { // KioCG
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
                          this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
                          return;
