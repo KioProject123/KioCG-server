@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 28 Jul 2023 23:13:01 +0800
+Subject: [PATCH] Fxxk incendium
+
+
+diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
+index 363b638c2c7842fe0083c78c7a5c45881ae02607..7d179e01c40a4931ebf25f3fbef5f32ff838d208 100644
+--- a/src/main/java/net/minecraft/world/item/ItemStack.java
++++ b/src/main/java/net/minecraft/world/item/ItemStack.java
+@@ -880,6 +880,12 @@ public final class ItemStack {
+         return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
+     }
+ 
++    // KioCG start
++    public boolean hasDatapackTag() {
++        return this.tag != null && this.tag.contains("incendium");
++    }
++    // KioCG end
++
+     // KioCG start
+     public boolean hasCustomModelData() {
+         return this.tag != null && this.tag.contains("CustomModelData");
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+index 1eec84e217f6dc929091fa7451cd235ef3623822..b7818cc9630f5a12e70cb3dfc60751c486ed9ef5 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+@@ -63,6 +63,15 @@ public class EnchantmentHelper {
+         if (stack.isEmpty()) {
+             return 0;
+         } else {
++            // KioCG start
++            if (stack.hasDatapackTag()) {
++                if (enchantment == Enchantments.UNBREAKING
++                    || enchantment == Enchantments.MENDING) {
++                    return 0;
++                }
++            }
++            // KioCG end
++
+             ResourceLocation resourceLocation = getEnchantmentId(enchantment);
+             ListTag listTag = stack.getEnchantmentTags();
+ 
