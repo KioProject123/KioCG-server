@@ -297,10 +297,10 @@ index a178f00744ad2e27c0f35d69803574e5a16ec294..29d5b560a52479dbef6cfd8476b73b30
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 8fe202c4b49324426568c18baf1461cf4fcd1cbc..1d8cc2ba81779002719a38cb95335196edd1b8ce 100644
+index aa517a7c1e69f197d59d6a2cad73cf9199ac6129..ed8084703c5d1ff488cf4dfe2474f4ae22425f95 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4985,4 +4985,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4984,4 +4984,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end

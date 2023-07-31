@@ -189,7 +189,7 @@ index 1b1f814770d1a906ed880df578845be2e9a14f46..684f5af83d3fba73f40b0c7a9617da6b
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 9e78c913da090d351d3dbaff3eff7d19fb18c8e4..363b638c2c7842fe0083c78c7a5c45881ae02607 100644
+index efc4656fd2bc8719a12e1235bc895ba463641114..0777ccaca322b1048b02efaeeecafa39865e1a01 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
 @@ -880,6 +880,12 @@ public final class ItemStack {
