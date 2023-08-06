@@ -189,10 +189,10 @@ index 1b1f814770d1a906ed880df578845be2e9a14f46..684f5af83d3fba73f40b0c7a9617da6b
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index efc4656fd2bc8719a12e1235bc895ba463641114..0777ccaca322b1048b02efaeeecafa39865e1a01 100644
+index 7e68596e28db88213e9352f798c5a4ce37cc5656..0ddab1087a4f45c027509be90370e3818700a947 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -880,6 +880,12 @@ public final class ItemStack {
+@@ -884,6 +884,12 @@ public final class ItemStack {
          return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
      }
  

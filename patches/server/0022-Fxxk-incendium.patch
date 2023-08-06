@@ -5,10 +5,10 @@ Subject: [PATCH] Fxxk incendium
 
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 0777ccaca322b1048b02efaeeecafa39865e1a01..64a3b538487694379af399e2b7f09c6bbaab7054 100644
+index 0ddab1087a4f45c027509be90370e3818700a947..5b43d05d55b31735a5578826464761a4b4bd7897 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -880,6 +880,12 @@ public final class ItemStack {
+@@ -884,6 +884,12 @@ public final class ItemStack {
          return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
      }
  
