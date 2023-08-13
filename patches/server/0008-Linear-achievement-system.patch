@@ -5,7 +5,7 @@ Subject: [PATCH] Linear achievement system
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-index 69d349613f01ab0ac1890734657da52984704f29..211d0737a2d6e08791249da68fcdb3330d8ca3d3 100644
+index 69d349613f01ab0ac1890734657da52984704f29..266c92448891f597697df472accc3d7031c7eb6d 100644
 --- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
 +++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
 @@ -237,6 +237,13 @@ public class PlayerAdvancements {
@@ -22,12 +22,13 @@ index 69d349613f01ab0ac1890734657da52984704f29..211d0737a2d6e08791249da68fcdb333
              this.progressChanged.add(advancement);
              flag = true;
              if (!flag1 && advancementprogress.isDone()) {
-@@ -287,6 +294,18 @@ public class PlayerAdvancements {
+@@ -287,6 +294,19 @@ public class PlayerAdvancements {
      }
  
      private void registerListeners(Advancement advancement) {
 +    // KioCG start - 线性的成就系统
-+        if (advancement.getDisplay() == null || advancement.getParent() == null || this.getOrStartProgress(advancement.getParent()).isDone()) {
++        if (advancement.getDisplay() == null || advancement.getParent() == null || this.getOrStartProgress(advancement.getParent()).isDone()
++            || advancement.getParent().getDisplay() != null && advancement.getParent().getDisplay().isHidden()) {
 +            this.registerListenersLinear(advancement);
 +            return;
 +        }
