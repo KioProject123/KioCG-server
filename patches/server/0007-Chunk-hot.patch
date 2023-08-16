@@ -231,7 +231,7 @@ index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66b
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e32bb5b40ffcbbbdcaa7140291759a9d94a454a7..5752881da18886311d3a8b0721e0dda2e85f5021 100644
+index e32bb5b40ffcbbbdcaa7140291759a9d94a454a7..b6d068572c9ccb31c07e769754edba4c6bf55784 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
@@ -251,7 +251,7 @@ index e32bb5b40ffcbbbdcaa7140291759a9d94a454a7..5752881da18886311d3a8b0721e0dda2
 +        if (this.server.getTickCount() % 20 == 1) {
 +            this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +
-+            if (this.nearbyChunkHot > 300000L) {
++            if (this.nearbyChunkHot > 500000L) {
 +                if (this.isAfk) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
@@ -320,38 +320,6 @@ index a01a8ba27534d2b0d544423bc2c48fd29d0a6d64..4cc19dea0cf53d668f78eb418e1e847b
 +    @Override
 +    public boolean shouldTickHot() {
 +        return false;
-+    }
-+    // KioCG end
- }
-diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index f435d14b62facdf97251400b1a4ae5b29a4dfea5..800f54150fcb0782076cbab8250e501b28e45f68 100644
---- a/src/main/java/net/minecraft/world/entity/Mob.java
-+++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1838,4 +1838,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
-         }
-     }
-     // Purpur end
-+
-+    // KioCG start
-+    @Override
-+    public boolean shouldTickHot() {
-+        return super.shouldTickHot() && (!this.removeWhenFarAway(0.0) || this.isPersistenceRequired() || this.requiresCustomPersistence());
-+    }
-+    // KioCG end
- }
-diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f027436b236 100644
---- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-+++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-@@ -215,4 +215,11 @@ public class TraderLlama extends Llama {
-             super.start();
-         }
-     }
-+
-+    // KioCG start
-+    @Override
-+    public boolean shouldTickHot() {
-+        return super.shouldTickHot() && !this.canDespawn();
 +    }
 +    // KioCG end
  }
@@ -455,7 +423,7 @@ index 19faa8f5f891c1ffbed0af8391dee8202433c447..a3503375133e5ed14dc7092bd403f226
          } catch (StackOverflowError ex) {
              world.lastPhysicsProblem = new BlockPos(pos);
 diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
-index 8769993e7ca59da309087051a3cd38fc562c15d1..2d9c05b187d3b740401db88418d214007a64d309 100644
+index 8769993e7ca59da309087051a3cd38fc562c15d1..c4b54bc4a054d8f718b525d285c911baeae37733 100644
 --- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 +++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 @@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
@@ -466,7 +434,7 @@ index 8769993e7ca59da309087051a3cd38fc562c15d1..2d9c05b187d3b740401db88418d21400
                  Placeholder.component("tps", getTPSColor()),
                  Placeholder.component("mspt", getMSPTColor()),
                  Placeholder.component("ping", getPingColor(player.getPing()))
-@@ -136,6 +137,18 @@ public class TPSBarTask extends BossBarTask {
+@@ -136,6 +137,20 @@ public class TPSBarTask extends BossBarTask {
          return MiniMessage.miniMessage().deserialize(color, Placeholder.parsed("text", String.format("%s", ping)));
      }
  
@@ -475,6 +443,8 @@ index 8769993e7ca59da309087051a3cd38fc562c15d1..2d9c05b187d3b740401db88418d21400
 +        String color;
 +        if (hot < 300000L) {
 +            color = PurpurConfig.commandTPSBarTextColorGood;
++        } else if (hot < 500000L) {
++            color = PurpurConfig.commandTPSBarTextColorMedium;
 +        } else {
 +            color = PurpurConfig.commandTPSBarTextColorLow;
 +        }

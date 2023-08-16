@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5752881da18886311d3a8b0721e0dda2e85f5021..e9c2440b9551ec69ed2d4d9917d1b7def031fcaa 100644
+index b6d068572c9ccb31c07e769754edba4c6bf55784..dcc892fdff6bc4ceb25cae9d6aaa7d9b084815fd 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -708,6 +708,7 @@ public class ServerPlayer extends Player {
