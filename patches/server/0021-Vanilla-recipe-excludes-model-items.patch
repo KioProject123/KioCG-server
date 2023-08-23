@@ -57,10 +57,10 @@ index 819187dbcf468d9278ce33bd97688476aab53f8e..89916ce77557a190ce5134333ddf1ec4
              MapItemSavedData worldmap = MapItem.getSavedData(map, world);
  
 diff --git a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-index 389b8cf74066f9cec90b54d86f5ff7661964b585..15b3ce2ea876e7edd44a1d97c635690f937741f7 100644
+index 948afb5b10d3b515f21810524bd72da2d963f808..c35165bc7cecada84a44877bde587abf2ac51a91 100644
 --- a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-@@ -85,6 +85,13 @@ public class CraftingMenu extends RecipeBookMenu<CraftingContainer> {
+@@ -86,6 +86,13 @@ public class CraftingMenu extends RecipeBookMenu<CraftingContainer> {
  
                      if (itemstack1.isItemEnabled(world.enabledFeatures())) {
                          itemstack = itemstack1;

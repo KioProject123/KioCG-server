@@ -18,7 +18,7 @@ index 4002e0fffb60556e7af1aeff71b4be244f02b0f5..bd5208773e6d1ffebb1c0109ee32c001
  
                  for (int l = -1; l <= 1; ++l) {
 diff --git a/src/main/java/net/minecraft/world/level/material/LavaFluid.java b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
-index f3d4a4196847e26934b6d2ed592f0ddb0e53182b..0db9e07a83fb1f3ad33855cc0151d571f08b549b 100644
+index 70ddb3b130ee59a6e200ea5af3ac89f3c3fa9e9b..ea8748995390ac5988d2665ac83cc160ca30f592 100644
 --- a/src/main/java/net/minecraft/world/level/material/LavaFluid.java
 +++ b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
 @@ -68,6 +68,7 @@ public abstract class LavaFluid extends FlowingFluid {

@@ -231,10 +231,10 @@ index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66b
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e32bb5b40ffcbbbdcaa7140291759a9d94a454a7..b6d068572c9ccb31c07e769754edba4c6bf55784 100644
+index 7dd20d87ee1199ad33b34c14199c628defce33cb..1ceb5a5bbcb4cfdc133aa9f0c7b888fcc10562ca 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -282,6 +282,7 @@ public class ServerPlayer extends Player {
+@@ -283,6 +283,7 @@ public class ServerPlayer extends Player {
      private boolean ramBar = false; // Purpur
      private boolean tpsBar = false; // Purpur
      private boolean compassBar = false; // Purpur
@@ -242,7 +242,7 @@ index e32bb5b40ffcbbbdcaa7140291759a9d94a454a7..b6d068572c9ccb31c07e769754edba4c
  
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
      public io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -771,6 +772,37 @@ public class ServerPlayer extends Player {
+@@ -772,6 +773,37 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -297,10 +297,10 @@ index a178f00744ad2e27c0f35d69803574e5a16ec294..29d5b560a52479dbef6cfd8476b73b30
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4cff80a117352fb934a4fefbe968484774abb505..c6ce23546cd5e662c48df40cd45af7c47228f764 100644
+index cf0d8da4c4b5f4aa4e4ef15897ca252a2b52ec8d..6d0abe6c1564e142d2274b2c9a362b62e25658be 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -4989,4 +4989,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4979,4 +4979,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end
