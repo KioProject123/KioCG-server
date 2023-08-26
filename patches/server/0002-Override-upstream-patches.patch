@@ -88,10 +88,10 @@ index 8b364fe9f3a3d47ae6daa331b8f16941ca17432a..fae47a2e8dd212bd0ad3fa768a6bcc98
              this.forceDrops = false; // CraftBukkit
          }
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index cb4a1cd39f12d90d30dd95efa2de58f57d9c6ee0..858c6b427fb836552637b9b6d88ac3b45e3d6dad 100644
+index 531b911c1bcdd3735529ee18f2bb0ccdf4ad6089..91e83c2ce7539c3004435baf12f13795e4bad874 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -320,6 +320,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -324,6 +324,7 @@ public class AnvilMenu extends ItemCombinerMenu {
                                      name = name.replace("&" + match, "\u00a7" + match.toLowerCase(java.util.Locale.ROOT));
                                  }
                                  //name = name.replaceAll("(?i)&([0-9a-fr])", "\u00a7$1");

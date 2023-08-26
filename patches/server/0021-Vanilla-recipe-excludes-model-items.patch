@@ -5,7 +5,7 @@ Subject: [PATCH] Vanilla recipe excludes model items
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 1ee0cab0f1bda9a4f29ddc4bed8b5e48f5428258..74058f0d328e5ad9d411d2bef67e0fbf7a33aa64 100644
+index bf6778438dcfc5b83f40d06a291f58d5521999ce..3c7f31346305dda31b8efe66a421f078ec14d960 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -177,7 +177,7 @@ public class AnvilMenu extends ItemCombinerMenu {
