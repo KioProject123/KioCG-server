@@ -231,7 +231,7 @@ index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66b
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7dd20d87ee1199ad33b34c14199c628defce33cb..2e24fb3165ac82187baae1b2f851992813fb39b0 100644
+index 7dd20d87ee1199ad33b34c14199c628defce33cb..c9dcfb21e12d26be6592a000655108d234b46cf4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -283,6 +283,7 @@ public class ServerPlayer extends Player {
@@ -242,7 +242,7 @@ index 7dd20d87ee1199ad33b34c14199c628defce33cb..2e24fb3165ac82187baae1b2f8519928
  
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
      public io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -772,6 +773,41 @@ public class ServerPlayer extends Player {
+@@ -772,6 +773,42 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -251,14 +251,15 @@ index 7dd20d87ee1199ad33b34c14199c628defce33cb..2e24fb3165ac82187baae1b2f8519928
 +        if (this.server.getTickCount() % 20 == 1) {
 +            this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +
-+            if (this.nearbyChunkHot > 500000L) {
-+                if (this.isAfk) {
++            if (this.nearbyChunkHot > 700000L) {
++                if (this.isAfk || MinecraftServer.getServer().lagging) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
++                    this.hurt(this.damageSources().generic(), 2.0F);
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
 +                }
 +            } else if (this.nearbyChunkHot > 330000L) {
-+                if (this.isAfk) {
++                if (this.isAfk || MinecraftServer.getServer().lagging) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                }
 +            }
@@ -459,7 +460,7 @@ index 19faa8f5f891c1ffbed0af8391dee8202433c447..a3503375133e5ed14dc7092bd403f226
          } catch (StackOverflowError ex) {
              world.lastPhysicsProblem = new BlockPos(pos);
 diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
-index 8769993e7ca59da309087051a3cd38fc562c15d1..c4b54bc4a054d8f718b525d285c911baeae37733 100644
+index 8769993e7ca59da309087051a3cd38fc562c15d1..5c7fd40735256332c0072d02f410df5fc32e3f25 100644
 --- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 +++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 @@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
@@ -479,7 +480,7 @@ index 8769993e7ca59da309087051a3cd38fc562c15d1..c4b54bc4a054d8f718b525d285c911ba
 +        String color;
 +        if (hot < 300000L) {
 +            color = PurpurConfig.commandTPSBarTextColorGood;
-+        } else if (hot < 500000L) {
++        } else if (hot < 700000L) {
 +            color = PurpurConfig.commandTPSBarTextColorMedium;
 +        } else {
 +            color = PurpurConfig.commandTPSBarTextColorLow;
