@@ -231,7 +231,7 @@ index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66b
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7dd20d87ee1199ad33b34c14199c628defce33cb..1ceb5a5bbcb4cfdc133aa9f0c7b888fcc10562ca 100644
+index 7dd20d87ee1199ad33b34c14199c628defce33cb..2e24fb3165ac82187baae1b2f851992813fb39b0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -283,6 +283,7 @@ public class ServerPlayer extends Player {
@@ -242,7 +242,7 @@ index 7dd20d87ee1199ad33b34c14199c628defce33cb..1ceb5a5bbcb4cfdc133aa9f0c7b888fc
  
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
      public io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -772,6 +773,37 @@ public class ServerPlayer extends Player {
+@@ -772,6 +773,41 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -256,6 +256,10 @@ index 7dd20d87ee1199ad33b34c14199c628defce33cb..1ceb5a5bbcb4cfdc133aa9f0c7b888fc
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
++                }
++            } else if (this.nearbyChunkHot > 330000L) {
++                if (this.isAfk) {
++                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                }
 +            }
 +        }
@@ -320,6 +324,38 @@ index a01a8ba27534d2b0d544423bc2c48fd29d0a6d64..4cc19dea0cf53d668f78eb418e1e847b
 +    @Override
 +    public boolean shouldTickHot() {
 +        return false;
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index f435d14b62facdf97251400b1a4ae5b29a4dfea5..800f54150fcb0782076cbab8250e501b28e45f68 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -1838,4 +1838,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
+         }
+     }
+     // Purpur end
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return super.shouldTickHot() && (!this.removeWhenFarAway(0.0) || this.isPersistenceRequired() || this.requiresCustomPersistence());
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
+index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f027436b236 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
++++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
+@@ -215,4 +215,11 @@ public class TraderLlama extends Llama {
+             super.start();
+         }
+     }
++
++    // KioCG start
++    @Override
++    public boolean shouldTickHot() {
++        return super.shouldTickHot() && !this.canDespawn();
 +    }
 +    // KioCG end
  }
