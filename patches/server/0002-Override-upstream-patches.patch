@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46c
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9c729910a39b010bf2123517c0bffc5a8993e6d1..7dd20d87ee1199ad33b34c14199c628defce33cb 100644
+index 0249eeb3937cf48cea13846a7e39b248947e21a4..2dde91075510cd8a9e64cfe266f5d86f65ec2cd2 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2163,7 +2163,7 @@ public class ServerPlayer extends Player {
+@@ -2166,7 +2166,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -44,7 +44,7 @@ index 9cc3ab8cd3f7ab7f8fbf4d9d14f25ea0bd757eec..cbf2d52e107fc5f0043b67d6a4de9756
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 0b08cf7b26731ffd6f3909342f4e3a92fe0c813e..f0ac2600208cb5ce2835ee739541c85c82082144 100644
+index 4cd04661b39a7055f5767a3dff88f9a3e197d810..b751726d2f40dc6fb6acdb18541921e848627c35 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
