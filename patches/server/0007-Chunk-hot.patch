@@ -146,10 +146,10 @@ index 5c0085589b08f199c75ceeab8d0cf25e970a0533..414942961a80ec85b06c9c452703db0c
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 99fd775e7a564aaef327a62bb7742da07b2d2829..a9b92753b28a352c76af3352f314d47912eea06e 100644
+index e6ddf69ade7ae51640569150f7db10d1afa63691..8e498ced37509c2e47a06319383746b1b33e9e91 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1418,6 +1418,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1417,6 +1417,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.tickCount+1).callEvent(); // Paper
  
          ++this.tickCount;
@@ -157,7 +157,7 @@ index 99fd775e7a564aaef327a62bb7742da07b2d2829..a9b92753b28a352c76af3352f314d479
          this.tickChildren(shouldKeepTicking);
          if (i - this.lastServerStatus >= 5000000000L) {
              this.lastServerStatus = i;
-@@ -1457,6 +1458,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1456,6 +1457,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
          new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.tickCount, ((double)(endTime - lastTick) / 1000000D), remaining).callEvent();
          // Paper end
@@ -165,7 +165,7 @@ index 99fd775e7a564aaef327a62bb7742da07b2d2829..a9b92753b28a352c76af3352f314d479
          //this.profiler.push("tallying"); // Purpur
          long j = this.tickTimes[this.tickCount % 100] = Util.getNanos() - i;
  
-@@ -1474,6 +1476,26 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1473,6 +1475,26 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          //co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper // Purpur
      }
  
