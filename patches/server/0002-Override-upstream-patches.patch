@@ -94,19 +94,6 @@ index 4cd04661b39a7055f5767a3dff88f9a3e197d810..b751726d2f40dc6fb6acdb18541921e8
                              this.hurt(this.damageSources().outOfBorder(), (float) Math.max(1, Mth.floor(-d0 * d1)));
                          }
                      }
-diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-index 651c156dc8a5aad04d461add02e22147af657d07..9601092b5057396dd48bf47e2c639075bf5f5690 100644
---- a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-@@ -50,7 +50,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
-     public final boolean tryStart(ServerLevel world, E entity, long time) {
-         // Paper start - behavior tick rate
-         int tickRate = java.util.Objects.requireNonNullElse(world.paperConfig().tickRates.behavior.get(entity.getType(), this.configKey), -1);
--        if (tickRate > -1 && time < this.endTimestamp + tickRate) {
-+        if (tickRate != -1 && time < this.endTimestamp + tickRate) { // KioCG - > → !=
-             return false;
-         }
-         // Paper end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 index 8b364fe9f3a3d47ae6daa331b8f16941ca17432a..fae47a2e8dd212bd0ad3fa768a6bcc9898fde95a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
