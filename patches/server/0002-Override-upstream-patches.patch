@@ -5,7 +5,7 @@ Subject: [PATCH] Override upstream patches
 
 
 diff --git a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
-index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46ca4727ce5 100644
+index e3a5f1ec376319bdfda87fa27ae217bff3914292..26c6a95966a7751cc22e25092bd6cced5f641ea7 100644
 --- a/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
 +++ b/src/main/java/io/papermc/paper/commands/FeedbackForwardingSender.java
 @@ -49,7 +49,7 @@ public final class FeedbackForwardingSender extends ServerCommandSender {
@@ -13,10 +13,43 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..f46d51069f338bef7d34a5bbb8c2f46c
      @Override
      public String getName() {
 -        return "FeedbackForwardingSender";
-+        return "MOSS"; // KioCG
++        return io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.feedbackForwardingSenderName; // KioCG
      }
  
      @Override
+diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+index 019d3bbd78fb0b06861979d223915fedb6c99442..8bfb5a66be03d79f3889f2e84c8adf137cd19d25 100644
+--- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+@@ -326,4 +326,12 @@ public class GlobalConfiguration extends ConfigurationPart {
+         public boolean disableChorusPlantUpdates = false;
+         public boolean disableMushroomBlockUpdates = false;
+     }
++
++    // KioCG start
++    public KiocgConfig kiocgConfig;
++
++    public class KiocgConfig extends ConfigurationPart {
++        public String feedbackForwardingSenderName = "MOSS";
++    }
++    // KioCG end
+ }
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index da7c899fbab162ee197a0593f455ebd9c5286d3c..c60434175f5b702c7c95e1e2259c7ff5c9d8a60e 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -527,4 +527,11 @@ public class WorldConfiguration extends ConfigurationPart {
+         }
+     }
+ 
++    // KioCG start
++    public KiocgConfig kiocgConfig;
++
++    public class KiocgConfig extends ConfigurationPart {
++
++    }
++    // KioCG end
+ }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 index 0249eeb3937cf48cea13846a7e39b248947e21a4..2dde91075510cd8a9e64cfe266f5d86f65ec2cd2 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java

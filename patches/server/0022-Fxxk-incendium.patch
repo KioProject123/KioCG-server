@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 28 Jul 2023 23:13:01 +0800
+Date: Tue, 5 Sep 2023 16:22:51 +0800
 Subject: [PATCH] Fxxk incendium
 
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 0ddab1087a4f45c027509be90370e3818700a947..5b43d05d55b31735a5578826464761a4b4bd7897 100644
+index 5b9658f3807fd8bff13143efed0bd6e3bb44377b..8d93389e2272d458874d80ca0d12f80ee9efdd17 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
 @@ -884,6 +884,12 @@ public final class ItemStack {
@@ -19,8 +19,8 @@ index 0ddab1087a4f45c027509be90370e3818700a947..5b43d05d55b31735a5578826464761a4
 +    // KioCG end
 +
      // KioCG start
-     public boolean hasCustomModelData() {
-         return this.tag != null && this.tag.contains("CustomModelData");
+     @Nullable
+     public Integer getCustomModelData() {
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 index 1eec84e217f6dc929091fa7451cd235ef3623822..b7818cc9630f5a12e70cb3dfc60751c486ed9ef5 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java

@@ -133,6 +133,23 @@ index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8
 +        return targets.size();
 +    }
 +}
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index c60434175f5b702c7c95e1e2259c7ff5c9d8a60e..7e9495ba8c494be56c44269a730ba703fe040f34 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -531,7 +531,12 @@ public class WorldConfiguration extends ConfigurationPart {
+     public KiocgConfig kiocgConfig;
+ 
+     public class KiocgConfig extends ConfigurationPart {
++        public ChunkHot chunkHot;
+ 
++        public class ChunkHot extends ConfigurationPart {
++            public long phaseOne = 300000L;
++            public long phaseTwo = 700000L;
++        }
+     }
+     // KioCG end
+ }
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
 index 5c0085589b08f199c75ceeab8d0cf25e970a0533..414942961a80ec85b06c9c452703db0c71d6f406 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
@@ -231,7 +248,7 @@ index a2444baf2212624a0468f208616f482d6747b754..f5f34eb609a7d8f3476b4ea591c8f66b
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 2dde91075510cd8a9e64cfe266f5d86f65ec2cd2..5c34442bf06cb16d6a33341bb34cce0917e7dc35 100644
+index 2dde91075510cd8a9e64cfe266f5d86f65ec2cd2..5a52d6f479e6ad6c3ebbf6ff5a313d53dfb89de6 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -283,6 +283,7 @@ public class ServerPlayer extends Player {
@@ -242,7 +259,7 @@ index 2dde91075510cd8a9e64cfe266f5d86f65ec2cd2..5c34442bf06cb16d6a33341bb34cce09
  
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
      public io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.PlayerChunkLoaderData chunkLoader;
-@@ -772,6 +773,42 @@ public class ServerPlayer extends Player {
+@@ -772,6 +773,47 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -250,21 +267,26 @@ index 2dde91075510cd8a9e64cfe266f5d86f65ec2cd2..5c34442bf06cb16d6a33341bb34cce09
 +        // KioCG start
 +        if (this.server.getTickCount() % 20 == 1) {
 +            this.nearbyChunkHot = this.refreshNearbyChunkHot();
-+
-+            if (this.nearbyChunkHot > 700000L) {
++            if (this.nearbyChunkHot < this.level().paperConfig().kiocgConfig.chunkHot.phaseOne) {
++                chunkHotPhaseOneTick = 0;
++                chunkHotPhaseTwoTick = 0;
++            } else if (this.nearbyChunkHot < this.level().paperConfig().kiocgConfig.chunkHot.phaseTwo && ++chunkHotPhaseOneTick >= 10) {
++                if (this.isAfk || MinecraftServer.getServer().lagging) {
++                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
++                }
++            } else if (++chunkHotPhaseTwoTick >= 10) {
 +                if (this.isAfk || MinecraftServer.getServer().lagging) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
 +                    this.hurt(this.damageSources().generic(), 2.0F);
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
 +                }
-+            } else if (this.nearbyChunkHot > 330000L) {
-+                if (this.isAfk || MinecraftServer.getServer().lagging) {
-+                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
-+                }
 +            }
 +        }
 +    }
++
++    private int chunkHotPhaseOneTick = 0;
++    private int chunkHotPhaseTwoTick = 0;
 +
 +    private long refreshNearbyChunkHot() {
 +        net.minecraft.world.level.chunk.LevelChunk chunk = this.level().getChunkAt(this.blockPosition());
@@ -460,27 +482,28 @@ index 19faa8f5f891c1ffbed0af8391dee8202433c447..a3503375133e5ed14dc7092bd403f226
          } catch (StackOverflowError ex) {
              world.lastPhysicsProblem = new BlockPos(pos);
 diff --git a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
-index 8769993e7ca59da309087051a3cd38fc562c15d1..5c7fd40735256332c0072d02f410df5fc32e3f25 100644
+index 8769993e7ca59da309087051a3cd38fc562c15d1..d9e1032dc2b2d167ff9e33a47fb9fa52b22888a8 100644
 --- a/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 +++ b/src/main/java/org/purpurmc/purpur/task/TPSBarTask.java
 @@ -31,6 +31,7 @@ public class TPSBarTask extends BossBarTask {
          bossbar.progress(getBossBarProgress());
          bossbar.color(getBossBarColor());
          bossbar.name(MiniMessage.miniMessage().deserialize(PurpurConfig.commandTPSBarTitle,
-+                Placeholder.component("hot", getHotColor(((org.bukkit.craftbukkit.entity.CraftPlayer)player).getHandle().getNearbyChunkHot())), // KioCG
++                Placeholder.component("hot", getHotColor(((org.bukkit.craftbukkit.entity.CraftPlayer)player).getHandle())), // KioCG
                  Placeholder.component("tps", getTPSColor()),
                  Placeholder.component("mspt", getMSPTColor()),
                  Placeholder.component("ping", getPingColor(player.getPing()))
-@@ -136,6 +137,20 @@ public class TPSBarTask extends BossBarTask {
+@@ -136,6 +137,21 @@ public class TPSBarTask extends BossBarTask {
          return MiniMessage.miniMessage().deserialize(color, Placeholder.parsed("text", String.format("%s", ping)));
      }
  
 +    // KioCG start
-+    private Component getHotColor(long hot) {
++    private Component getHotColor(net.minecraft.server.level.ServerPlayer player) {
 +        String color;
-+        if (hot < 300000L) {
++        long hot = player.getNearbyChunkHot();
++        if (hot < player.level().paperConfig().kiocgConfig.chunkHot.phaseOne) {
 +            color = PurpurConfig.commandTPSBarTextColorGood;
-+        } else if (hot < 700000L) {
++        } else if (hot < player.level().paperConfig().kiocgConfig.chunkHot.phaseTwo) {
 +            color = PurpurConfig.commandTPSBarTextColorMedium;
 +        } else {
 +            color = PurpurConfig.commandTPSBarTextColorLow;
