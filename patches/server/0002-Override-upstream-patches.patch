@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..26c6a95966a7751cc22e25092bd6cced
  
      @Override
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 019d3bbd78fb0b06861979d223915fedb6c99442..8bfb5a66be03d79f3889f2e84c8adf137cd19d25 100644
+index 3bc7230ca62ebe3426da293e436a962bb0134f85..7fa78203c8ed254303de76b2d8ae6a7adfd1e97c 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -326,4 +326,12 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -328,4 +328,12 @@ public class GlobalConfiguration extends ConfigurationPart {
          public boolean disableChorusPlantUpdates = false;
          public boolean disableMushroomBlockUpdates = false;
      }
@@ -35,10 +35,10 @@ index 019d3bbd78fb0b06861979d223915fedb6c99442..8bfb5a66be03d79f3889f2e84c8adf13
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index da7c899fbab162ee197a0593f455ebd9c5286d3c..c60434175f5b702c7c95e1e2259c7ff5c9d8a60e 100644
+index f45afb7e2607617d1239abeca13a9002dd9a3a18..c855184947ea39f308723b5163702ec5c4f22ce4 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -527,4 +527,11 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -528,4 +528,11 @@ public class WorldConfiguration extends ConfigurationPart {
          }
      }
  
@@ -64,7 +64,7 @@ index 0249eeb3937cf48cea13846a7e39b248947e21a4..2dde91075510cd8a9e64cfe266f5d86f
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9cc3ab8cd3f7ab7f8fbf4d9d14f25ea0bd757eec..cbf2d52e107fc5f0043b67d6a4de975675d319c1 100644
+index 255b422078880b46dfa6f5140f6c92fef057d09e..162b0598c883d0ac5ce5868db1b01d23f85610d0 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -466,7 +466,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -77,7 +77,7 @@ index 9cc3ab8cd3f7ab7f8fbf4d9d14f25ea0bd757eec..cbf2d52e107fc5f0043b67d6a4de9756
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 4cd04661b39a7055f5767a3dff88f9a3e197d810..b751726d2f40dc6fb6acdb18541921e848627c35 100644
+index 49906b4dc8392eee592215d0b4cba85267a875fc..fe2d79407105c259461a7dbd1fcfa82c35d34dbc 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {

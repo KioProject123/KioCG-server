@@ -219,7 +219,7 @@ index aea5864957e54798a08cc350e1a5d2f5f3c03353..b721d14310fd6569f037b6f6793156e0
                      }
                  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index dd84433a988712da9d799cbda2487a902315fb92..7ee7a196a22441bc6f4bfa49c07c146ddd1bdac6 100644
+index 917648c2cc52790f40123b27b1cafa3fc3ba4b3f..d55dd189715d94f2eff734af255da0901779e157 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -82,7 +82,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo

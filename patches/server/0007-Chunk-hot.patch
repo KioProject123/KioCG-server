@@ -134,10 +134,10 @@ index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index c60434175f5b702c7c95e1e2259c7ff5c9d8a60e..7e9495ba8c494be56c44269a730ba703fe040f34 100644
+index c855184947ea39f308723b5163702ec5c4f22ce4..e53cbba076d905c977a0e889514144f7228a02c6 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -531,7 +531,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -532,7 +532,12 @@ public class WorldConfiguration extends ConfigurationPart {
      public KiocgConfig kiocgConfig;
  
      public class KiocgConfig extends ConfigurationPart {
@@ -351,10 +351,10 @@ index a01a8ba27534d2b0d544423bc2c48fd29d0a6d64..4cc19dea0cf53d668f78eb418e1e847b
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index f435d14b62facdf97251400b1a4ae5b29a4dfea5..800f54150fcb0782076cbab8250e501b28e45f68 100644
+index 194a3285ca1698989a424efc6d77731f6a51026b..7dd5a9d1cdfe1715b6f42798fb5df0ba9773a4cb 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1838,4 +1838,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1845,4 +1845,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
      }
      // Purpur end
@@ -415,10 +415,10 @@ index d00035e31cf4773a418d1cc6a6018d08e6b558f0..c26bdbc336e09b905d921745d868fdb0
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 134b5758e5c6335a52ffb2703c3fa98dc792948e..7dc51178104cf3e7ebe7c64f9d55208f5a5a8666 100644
+index b0a559dfefac693bda8692a30fbaa5ac8062ef27..caf115c0571e85aa512d683ec77b79bea844786b 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-@@ -321,4 +321,11 @@ public abstract class Projectile extends Entity implements TraceableEntity {
+@@ -328,4 +328,11 @@ public abstract class Projectile extends Entity implements TraceableEntity {
  
          return entity instanceof Player ? entity.mayInteract(world, pos) : entity == null || world.purpurConfig.projectilesBypassMobGriefing || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
      }

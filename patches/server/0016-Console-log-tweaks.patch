@@ -5,10 +5,10 @@ Subject: [PATCH] Console log tweaks
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
-index 774fb97912f766589f3548f659618ad554e0503f..0323e182d0c233c2ac907566193df0025e754177 100644
+index 8a674441a27137ddf00561647115da1bf841090e..e32a9f4b9b70e07d2b0fc7c21bbbb55871ca1786 100644
 --- a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
 +++ b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
-@@ -353,7 +353,7 @@ public final class ChatProcessor {
+@@ -355,7 +355,7 @@ public final class ChatProcessor {
  
          private void sendToServer(final ChatType.Bound chatType, final @Nullable Function<Audience, net.minecraft.network.chat.Component> msgFunction) {
              final PlayerChatMessage toConsoleMessage = msgFunction == null ? ChatProcessor.this.message : ChatProcessor.this.message.withUnsignedContent(msgFunction.apply(ChatProcessor.this.server.console));

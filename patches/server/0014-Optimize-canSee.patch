@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize canSee
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 319c469c20f3cb4f6d61425bfa6d98b55b55c4d6..640a3d8dc80f8690f50a00de0306c97783ddf06c 100644
+index 3a7c694ff0e248df3f4d168a5e2e883c0e3cb167..4a34c9759c28177c90b56f941cb5df53a3ddebaa 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -1565,6 +1565,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1568,6 +1568,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
                  // Paper end - check Y
  
                  // CraftBukkit start - respect vanish API
@@ -29,7 +29,7 @@ index 8973c8a3bad120e55269bf1b7b810284ad0fe14c..471c663a355b8af4415a904180eb1ee1
              if (visible) {
                  // Making visible by default, reset and show to all players
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 668d825a2469706e4de11629a0b41877de700ca6..7d9ba9dd16cbde64da61465805f928e20af3b839 100644
+index 720a81da72a8002ff02cc39e5fca42354519c742..cd529dd45deab2f2ba8bc376145b2fd845f6bba2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1848,6 +1848,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

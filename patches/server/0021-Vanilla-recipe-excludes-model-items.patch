@@ -5,10 +5,10 @@ Subject: [PATCH] Vanilla recipe excludes model items
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 8bfb5a66be03d79f3889f2e84c8adf137cd19d25..fcf06289025e7b3729932243d4f7dff89c0199e5 100644
+index 7fa78203c8ed254303de76b2d8ae6a7adfd1e97c..dcb4b33de615d018249721492c7793c079656aea 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -332,6 +332,58 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -334,6 +334,58 @@ public class GlobalConfiguration extends ConfigurationPart {
  
      public class KiocgConfig extends ConfigurationPart {
          public String feedbackForwardingSenderName = "MOSS";
@@ -90,10 +90,10 @@ index bf6778438dcfc5b83f40d06a291f58d5521999ce..27cd11f2c7e26b12106289fbc6002709
                          this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
                          return;
 diff --git a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
-index fb1d71143a0344432af9dc5c3085e217a2778f10..72bc0505e630ea2779d405b4d07762809a543c25 100644
+index be507c00b9143c98820a7644f48b2944f787a9ee..10f76f939258bdb59d04e90ecca764602f0695e4 100644
 --- a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
-@@ -176,6 +176,7 @@ public class BeaconMenu extends AbstractContainerMenu {
+@@ -181,6 +181,7 @@ public class BeaconMenu extends AbstractContainerMenu {
          if (this.paymentSlot.hasItem()) {
              // Paper start
              io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent event = new io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent((org.bukkit.entity.Player) this.player.player.getBukkitEntity(), convert(primary), convert(secondary), this.access.getLocation().getBlock());
@@ -102,7 +102,7 @@ index fb1d71143a0344432af9dc5c3085e217a2778f10..72bc0505e630ea2779d405b4d0776280
              this.beaconData.set(1, event.getPrimary() == null ? -1 : event.getPrimary().getId());
              this.beaconData.set(2, event.getSecondary() == null ? -1 : event.getSecondary().getId());
 diff --git a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
-index 819187dbcf468d9278ce33bd97688476aab53f8e..67a2fc3e651ff088f7754611cc61ac71b3aedaa5 100644
+index 09be5db3c09262e8bc56c4e20a48fe648f09237c..0672295fa75ebbc536378de26aea381e0081750a 100644
 --- a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
 @@ -154,6 +154,14 @@ public class CartographyTableMenu extends AbstractContainerMenu {
@@ -139,7 +139,7 @@ index 948afb5b10d3b515f21810524bd72da2d963f808..a5e336c30dc5c17fdfc2e01b2f5202a1
                  }
              }
 diff --git a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
-index 1711406996ec4a9cb7b1838bd2446e5cf802e043..01766244b7f0c971b4822ef31ff85cf724a1c0fd 100644
+index f0a84889103cb605d3b1496f03d855848a5f5067..62b30ba05a8cf60e5ed76870274e02a3e19938f3 100644
 --- a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
 @@ -210,6 +210,12 @@ public class EnchantmentMenu extends AbstractContainerMenu {
@@ -156,7 +156,7 @@ index 1711406996ec4a9cb7b1838bd2446e5cf802e043..01766244b7f0c971b4822ef31ff85cf7
  
                      if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
-index 23a8522b80475ad29ffb4afd2f4836acda2538e3..1899717fc94a611d1d0993ae6baba4fd33fe1f43 100644
+index 3b721092a7a73472756064e0eb91d3220fdc4bc8..de54f9d19caad1546f67e8043409dfc4044ca7bf 100644
 --- a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 @@ -213,6 +213,13 @@ public class GrindstoneMenu extends AbstractContainerMenu {
@@ -174,7 +174,7 @@ index 23a8522b80475ad29ffb4afd2f4836acda2538e3..1899717fc94a611d1d0993ae6baba4fd
              org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareGrindstoneEvent(this.getBukkitView(), this.removeNonCurses(itemstack2, i, b0)); // CraftBukkit
          } else {
 diff --git a/src/main/java/net/minecraft/world/inventory/LoomMenu.java b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
-index 0a87996a6ab5b4d67c2aa10daadf6174bc647a44..5df0ea0a90ab64e04f4a092c87f4b00465f20fb9 100644
+index 95598335c29574b4a5798174f7fc56cfc27c886d..8e02aaadab20eff8d5510bf8ee2662df9236f61a 100644
 --- a/src/main/java/net/minecraft/world/inventory/LoomMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
 @@ -204,6 +204,7 @@ public class LoomMenu extends AbstractContainerMenu {
@@ -227,7 +227,7 @@ index 947f7f7e87534872660442947bb24ef5a806a972..75d37d2ef4cf98ad7a5af11daa3d5f70
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareSmithingEvent(this.getBukkitView(), itemstack);
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
-index 1b1f814770d1a906ed880df578845be2e9a14f46..93192e1ba98a1b1f7e5d458aa389030294f238b1 100644
+index 9699f97efcfecdc446ca25a6bab42cc484314cbb..ff3d062908b4866b3782f143aca68533c65225bf 100644
 --- a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 @@ -166,6 +166,13 @@ public class StonecutterMenu extends AbstractContainerMenu {
@@ -254,10 +254,10 @@ index 1b1f814770d1a906ed880df578845be2e9a14f46..93192e1ba98a1b1f7e5d458aa3890302
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 7e68596e28db88213e9352f798c5a4ce37cc5656..5b9658f3807fd8bff13143efed0bd6e3bb44377b 100644
+index 50ea2bc3f785dabc686162c895590b7d7f15a93d..570207754f1afe8605f069ff3434eeb1bc509086 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -884,6 +884,16 @@ public final class ItemStack {
+@@ -885,6 +885,16 @@ public final class ItemStack {
          return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
      }
  
