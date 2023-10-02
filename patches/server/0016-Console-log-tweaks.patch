@@ -5,7 +5,7 @@ Subject: [PATCH] Console log tweaks
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
-index 8a674441a27137ddf00561647115da1bf841090e..e32a9f4b9b70e07d2b0fc7c21bbbb55871ca1786 100644
+index e4fd372a1d585887287253a02531cd192929377b..f839aee9a42cbbe280daf54def7827876eeb3009 100644
 --- a/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
 +++ b/src/main/java/io/papermc/paper/adventure/ChatProcessor.java
 @@ -355,7 +355,7 @@ public final class ChatProcessor {
