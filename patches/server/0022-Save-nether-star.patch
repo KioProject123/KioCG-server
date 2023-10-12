@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Thu, 12 Oct 2023 21:00:29 +0800
+Subject: [PATCH] Save nether star
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index a8ffa403ac48041e17aa4ce057be0539e5468fd4..84056da025c38afb361fa93c9a625fc74243abc2 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -281,7 +281,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     public static final EntityType<Warden> WARDEN = EntityType.register("warden", EntityType.Builder.of(Warden::new, MobCategory.MONSTER).sized(0.9F, 2.9F).clientTrackingRange(16).fireImmune());
+     public static final EntityType<Witch> WITCH = EntityType.register("witch", EntityType.Builder.of(Witch::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
+     public static final EntityType<WitherBoss> WITHER = EntityType.register("wither", EntityType.Builder.of(WitherBoss::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.9F, 3.5F).clientTrackingRange(10));
+-    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.7F, 2.4F).clientTrackingRange(8));
++    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().sized(0.7F, 2.4F).clientTrackingRange(8)); // KioCG
+     public static final EntityType<WitherSkull> WITHER_SKULL = EntityType.register("wither_skull", EntityType.Builder.of(WitherSkull::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10));
+     public static final EntityType<Wolf> WOLF = EntityType.register("wolf", EntityType.Builder.of(Wolf::new, MobCategory.CREATURE).sized(0.6F, 0.85F).clientTrackingRange(10));
+     public static final EntityType<Zoglin> ZOGLIN = EntityType.register("zoglin", EntityType.Builder.of(Zoglin::new, MobCategory.MONSTER).fireImmune().sized(1.3964844F, 1.4F).clientTrackingRange(8));
+diff --git a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
+index 2b3decb90aeb99bef42b36f3b8df06cb1172b413..d9066a833431cbd50031d54a128293d7dfb1ebdf 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
++++ b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
+@@ -101,6 +101,7 @@ public class WitherSkeleton extends AbstractSkeleton {
+         if (entity instanceof Creeper) {
+             Creeper entitycreeper = (Creeper) entity;
+ 
++            if (false) // KioCG
+             if (entitycreeper.canDropMobsSkull()) {
+                 entitycreeper.increaseDroppedSkulls();
+                 this.spawnAtLocation((ItemLike) Items.WITHER_SKELETON_SKULL);
