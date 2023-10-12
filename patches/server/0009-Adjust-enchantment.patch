@@ -35,6 +35,30 @@ index fc2c35f57436371cb0111aedfd289ac95d506d07..a09bd528218d44630300fcf8f263e7b1
      };
  
      public abstract boolean canEnchant(Item item);
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+index 1eec84e217f6dc929091fa7451cd235ef3623822..25c386cdf1b29836e236c569a4123c543c81a341 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+@@ -255,11 +255,17 @@ public class EnchantmentHelper {
+     }
+ 
+     public static boolean hasBindingCurse(ItemStack stack) {
+-        return getItemEnchantmentLevel(Enchantments.BINDING_CURSE, stack) > 0;
++        // KioCG start
++        int level = getItemEnchantmentLevel(Enchantments.BINDING_CURSE, stack);
++        return level > 0 && level < 5;
++        // KioCG end
+     }
+ 
+     public static boolean hasVanishingCurse(ItemStack stack) {
+-        return getItemEnchantmentLevel(Enchantments.VANISHING_CURSE, stack) > 0;
++        // KioCG start
++        int level = getItemEnchantmentLevel(Enchantments.VANISHING_CURSE, stack);
++        return level > 0 && level < 5;
++        // KioCG end
+     }
+ 
+     public static boolean hasSilkTouch(ItemStack stack) {
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/MendingEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/MendingEnchantment.java
 index 7c0b880b0d1b409a03fe6cde5d0686a79d64cb7d..4d3590f6b13f29938bbb92252ee7e3ec5ce477c5 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/MendingEnchantment.java
