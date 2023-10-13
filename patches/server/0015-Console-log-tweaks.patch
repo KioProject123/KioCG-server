@@ -18,7 +18,7 @@ index e4fd372a1d585887287253a02531cd192929377b..f839aee9a42cbbe280daf54def782787
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 2a70abb9e0af502885593df1e732887cd9d2ce4d..6c2dd7452b6541aa2773907790685895f1fd0a0b 100644
+index e2c74460d149360f01c4d0577054879f2601a58f..6bd6b51ee5e03405cc08f06fe834afda6d6df10d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -181,7 +181,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -30,7 +30,7 @@ index 2a70abb9e0af502885593df1e732887cd9d2ce4d..6c2dd7452b6541aa2773907790685895
              DedicatedServer.LOGGER.warn("****************************");
              DedicatedServer.LOGGER.warn("YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.");
              DedicatedServer.LOGGER.warn("YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.");
-@@ -316,7 +316,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -313,7 +313,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          String proxyFlavor = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "Velocity" : "BungeeCord";
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end
@@ -40,10 +40,10 @@ index 2a70abb9e0af502885593df1e732887cd9d2ce4d..6c2dd7452b6541aa2773907790685895
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 824f31b68b38f2f8642fb9d59a123cfdaffbb7b2..e29c47a92e3988ab93a25d5cff3f602aa9fc022a 100644
+index 5c38df8170033dbfee267520991a3cc3285d219e..9e448dc490fc7c03ed542097849798d1294c47b1 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1450,7 +1450,7 @@ public abstract class PlayerList {
+@@ -1442,7 +1442,7 @@ public abstract class PlayerList {
          // Paper end
          boolean flag = this.verifyChatTrusted(message);
  

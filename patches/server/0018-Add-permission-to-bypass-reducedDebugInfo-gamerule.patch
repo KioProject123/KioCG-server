@@ -1,23 +1,23 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Jun 2023 05:46:28 +0800
+Date: Fri, 13 Oct 2023 22:07:31 +0800
 Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e29c47a92e3988ab93a25d5cff3f602aa9fc022a..dba6cbdd039d57e908bb8b27142e7934854bb47f 100644
+index 9e448dc490fc7c03ed542097849798d1294c47b1..5bc2a304cd71cd4629bff401969ce48c05ca29e9 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -282,7 +282,7 @@ public abstract class PlayerList {
-         ServerGamePacketListenerImpl playerconnection = new ServerGamePacketListenerImpl(this.server, connection, player);
+@@ -270,7 +270,7 @@ public abstract class PlayerList {
+         ServerGamePacketListenerImpl playerconnection = new ServerGamePacketListenerImpl(this.server, connection, player, clientData);
          GameRules gamerules = worldserver1.getGameRules();
          boolean flag = gamerules.getBoolean(GameRules.RULE_DO_IMMEDIATE_RESPAWN);
 -        boolean flag1 = gamerules.getBoolean(GameRules.RULE_REDUCEDDEBUGINFO);
 +        boolean flag1 = gamerules.getBoolean(GameRules.RULE_REDUCEDDEBUGINFO) && !player.getBukkitEntity().hasPermission("kiocg.reduced_debug_info.bypass"); // KioCG
+         boolean flag2 = gamerules.getBoolean(GameRules.RULE_LIMITED_CRAFTING);
  
          // Spigot - view distance
-         playerconnection.send(new ClientboundLoginPacket(player.getId(), worlddata.isHardcore(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), this.server.levelKeys(), this.synchronizedRegistries, worldserver1.dimensionTypeId(), worldserver1.dimension(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), this.getMaxPlayers(), worldserver1.getWorld().getSendViewDistance(), worldserver1.getWorld().getSimulationDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat(), player.getLastDeathLocation(), player.getPortalCooldown())); // Paper - replace old player chunk management
-@@ -1315,7 +1315,7 @@ public abstract class PlayerList {
+@@ -1307,7 +1307,7 @@ public abstract class PlayerList {
          player.getEntityData().refresh(player); // CraftBukkkit - SPIGOT-7218: sync metadata
          player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules

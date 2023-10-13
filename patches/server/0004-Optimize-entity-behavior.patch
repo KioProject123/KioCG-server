@@ -1,26 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Jun 2023 05:17:59 +0800
+Date: Fri, 13 Oct 2023 21:01:46 +0800
 Subject: [PATCH] Optimize entity behavior
 
 
-diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 221d1d0e1b4b46de6ebca5faac09bbda875fae17..a2444baf2212624a0468f208616f482d6747b754 100644
---- a/src/main/java/net/minecraft/server/level/ServerLevel.java
-+++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -871,6 +871,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
-             org.spigotmc.ActivationRange.activateEntities(this); // Spigot
-             //timings.entityTick.startTiming(); // Spigot // Purpur
-             this.entityTickList.forEach((entity) -> {
-+                if (!entity.activatedPriorityReset && gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; else // KioCG - 优化未被打勾的实体
-                 entity.activatedPriorityReset = false; // Pufferfish - DAB
-                 if (!entity.isRemoved()) {
-                     if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index a8ffa403ac48041e17aa4ce057be0539e5468fd4..84056da025c38afb361fa93c9a625fc74243abc2 100644
+index a9f69e4f880711c21ef28bd079960ef8f12da25c..c7ef37b48328b3c2f7c7e3b6a453c3c52a2971ac 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -281,7 +281,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+@@ -282,7 +282,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
      public static final EntityType<Warden> WARDEN = EntityType.register("warden", EntityType.Builder.of(Warden::new, MobCategory.MONSTER).sized(0.9F, 2.9F).clientTrackingRange(16).fireImmune());
      public static final EntityType<Witch> WITCH = EntityType.register("witch", EntityType.Builder.of(Witch::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
      public static final EntityType<WitherBoss> WITHER = EntityType.register("wither", EntityType.Builder.of(WitherBoss::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.9F, 3.5F).clientTrackingRange(10));
@@ -30,10 +18,10 @@ index a8ffa403ac48041e17aa4ce057be0539e5468fd4..84056da025c38afb361fa93c9a625fc7
      public static final EntityType<Wolf> WOLF = EntityType.register("wolf", EntityType.Builder.of(Wolf::new, MobCategory.CREATURE).sized(0.6F, 0.85F).clientTrackingRange(10));
      public static final EntityType<Zoglin> ZOGLIN = EntityType.register("zoglin", EntityType.Builder.of(Zoglin::new, MobCategory.MONSTER).fireImmune().sized(1.3964844F, 1.4F).clientTrackingRange(8));
 diff --git a/src/main/java/net/minecraft/world/entity/PathfinderMob.java b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
-index 610bc67af915c8ff40a6c8a0d8e022e7db8614d8..385daa789cb23c4a77525c18c69b41ff41df2212 100644
+index 463b72cab6a62e9738b33007728b2b00ae12e1bc..47637044ff6879422c0c55697cef147539ef45e6 100644
 --- a/src/main/java/net/minecraft/world/entity/PathfinderMob.java
 +++ b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
-@@ -86,7 +86,7 @@ public abstract class PathfinderMob extends Mob {
+@@ -94,7 +94,7 @@ public abstract class PathfinderMob extends Mob {
      }
  
      protected boolean shouldStayCloseToLeashHolder() {
@@ -56,7 +44,7 @@ index 495ac7779ad782488d20da8daa8e28b75c1f2f0d..fa722ec06c6c572f1c4a0714c8e009a7
      @Nullable
      private Mob followingMob;
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
-index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152ef80828a 100644
+index 676e1580849e8942eb41c7a3a80f464138b22764..9c57a2e4b1a80711efbf2a756458c0250a43f880 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 @@ -28,7 +28,7 @@ public class RandomStrollGoal extends Goal {
@@ -69,10 +57,10 @@ index 216929c838446c3c14d9b9906ffa625ef35fcbc8..d4389f006c01e9ef1bf9c6b0a6156152
          this.setFlags(EnumSet.of(Goal.Flag.MOVE));
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index 3347b39fa1bc3308aa3b70b4169523885b91a047..f2352275f26c688cc4cd68d1ef7224791e331833 100644
+index 6e5b4a50b8d2dddbd7f099426b4866b35bcb798a..03490dac43a6077d59aac655f903057047c45220 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-@@ -161,7 +161,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+@@ -162,7 +162,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
          this.goalSelector.addGoal(8, new LeapAtTargetGoal(this, 0.3F));
          this.goalSelector.addGoal(9, new OcelotAttackGoal(this));
          this.goalSelector.addGoal(10, new BreedGoal(this, 0.8D));
@@ -88,7 +76,7 @@ index 3347b39fa1bc3308aa3b70b4169523885b91a047..f2352275f26c688cc4cd68d1ef722479
          this.goalSelector.addGoal(12, new LookAtPlayerGoal(this, Player.class, 10.0F));
          this.targetSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
          this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, Rabbit.class, false, (Predicate) null));
-@@ -558,7 +565,7 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
+@@ -564,7 +571,7 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
  
          @Override
          public boolean canUse() {
@@ -98,10 +86,10 @@ index 3347b39fa1bc3308aa3b70b4169523885b91a047..f2352275f26c688cc4cd68d1ef722479
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index 0e20d9ed5b25f5aaab68dc3a4fa4e63ced280969..6c3c29ee410ded212ab7d3b848f43e2d815b5700 100644
+index d97ca9d567df224c34eba306b4c9b7df65f31824..1cf6c211be5a2bc8767343d4be05cbd3f5829886 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-@@ -237,9 +237,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -238,9 +238,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
@@ -128,10 +116,10 @@ index 0e20d9ed5b25f5aaab68dc3a4fa4e63ced280969..6c3c29ee410ded212ab7d3b848f43e2d
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace3ea9e742 100644
+index 5d49ed7ddf44a3d549b178ae548664194967776b..96f2a6688ccab4c97e8546d13e674198c55cf2d2 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-@@ -106,6 +106,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -108,6 +108,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
  
          @Override
          public boolean canUse() {
@@ -139,7 +127,7 @@ index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace
              return super.canUse() && !this.wolf.isRabid() && this.toAvoid != null && this.toAvoid.isRabid(); // wolves which are not rabid run away from rabid wolves
          }
  
-@@ -232,7 +233,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -234,7 +235,14 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
          this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
          this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
@@ -155,7 +143,7 @@ index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace
          this.goalSelector.addGoal(9, new BegGoal(this, 8.0F));
          this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
-@@ -240,10 +248,24 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -242,10 +250,24 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
          this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
          this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers());
@@ -182,7 +170,7 @@ index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace
          this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
      }
  
-@@ -720,7 +742,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
+@@ -727,7 +749,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
  
          @Override
          public boolean canUse() {
@@ -191,24 +179,6 @@ index 64bceae4d06b35fcbecb0daca2496ba30e39d995..8242e9a61ecd502f4df3e5b5bffe7ace
          }
  
          private boolean avoidLlama(Llama llama) {
-diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
-index 7166f4a39fd615e10d7b1f53c57363832a41f365..48f751e1bdd0468350b17fbd14a378023cc1414e 100644
---- a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
-+++ b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
-@@ -257,11 +257,11 @@ public class Allay extends PathfinderMob implements InventoryCarrier, VibrationS
-         return 0.4F;
-     }
- 
--    private int behaviorTick = 0; // Pufferfish
-+    private int behaviorTick = this.getRandom().nextInt(90); // Pufferfish // KioCG
-     @Override
-     protected void customServerAiStep() {
-         //this.level().getProfiler().push("allayBrain"); // Purpur
--        if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur - only use brain if no rider
-+        if ((getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 30 + 60) < 30) // Pufferfish // Purpur - only use brain if no rider // KioCG
-         this.getBrain().tick((ServerLevel) this.level(), this);
-         //this.level().getProfiler().pop(); // Purpur
-         //this.level().getProfiler().push("allayActivityUpdate"); // Purpur
 diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java b/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
 index aea5864957e54798a08cc350e1a5d2f5f3c03353..b721d14310fd6569f037b6f6793156e02ecdab8a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/allay/AllayAi.java
@@ -232,7 +202,7 @@ index aea5864957e54798a08cc350e1a5d2f5f3c03353..b721d14310fd6569f037b6f6793156e0
                      }
                  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 917648c2cc52790f40123b27b1cafa3fc3ba4b3f..d55dd189715d94f2eff734af255da0901779e157 100644
+index 28eb98d383d6846a25c29f8cd8ff211c360a56dc..afa38036e799c37d4b85b923d3a2609bb41ecfa4 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -82,7 +82,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -258,10 +228,10 @@ index 63a1cf5604c14025171d7be7434e2d6b64c98107..e90de7d4d303f0c908a15ef9c4b7e969
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Giant.java b/src/main/java/net/minecraft/world/entity/monster/Giant.java
-index 88b0dffe2c2b4da1406f218186d28f018ee879a3..b2f9a0643ac127b46494f940775b251c1dda5e69 100644
+index d13eed85d5399cd6991b3ad90f05a5805a3a2678..2b22e378c642fa2b37db013c49842b8023912cb6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Giant.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Giant.java
-@@ -68,9 +68,9 @@ public class Giant extends Monster {
+@@ -69,9 +69,9 @@ public class Giant extends Monster {
                  this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this));
                  this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ZombifiedPiglin.class));
                  this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -274,10 +244,10 @@ index 88b0dffe2c2b4da1406f218186d28f018ee879a3..b2f9a0643ac127b46494f940775b251c
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 7c5efb5582f43d9f333f926ad7dba1ed9920333a..5543f4117b0c549ec27531750fdd79f63adc416c 100644
+index 3f00634dd8d426f4578a3d6362f7a52f57e09d3b..d9e520a5d08bb3b739c19151bbe186a226a728f3 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-@@ -163,7 +163,7 @@ public class Zombie extends Monster {
+@@ -164,7 +164,7 @@ public class Zombie extends Monster {
  
      protected void addBehaviourGoals() {
          this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0D, false));
@@ -286,7 +256,7 @@ index 7c5efb5582f43d9f333f926ad7dba1ed9920333a..5543f4117b0c549ec27531750fdd79f6
          this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
          this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(ZombifiedPiglin.class));
          this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-@@ -181,7 +181,7 @@ public class Zombie extends Monster {
+@@ -182,7 +182,7 @@ public class Zombie extends Monster {
          });
          // Purpur end
          this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -295,33 +265,11 @@ index 7c5efb5582f43d9f333f926ad7dba1ed9920333a..5543f4117b0c549ec27531750fdd79f6
      }
  
      public static AttributeSupplier.Builder createAttributes() {
-diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 2ea19f72dd8e86d5821f734c13ac2dc6f53e9c30..427c17635305dc0c31dd376d832e930d4fd66d8b 100644
---- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
-+++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -332,7 +332,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
-     }
-     // Spigot End
- 
--    private int behaviorTick = 0; // Pufferfish
-+    private int behaviorTick = this.getRandom().nextInt(100); // Pufferfish // KioCG
-     @Override
-     @Deprecated // Paper
-     protected void customServerAiStep() {
-@@ -350,7 +350,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
-             // clean up state for API
-             this.isLobotomized = false;
-         }
--        if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Purpur - only use brain if no rider
-+        if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 50 + 50) < 50) // Purpur - only use brain if no rider // KioCG
-             this.getBrain().tick((ServerLevel) this.level(), this); // Paper
-         else if (this.isLobotomized && shouldRestock()) restock();
-         // Purpur end
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 0e5fae26bf89749e446050c92dc7c23d788f5edb..1f79fbdb812fc903da73a7a9041b8be075fec0a9 100644
+index d8a4b1aaa180fc0c837bc0d8efab781a578898a5..73e020c3ab15dcc04b64a116c215285986e52b67 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -113,6 +113,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -117,6 +117,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return level().purpurConfig.milkClearsBeneficialEffects && this.canDrinkMilk && this.level().isDay() && entityvillagertrader.isInvisible(); // Paper - Add more WanderingTrader API // Purpur
          }));
          this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
@@ -330,7 +278,7 @@ index 0e5fae26bf89749e446050c92dc7c23d788f5edb..1f79fbdb812fc903da73a7a9041b8be0
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
-@@ -120,6 +122,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -124,6 +126,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 0.5D, 0.5D));
@@ -340,10 +288,10 @@ index 0e5fae26bf89749e446050c92dc7c23d788f5edb..1f79fbdb812fc903da73a7a9041b8be0
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 43d9e7287cf0e498ccbff9b865bb813e7fb567c0..0f12b5fcbe11b1447462efb1322fd19e425be371 100644
+index f2e7e3501ca9d1664039468b5e7dece47986fd29..d421983bb9902ffa5fceb8133fd7863322cd6c80 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -298,6 +298,7 @@ public class ActivationRange
+@@ -280,6 +280,7 @@ public class ActivationRange
              return 100; // Paper
          }
          // Paper start
@@ -351,7 +299,7 @@ index 43d9e7287cf0e498ccbff9b865bb813e7fb567c0..0f12b5fcbe11b1447462efb1322fd19e
          if ( !entity.onGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
          {
              return 100;
-@@ -307,6 +308,11 @@ public class ActivationRange
+@@ -289,6 +290,11 @@ public class ActivationRange
          {
              if ( (!entity.onGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
@@ -363,7 +311,7 @@ index 43d9e7287cf0e498ccbff9b865bb813e7fb567c0..0f12b5fcbe11b1447462efb1322fd19e
                  return 10; // Paper
              }
          } else if ( !( (AbstractArrow) entity ).inGround )
-@@ -398,7 +404,7 @@ public class ActivationRange
+@@ -380,7 +386,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

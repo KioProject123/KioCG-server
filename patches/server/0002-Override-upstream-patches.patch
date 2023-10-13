@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Jun 2023 05:11:09 +0800
+Date: Fri, 13 Oct 2023 20:56:34 +0800
 Subject: [PATCH] Override upstream patches
 
 
@@ -18,10 +18,10 @@ index e3a5f1ec376319bdfda87fa27ae217bff3914292..26c6a95966a7751cc22e25092bd6cced
  
      @Override
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 3bc7230ca62ebe3426da293e436a962bb0134f85..7fa78203c8ed254303de76b2d8ae6a7adfd1e97c 100644
+index a6f58b3457b7477015c5c6d969e7d83017dd3fa1..8de3c3aac56415dca3815d5b103c7501f6d33f7e 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -328,4 +328,12 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -341,4 +341,12 @@ public class GlobalConfiguration extends ConfigurationPart {
          public boolean disableChorusPlantUpdates = false;
          public boolean disableMushroomBlockUpdates = false;
      }
@@ -35,13 +35,14 @@ index 3bc7230ca62ebe3426da293e436a962bb0134f85..7fa78203c8ed254303de76b2d8ae6a7a
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index f45afb7e2607617d1239abeca13a9002dd9a3a18..c855184947ea39f308723b5163702ec5c4f22ce4 100644
+index c9ae7e88afb1ca8349a118c6b491a1e1e83517a7..5c6596990f0f3064c691735b07d87cff3e8172dd 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -528,4 +528,11 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -536,4 +536,12 @@ public class WorldConfiguration extends ConfigurationPart {
+             VANILLA, EIGENCRAFT, ALTERNATE_CURRENT
          }
      }
- 
++
 +    // KioCG start
 +    public KiocgConfig kiocgConfig;
 +
@@ -51,10 +52,10 @@ index f45afb7e2607617d1239abeca13a9002dd9a3a18..c855184947ea39f308723b5163702ec5
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 0249eeb3937cf48cea13846a7e39b248947e21a4..2dde91075510cd8a9e64cfe266f5d86f65ec2cd2 100644
+index 8d6adc26ee59c1e7e9403731032f5dc11be80b9d..60d8b42f18480ceb9db9d1090e16ad419d6e284e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2166,7 +2166,7 @@ public class ServerPlayer extends Player {
+@@ -2163,7 +2163,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -64,10 +65,10 @@ index 0249eeb3937cf48cea13846a7e39b248947e21a4..2dde91075510cd8a9e64cfe266f5d86f
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 255b422078880b46dfa6f5140f6c92fef057d09e..162b0598c883d0ac5ce5868db1b01d23f85610d0 100644
+index d3827d918ee1f748e936dd3b05b2021a3a0f88c4..ba555cb71eaebed9d910443d6aaa393de0905a84 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -466,7 +466,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -405,7 +405,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
          if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) this.server.getPlayerIdleTimeout() * 1000L * 60L && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
              // Purpur start
@@ -77,10 +78,10 @@ index 255b422078880b46dfa6f5140f6c92fef057d09e..162b0598c883d0ac5ce5868db1b01d23
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 49906b4dc8392eee592215d0b4cba85267a875fc..fe2d79407105c259461a7dbd1fcfa82c35d34dbc 100644
+index 9bb693aa505eae2236d8b37e4d42a11445227643..32490fdddef1b66f20376798882ba5e80085198e 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -429,7 +429,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {

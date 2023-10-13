@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Mon, 3 Apr 2023 19:24:04 +0800
+Date: Fri, 13 Oct 2023 21:51:40 +0800
 Subject: [PATCH] Endermite merge with purpur block
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Endermite.java b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..ff985655e1c34ae7cb7d3d2514269c951530e169 100644
+index 20ca96baf8f73fd5835422c6551f515a394cb168..31a64f0ff9385a7e9038fc07870e26dd0d94c589 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Endermite.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Endermite.java
-@@ -84,7 +84,7 @@ public class Endermite extends Monster {
+@@ -85,7 +85,7 @@ public class Endermite extends Monster {
          this.goalSelector.addGoal(1, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
          this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
          this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
@@ -17,9 +17,9 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..ff985655e1c34ae7cb7d3d2514269c95
          this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
          this.targetSelector.addGoal(0, new org.purpurmc.purpur.entity.ai.HasRider(this)); // Purpur
-@@ -189,4 +189,90 @@ public class Endermite extends Monster {
-     public MobType getMobType() {
-         return MobType.ARTHROPOD;
+@@ -190,4 +190,85 @@ public class Endermite extends Monster {
+     protected Vector3f getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float scaleFactor) {
+         return new Vector3f(0.0F, dimensions.height - 0.0625F * scaleFactor, 0.0F);
      }
 +
 +    // KioCG start
@@ -90,13 +90,8 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..ff985655e1c34ae7cb7d3d2514269c95
 +                        }
 +                        world.addFreshEntity(entityshulker, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SILVERFISH_BLOCK);
 +
-+                        // find attachable surface
-+                        net.minecraft.core.Direction enumdirection = entityshulker.findAttachableSurface(blockposition);
-+                        if (enumdirection != null) {
-+                            entityshulker.setAttachFace(enumdirection);
-+                        } else {
-+                            entityshulker.teleportSomewhere();
-+                        }
++                        // findNewAttachment
++                        entityshulker.findNewAttachment();
 +                    }
 +
 +                    this.mob.spawnAnim();
@@ -108,3 +103,16 @@ index e131949bd6aab4c8ff5cd4ea57280ad945ceef67..ff985655e1c34ae7cb7d3d2514269c95
 +    }
 +    // KioCG end
  }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Shulker.java b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
+index 81caa18fca658f70846ba437ac02906f5e9653b9..248efc34a3b27fb0446ee585175efe69689a82e4 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Shulker.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
+@@ -249,7 +249,7 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye
+ 
+     }
+ 
+-    private void findNewAttachment() {
++    void findNewAttachment() { // KioCG - 默认访问修饰符
+         Direction enumdirection = this.findAttachableSurface(this.blockPosition());
+ 
+         if (enumdirection != null) {

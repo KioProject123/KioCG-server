@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 21 Mar 2023 05:07:19 +0800
+Date: Fri, 13 Oct 2023 21:10:24 +0800
 Subject: [PATCH] Optimize block entity
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-index f8fd3b320494d1c1e8ee3d170f2feebd152230fa..27bee1aa2bc82516f6504e032ecf5232400e156e 100644
+index cfa02b274286374c7555919d0e8d66a2c8fb8b88..61f3dc1536d477238fe93eba498dfd0d6460f489 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-@@ -280,7 +280,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
+@@ -281,7 +281,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
      @Nullable
      @Override
      public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
@@ -18,7 +18,7 @@ index f8fd3b320494d1c1e8ee3d170f2feebd152230fa..27bee1aa2bc82516f6504e032ecf5232
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 997d0fab71eacc6466ffe3bc8f6349e5813d6d49..00c0051120aaa73b779855ab36f4d1dae1e64e3a 100644
+index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678a500a498 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -85,6 +85,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
@@ -44,7 +44,7 @@ index 997d0fab71eacc6466ffe3bc8f6349e5813d6d49..00c0051120aaa73b779855ab36f4d1da
 +                blockEntity.shouldTick = true; // KioCG
              }
          } else {
-             Recipe irecipe;
+             RecipeHolder recipeholder;
 @@ -416,6 +419,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
                  }
                  // CraftBukkit end
@@ -98,10 +98,10 @@ index c57efcb9a79337ec791e4e8f6671612f0a82b441..7af18eac34f3eb424180f8603b4ccc82
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673d6f800cb 100644
+index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812e3f15c5a 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -122,6 +122,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -123,6 +123,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
  
      }
  
@@ -126,7 +126,7 @@ index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673
      public static void particleTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
          RandomSource randomsource = world.random;
          int i;
-@@ -249,6 +267,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -250,6 +268,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
      public void dowse() {
          if (this.level != null) {
              this.markUpdated();
@@ -134,73 +134,11 @@ index 91feee1e284c929b008bc2df7ab548df898b3ef7..1a86a87ab7566588fa5c0d1ff84dd673
          }
  
      }
-diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index f03608a133338b0f5522a07239e06fd2245db1e5..b5b311144f21a70fc307f981433da69a8d8e261d 100644
---- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-+++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -747,7 +747,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-     @Nullable
-     private static Container getSourceContainer(Level world, Hopper hopper) {
-         // CraftBukkit start
--        Container inventory = HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
-+        Container inventory = HopperBlockEntity.getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ(), hopper); // KioCG
- 
-         BlockPos blockPosition = BlockPos.containing(hopper.getLevelX(), hopper.getLevelY(), hopper.getLevelZ());
-         CraftBlock hopper1 = CraftBlock.at(world, blockPosition);
-@@ -794,9 +794,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-         // Paper start - add optimizeEntities parameter
-         return HopperBlockEntity.getContainerAt(world, x, y, z, false);
-     }
-+    // KioCG start
-+    @Nullable
-+    public static Container getContainerAt(Level world, double x, double y, double z, Hopper hopper) {
-+        return getContainerAt(world, x, y, z, false, hopper instanceof HopperBlockEntity);
-+    }
-+    // KioCG end
-+
-     @Nullable
-     private static Container getContainerAt(Level world, double x, double y, double z, final boolean optimizeEntities) {
-         // Paper end - add optimizeEntities parameter
-+        // KioCG start
-+        return getContainerAt(world, x, y, z, optimizeEntities, false);
-+    }
-+
-+    @Nullable
-+    private static Container getContainerAt(Level world, double x, double y, double z, final boolean optimizeEntities, final boolean optimizeHopper) {
-+        // KioCG end
-         Object object = null;
-         BlockPos blockposition = BlockPos.containing(x, y, z);
-         if ( !world.spigotConfig.hopperCanLoadChunks && !world.hasChunkAt( blockposition ) ) return null; // Spigot
-@@ -816,12 +830,23 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-             }
-         }
- 
--        if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
-+        // KioCG start
-+        else {
-+            // if (object == null && (!optimizeEntities || !world.paperConfig().hopper.ignoreOccludingBlocks || !org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(block).isOccluding())) { // Paper
-+        boolean ignoreOccludingBlocks = world.paperConfig().hopper.ignoreOccludingBlocks && iblockdata.isCollisionShapeFullBlock(world, blockposition);
-+        if (!optimizeEntities || !ignoreOccludingBlocks) {
-+        // KioCG end
-             List<Entity> list = world.getEntities((Entity) null, new AABB(x - 0.5D, y - 0.5D, z - 0.5D, x + 0.5D, y + 0.5D, z + 0.5D), EntitySelector.CONTAINER_ENTITY_SELECTOR);
- 
-             if (!list.isEmpty()) {
-                 object = (Container) list.get(world.random.nextInt(list.size()));
-             }
-+        // KioCG start
-+        }
-+        if (object == null && optimizeHopper && (ignoreOccludingBlocks || block instanceof net.minecraft.world.level.block.BaseRailBlock)) {
-+            return new net.minecraft.world.level.block.ComposterBlock.EmptyContainer(world, blockposition);
-+        }
-+        // KioCG end
-         }
- 
-         return (Container) object;
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index c17b04880b4032984b43dd4fbe1c08f96112abac..be47393d973a88809330d2120a0e72bbf2fd9064 100644
+index 8d385708df97d47881929d4352f1b90286aad1a2..b196cd745b42f98145a8e0725cfeaa0113ffa50d 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -682,7 +682,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -577,7 +577,7 @@ public class LevelChunk extends ChunkAccess {
              } else {
                  ServerLevel worldserver = (ServerLevel) world;
  

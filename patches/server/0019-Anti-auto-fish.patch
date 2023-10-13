@@ -5,7 +5,7 @@ Subject: [PATCH] Anti auto fish
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index b8c238287e0639b578170c6fec0d4db5a1a59fe7..572ec93af2b9406fbb4a9724a99a4517b667be62 100644
+index a9eaa079a43bc8a5e81deaf6df5ce2f9c53cb319..d3c5c0abcb18526c4eddf3ef8e072e76690e71b7 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 @@ -328,7 +328,10 @@ public class FishingHook extends Projectile {

@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sun, 9 Jul 2023 19:03:15 +0800
+Date: Fri, 13 Oct 2023 21:37:32 +0800
 Subject: [PATCH] Lobotomized animals
 
 
@@ -62,10 +62,10 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 9d2e04ee6de9c8067f6ea89ec7d72bdc5d8a6845..0a1b07dc9ec6b34a84839dfb6fdd850dbae20937 100644
+index a2ee90f599d952c2b11a0187ff0bc90ebb1497c2..ecdcb63b74fda35fe949b95ea1611c652abe7898 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -306,6 +306,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -147,7 +147,7 @@ index 3263c816e82285ff943270be21049432ac7f55e9..71cfe89bebf60a904607a21fbc0048e7
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
-index d4389f006c01e9ef1bf9c6b0a6156152ef80828a..88704e619ef0b8696d2fe9e99a68e20d52e661c9 100644
+index 9c57a2e4b1a80711efbf2a756458c0250a43f880..dac232e2e19ff43e5a6a1e6252b1555a489c5caf 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/RandomStrollGoal.java
 @@ -35,6 +35,7 @@ public class RandomStrollGoal extends Goal {
@@ -155,7 +155,7 @@ index d4389f006c01e9ef1bf9c6b0a6156152ef80828a..88704e619ef0b8696d2fe9e99a68e20d
      @Override
      public boolean canUse() {
 +        if (this.mob.isLobotomized()) return false; // KioCG
-         if (this.mob.isVehicle()) {
+         if (this.mob.hasControllingPassenger()) {
              return false;
          } else {
 @@ -68,6 +69,7 @@ public class RandomStrollGoal extends Goal {
@@ -163,7 +163,7 @@ index d4389f006c01e9ef1bf9c6b0a6156152ef80828a..88704e619ef0b8696d2fe9e99a68e20d
      @Override
      public boolean canContinueToUse() {
 +        if (this.mob.isLobotomized()) return false; // KioCG
-         return !this.mob.getNavigation().isDone() && !this.mob.isVehicle();
+         return !this.mob.getNavigation().isDone() && !this.mob.hasControllingPassenger();
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/TemptGoal.java
@@ -187,7 +187,7 @@ index 00cf59524477ec79d4354cc403fc3e75a63b81a0..a1cc5c1524208835f9eb2cf838024155
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
-index fdb08ecc19bc4a1bc93cf6b18adcea2bc5573965..0329a6a26977eb47f8124e957ecf94ec69f1e4ee 100644
+index 0e36e3e672de4c806e2d534b437489a3a349a722..d701c94c55339c31f3a7ce82da5c714cc97a612e 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
 @@ -198,6 +198,7 @@ public abstract class PathNavigation {
@@ -207,7 +207,7 @@ index fdb08ecc19bc4a1bc93cf6b18adcea2bc5573965..0329a6a26977eb47f8124e957ecf94ec
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 8773b1072016a3bbf025959e9ab827704ec17fc6..7a603b141f51d6dbf77dbeba59312e195c3a09fc 100644
+index 2e268aa614522b40fbffabce4017b228db5bcba8..3283d19434769cb6948b7641f1b5287b589d3142 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -42,6 +42,7 @@ public abstract class Animal extends AgeableMob {
@@ -258,7 +258,7 @@ index 8773b1072016a3bbf025959e9ab827704ec17fc6..7a603b141f51d6dbf77dbeba59312e19
  
      }
  
-@@ -119,6 +144,13 @@ public abstract class Animal extends AgeableMob {
+@@ -114,6 +139,13 @@ public abstract class Animal extends AgeableMob {
          super.readAdditionalSaveData(nbt);
          this.inLove = nbt.getInt("InLove");
          this.loveCause = nbt.hasUUID("LoveCause") ? nbt.getUUID("LoveCause") : null;
@@ -273,7 +273,7 @@ index 8773b1072016a3bbf025959e9ab827704ec17fc6..7a603b141f51d6dbf77dbeba59312e19
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 6c04c8e7776b2830ac368229da834532e8ce163e..e832ffe2878cc0c2efd04ad798f09a81e4f370c6 100644
+index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc324fa82825 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
 @@ -1111,6 +1111,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
@@ -309,10 +309,10 @@ index 6c04c8e7776b2830ac368229da834532e8ce163e..e832ffe2878cc0c2efd04ad798f09a81
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 427c17635305dc0c31dd376d832e930d4fd66d8b..1f8c2277bb0bafbe890222939f8652dabe2a4326 100644
+index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6e58d44f3 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -140,7 +140,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }, MemoryModuleType.MEETING_POINT, (entityvillager, holder) -> {
          return holder.is(PoiTypes.MEETING);
      });
@@ -321,8 +321,8 @@ index 427c17635305dc0c31dd376d832e930d4fd66d8b..1f8c2277bb0bafbe890222939f8652da
 +    private boolean isLobotomized = false; @Override public boolean isLobotomized() { return this.lobotomized.isLobotomized(); } // Purpur // KioCG - 使用更好的检测
      private int notLobotomizedCount = 0; // Purpur
  
-     public long nextGolemPanic = -1; // Pufferfish
-@@ -242,6 +243,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public Villager(EntityType<? extends Villager> entityType, Level world) {
+@@ -241,6 +242,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return !bottom.hasCollision && !top.hasCollision;
      }
  
@@ -346,7 +346,7 @@ index 427c17635305dc0c31dd376d832e930d4fd66d8b..1f8c2277bb0bafbe890222939f8652da
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -345,14 +363,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -343,14 +361,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level().purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
@@ -356,14 +356,14 @@ index 427c17635305dc0c31dd376d832e930d4fd66d8b..1f8c2277bb0bafbe890222939f8652da
              // clean up state for API
              this.isLobotomized = false;
          }
-         if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % (this.activatedPriority * 50 + 50) < 50) // Purpur - only use brain if no rider // KioCG
+         /*if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Purpur - only use brain if no rider // Purpur - TODO: Pufferfish
              this.getBrain().tick((ServerLevel) this.level(), this); // Paper
--        else if (this.isLobotomized && shouldRestock()) restock();
-+        else if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
+-        else */if (this.isLobotomized && shouldRestock()) restock();
++        else */if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
          // Purpur end
+         if (!inactive) this.getBrain().tick((ServerLevel) this.level(), this); // Paper
          //this.level().getProfiler().pop(); // Purpur
-         if (this.assignProfessionWhenSpawned) {
-@@ -657,6 +675,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -656,6 +674,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -372,7 +372,7 @@ index 427c17635305dc0c31dd376d832e930d4fd66d8b..1f8c2277bb0bafbe890222939f8652da
      }
  
      @Override
-@@ -697,6 +717,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -696,6 +716,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  
