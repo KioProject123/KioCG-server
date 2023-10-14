@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sun, 15 Oct 2023 04:48:49 +0800
+Subject: [PATCH] Villager restock every day
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index 0c45c85a535134401fb064b98c1be7b6e58d44f3..3cf41011da3a2eaf4a04d444773d1d27dab12f41 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -561,23 +561,24 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public boolean shouldRestock() {
+         long i = this.lastRestockGameTime + 12000L;
+         long j = this.level().getGameTime();
+-        boolean flag = j > i;
++        boolean flag = j > i && false; // KioCG - 去除半天刷新一次补货? 意义不明
+         long k = this.level().getDayTime();
+ 
+         if (this.lastRestockCheckDayTime > 0L) {
+             long l = this.lastRestockCheckDayTime / 24000L;
+             long i1 = k / 24000L;
+ 
++            // KioCG - 注释: 天数不同则补货
+             flag |= i1 > l;
+         }
+ 
+         this.lastRestockCheckDayTime = k;
+         if (flag) {
+             this.lastRestockGameTime = j;
+-            this.resetNumberOfRestocks();
++            this.numberOfRestocksToday = 1; // KioCG - 补货后会变成2, 用于兼容插件
+         }
+ 
+-        return this.allowedToRestock() && this.needsToRestock();
++        return flag; // KioCG
+     }
+ 
+     private void catchUpDemand() {
