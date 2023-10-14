@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable can drop mobs skull
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 474c58a8d311e8fb65d46a10fb203acc99fc74b8..124423d8e75381be4d956596f4372be476bbcd76 100644
+index 474c58a8d311e8fb65d46a10fb203acc99fc74b8..177d4804ac23a4749fc38b36df76e5bb48d90b5a 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 @@ -547,6 +547,20 @@ public class WorldConfiguration extends ConfigurationPart {
@@ -13,9 +13,9 @@ index 474c58a8d311e8fb65d46a10fb203acc99fc74b8..124423d8e75381be4d956596f4372be4
              public long phaseTwo = 700000L;
          }
 +
-+        public Entity entity;
++        public Entities entities;
 +
-+        public class Entity extends ConfigurationPart {
++        public class Entities extends ConfigurationPart {
 +            public Creeper creeper;
 +
 +            public class Creeper extends ConfigurationPart {
@@ -30,7 +30,7 @@ index 474c58a8d311e8fb65d46a10fb203acc99fc74b8..124423d8e75381be4d956596f4372be4
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 304ea7fdcd410a7c88ec61143364e14de8db0b0c..3ea229a1a7f89bd27ecb2fb939dc928ca77a2e6a 100644
+index 304ea7fdcd410a7c88ec61143364e14de8db0b0c..61804db25c09b8d6a92dd9778472dd83fa1b2889 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -300,7 +300,7 @@ public class Creeper extends Monster implements PowerableMob {
@@ -38,12 +38,12 @@ index 304ea7fdcd410a7c88ec61143364e14de8db0b0c..3ea229a1a7f89bd27ecb2fb939dc928c
              Creeper entitycreeper = (Creeper) entity;
  
 -            if (entitycreeper.canDropMobsSkull()) {
-+            if (entitycreeper.level().paperConfig().kiocgConfig.entity.creeper.canDropCreeperSkull && entitycreeper.canDropMobsSkull()) { // KioCG
++            if (entitycreeper.level().paperConfig().kiocgConfig.entities.creeper.canDropCreeperSkull && entitycreeper.canDropMobsSkull()) { // KioCG
                  entitycreeper.increaseDroppedSkulls();
                  this.spawnAtLocation((ItemLike) Items.CREEPER_HEAD);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index f4a47ac2c86cc95178922cce7320ba1ef5121b57..a9154ddacefbbd56d3f25dcc2a58ff434afa26e5 100644
+index f4a47ac2c86cc95178922cce7320ba1ef5121b57..82bcce358099a24e38c81b75b541bc38933d7885 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -177,7 +177,7 @@ public class Skeleton extends AbstractSkeleton {
@@ -51,12 +51,12 @@ index f4a47ac2c86cc95178922cce7320ba1ef5121b57..a9154ddacefbbd56d3f25dcc2a58ff43
              Creeper entitycreeper = (Creeper) entity;
  
 -            if (entitycreeper.canDropMobsSkull()) {
-+            if (entitycreeper.level().paperConfig().kiocgConfig.entity.creeper.canDropSkeletonSkull && entitycreeper.canDropMobsSkull()) { // KioCG
++            if (entitycreeper.level().paperConfig().kiocgConfig.entities.creeper.canDropSkeletonSkull && entitycreeper.canDropMobsSkull()) { // KioCG
                  entitycreeper.increaseDroppedSkulls();
                  this.spawnAtLocation((ItemLike) Items.SKELETON_SKULL);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
-index b5462ca1e67c87eeb447b8c4536c4bba897be186..4c48e73f07744f5415ded0a99d7de6181af3df94 100644
+index b5462ca1e67c87eeb447b8c4536c4bba897be186..85b10c2d5d08af3307771e44c9b37982d7598c3a 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
 @@ -101,7 +101,7 @@ public class WitherSkeleton extends AbstractSkeleton {
@@ -64,12 +64,12 @@ index b5462ca1e67c87eeb447b8c4536c4bba897be186..4c48e73f07744f5415ded0a99d7de618
              Creeper entitycreeper = (Creeper) entity;
  
 -            if (entitycreeper.canDropMobsSkull()) {
-+            if (entitycreeper.level().paperConfig().kiocgConfig.entity.creeper.canDropWitherSkeletonSkull && entitycreeper.canDropMobsSkull()) { // KioCG
++            if (entitycreeper.level().paperConfig().kiocgConfig.entities.creeper.canDropWitherSkeletonSkull && entitycreeper.canDropMobsSkull()) { // KioCG
                  entitycreeper.increaseDroppedSkulls();
                  this.spawnAtLocation((ItemLike) Items.WITHER_SKELETON_SKULL);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index d9e520a5d08bb3b739c19151bbe186a226a728f3..baa963fa1e10f9df6f198d8b389a17ab2e0a9865 100644
+index d9e520a5d08bb3b739c19151bbe186a226a728f3..827420d00157f2155db7eb6421c184134e0bea08 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -644,7 +644,7 @@ public class Zombie extends Monster {
@@ -77,12 +77,12 @@ index d9e520a5d08bb3b739c19151bbe186a226a728f3..baa963fa1e10f9df6f198d8b389a17ab
              Creeper entitycreeper = (Creeper) entity;
  
 -            if (entitycreeper.canDropMobsSkull()) {
-+            if (entitycreeper.level().paperConfig().kiocgConfig.entity.creeper.canDropZombieSkull && entitycreeper.canDropMobsSkull()) { // KioCG
++            if (entitycreeper.level().paperConfig().kiocgConfig.entities.creeper.canDropZombieSkull && entitycreeper.canDropMobsSkull()) { // KioCG
                  ItemStack itemstack = this.getSkull();
  
                  if (!itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index a667b327935efd15318f9f27d81fe73aabc93484..3761b594435b3f249c787646d7d50c2c5d71c5a1 100644
+index a667b327935efd15318f9f27d81fe73aabc93484..0ae97477b58f82966dda417c5d9083ab040f6f10 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -176,7 +176,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
@@ -90,7 +90,7 @@ index a667b327935efd15318f9f27d81fe73aabc93484..3761b594435b3f249c787646d7d50c2c
              Creeper entitycreeper = (Creeper) entity;
  
 -            if (entitycreeper.canDropMobsSkull()) {
-+            if (entitycreeper.level().paperConfig().kiocgConfig.entity.creeper.canDropPiglinSkull && entitycreeper.canDropMobsSkull()) { // KioCG
++            if (entitycreeper.level().paperConfig().kiocgConfig.entities.creeper.canDropPiglinSkull && entitycreeper.canDropMobsSkull()) { // KioCG
                  ItemStack itemstack = new ItemStack(Items.PIGLIN_HEAD);
  
                  entitycreeper.increaseDroppedSkulls();
