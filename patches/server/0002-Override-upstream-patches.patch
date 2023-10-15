@@ -120,3 +120,16 @@ index 531b911c1bcdd3735529ee18f2bb0ccdf4ad6089..91e83c2ce7539c3004435baf12f13795
                              }
                              if (player.hasPermission("purpur.anvil.format")) {
                                  java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
+diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
+index ea8b928b6d82689e71bbcc39ab497491072dfba6..fa0e4ed180fad984f49459f911602d6875fbccde 100644
+--- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
++++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
+@@ -98,7 +98,7 @@ public class PhantomFlames extends LlamaSpit {
+         Entity shooter = this.getOwner();
+         if (shooter instanceof LivingEntity) {
+             Entity target = entityHitResult.getEntity();
+-            if (canGrief || (target instanceof LivingEntity && !(target instanceof ArmorStand))) {
++            if (canGrief || target instanceof net.minecraft.world.entity.player.Player) { // KioCG - 只伤害玩家
+                 boolean hurt = target.hurt(target.damageSources().mobProjectile(this, (LivingEntity) shooter), level().purpurConfig.phantomFlameDamage);
+                 if (hurt && level().purpurConfig.phantomFlameFireTime > 0) {
+                     target.setSecondsOnFire(level().purpurConfig.phantomFlameFireTime);
