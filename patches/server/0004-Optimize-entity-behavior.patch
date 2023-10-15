@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index a9f69e4f880711c21ef28bd079960ef8f12da25c..c7ef37b48328b3c2f7c7e3b6a453c3c52a2971ac 100644
+index a9f69e4f880711c21ef28bd079960ef8f12da25c..c5f337e5468454e2effbd3bf50de450003f01765 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -282,7 +282,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -13,7 +13,7 @@ index a9f69e4f880711c21ef28bd079960ef8f12da25c..c7ef37b48328b3c2f7c7e3b6a453c3c5
      public static final EntityType<Witch> WITCH = EntityType.register("witch", EntityType.Builder.of(Witch::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
      public static final EntityType<WitherBoss> WITHER = EntityType.register("wither", EntityType.Builder.of(WitherBoss::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.9F, 3.5F).clientTrackingRange(10));
 -    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.7F, 2.4F).clientTrackingRange(8));
-+    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().sized(0.7F, 2.4F).clientTrackingRange(8)); // KioCG
++    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().sized(0.7F, 2.4F).clientTrackingRange(8)); // KioCG - 不在凋灵玫瑰上生成
      public static final EntityType<WitherSkull> WITHER_SKULL = EntityType.register("wither_skull", EntityType.Builder.of(WitherSkull::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10));
      public static final EntityType<Wolf> WOLF = EntityType.register("wolf", EntityType.Builder.of(Wolf::new, MobCategory.CREATURE).sized(0.6F, 0.85F).clientTrackingRange(10));
      public static final EntityType<Zoglin> ZOGLIN = EntityType.register("zoglin", EntityType.Builder.of(Zoglin::new, MobCategory.MONSTER).fireImmune().sized(1.3964844F, 1.4F).clientTrackingRange(8));

@@ -1,0 +1,80 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Mon, 16 Oct 2023 03:40:49 +0800
+Subject: [PATCH] Configurable persistent when picked up items
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..a0b96ca74ab21f8a15bc42d0d9268af2a1efcdb9 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -560,6 +560,8 @@ public class WorldConfiguration extends ConfigurationPart {
+                 public boolean canDropZombieSkull = true;
+                 public boolean canDropPiglinSkull = true;
+             }
++
++            public boolean persistentWhenPickedUpItems = true;
+         }
+     }
+     // KioCG end
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index a69faea473ec1f0eb13eb814aecacb1ea391c7c7..0aefa8619417bdf0d0738cfc0329081c9e1205b5 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -389,6 +389,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+         }
+         if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
+             this.discard();
++            if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
+         }
+     }
+     // Purpur end
+@@ -792,9 +793,32 @@ public abstract class Mob extends LivingEntity implements Targeting {
+     protected void setItemSlotAndDropWhenKilled(EquipmentSlot slot, ItemStack stack) {
+         this.setItemSlot(slot, stack);
+         this.setGuaranteedDrop(slot);
++        if (this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) // KioCG
+         this.persistenceRequired = true;
+     }
+ 
++    // KioCG start
++    private void dropPickedUpItems() {
++        if (this.canPickUpLoot()) {
++            EquipmentSlot[] aenumitemslot = EquipmentSlot.values();
++            int j = aenumitemslot.length;
++            for (int k = 0; k < j; ++k) {
++                EquipmentSlot enumitemslot = aenumitemslot[k];
++                if (this.getEquipmentDropChance(enumitemslot) != 2.0f) {
++                    continue;
++                }
++
++                ItemStack itemstack = this.getItemBySlot(enumitemslot);
++                if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack)) {
++                    this.forceDrops = true;
++                    this.spawnAtLocation(itemstack);
++                    this.forceDrops = false;
++                }
++            }
++        }
++    }
++    // KioCG end
++
+     public void setGuaranteedDrop(EquipmentSlot slot) {
+         switch (slot.getType()) {
+             case HAND:
+@@ -904,6 +928,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+ 
+                 if (d0 > (double) j && this.removeWhenFarAway(d0)) {
+                     this.discard();
++                    if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
+                 }
+ 
+                 int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - custom despawn distances
+@@ -911,6 +936,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+ 
+                 if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double) l && this.removeWhenFarAway(d0)) {
+                     this.discard();
++                    if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
+                 } else if (d0 < (double) l) {
+                     this.noActionTime = 0;
+                 }
