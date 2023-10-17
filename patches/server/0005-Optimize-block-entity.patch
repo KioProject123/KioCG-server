@@ -135,10 +135,10 @@ index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 8d385708df97d47881929d4352f1b90286aad1a2..b196cd745b42f98145a8e0725cfeaa0113ffa50d 100644
+index 220e1dbf70e7d51ea69d964eb7e84f55aa5a32d7..496ce7bdf640357405cc866603a540fc0bc11488 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -577,7 +577,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -587,7 +587,7 @@ public class LevelChunk extends ChunkAccess {
              } else {
                  ServerLevel worldserver = (ServerLevel) world;
  

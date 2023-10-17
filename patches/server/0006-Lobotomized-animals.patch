@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 13 Oct 2023 21:37:32 +0800
+Date: Tue, 17 Oct 2023 19:16:08 +0800
 Subject: [PATCH] Lobotomized animals
 
 
@@ -62,10 +62,10 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index a2ee90f599d952c2b11a0187ff0bc90ebb1497c2..ecdcb63b74fda35fe949b95ea1611c652abe7898 100644
+index 33be534a2dea24007f656fd5dec17b9660cea49f..f5cee767325719d94bfe551c3de7b9db3f75eaf6 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -306,6 +306,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -309,7 +309,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6e58d44f3 100644
+index 81bb48853acb34ad2f26da43b4d81620a9bfcc4f..15728d1ea218d6d6cb94787c2b6dd6d4131326f0 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -321,8 +321,8 @@ index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6
 +    private boolean isLobotomized = false; @Override public boolean isLobotomized() { return this.lobotomized.isLobotomized(); } // Purpur // KioCG - 使用更好的检测
      private int notLobotomizedCount = 0; // Purpur
  
-     public Villager(EntityType<? extends Villager> entityType, Level world) {
-@@ -241,6 +242,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public long nextGolemPanic = -1; // Pufferfish
+@@ -243,6 +244,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return !bottom.hasCollision && !top.hasCollision;
      }
  
@@ -346,7 +346,7 @@ index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -343,14 +361,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -346,14 +364,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level().purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
@@ -356,14 +356,14 @@ index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6
              // clean up state for API
              this.isLobotomized = false;
          }
-         /*if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Purpur - only use brain if no rider // Purpur - TODO: Pufferfish
+         if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Purpur - only use brain if no rider
              this.getBrain().tick((ServerLevel) this.level(), this); // Paper
--        else */if (this.isLobotomized && shouldRestock()) restock();
-+        else */if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
+-        else if (this.isLobotomized && shouldRestock()) restock();
++        else if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
          // Purpur end
-         if (!inactive) this.getBrain().tick((ServerLevel) this.level(), this); // Paper
          //this.level().getProfiler().pop(); // Purpur
-@@ -656,6 +674,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         if (this.assignProfessionWhenSpawned) {
+@@ -658,6 +676,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -372,7 +372,7 @@ index b9c964a4f9a89259605a09e2a8eb0f7ae94ae24f..0c45c85a535134401fb064b98c1be7b6
      }
  
      @Override
-@@ -696,6 +716,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -698,6 +718,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  

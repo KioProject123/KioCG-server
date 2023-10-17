@@ -52,10 +52,10 @@ index c9ae7e88afb1ca8349a118c6b491a1e1e83517a7..5c6596990f0f3064c691735b07d87cff
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8d6adc26ee59c1e7e9403731032f5dc11be80b9d..60d8b42f18480ceb9db9d1090e16ad419d6e284e 100644
+index 6b5bcc87e96619877737fc8200075bdb99d59230..9fa4a02ce780923fd2baef723820510005fdc829 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2163,7 +2163,7 @@ public class ServerPlayer extends Player {
+@@ -2168,7 +2168,7 @@ public class ServerPlayer extends Player {
  
      public void resetLastActionTime() {
          this.lastActionTime = Util.getMillis();
@@ -65,7 +65,7 @@ index 8d6adc26ee59c1e7e9403731032f5dc11be80b9d..60d8b42f18480ceb9db9d1090e16ad41
  
      // Purpur Start
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index d3827d918ee1f748e936dd3b05b2021a3a0f88c4..ba555cb71eaebed9d910443d6aaa393de0905a84 100644
+index 6638d769a34287d54b22e4416003556915e153f1..c9dd4ef1a5152ab014d116311b5f9273dbd6b9ed 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -405,7 +405,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -78,10 +78,10 @@ index d3827d918ee1f748e936dd3b05b2021a3a0f88c4..ba555cb71eaebed9d910443d6aaa393d
                  return;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 9bb693aa505eae2236d8b37e4d42a11445227643..32490fdddef1b66f20376798882ba5e80085198e 100644
+index aa7ef9bcd6caffa9b987ae4ae759f89358e3001d..1a0078acc26b546688d4c2d3f6b6433a097aebf9 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -429,7 +429,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {

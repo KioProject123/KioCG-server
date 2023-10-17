@@ -82,7 +82,7 @@ index d9e520a5d08bb3b739c19151bbe186a226a728f3..827420d00157f2155db7eb6421c18413
  
                  if (!itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index a667b327935efd15318f9f27d81fe73aabc93484..0ae97477b58f82966dda417c5d9083ab040f6f10 100644
+index 8e829d522a6012f409161ad5a9a06721a942d7e4..9ffa04d1d98e9890dbd650ec88e4f4c693b81c11 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -176,7 +176,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
