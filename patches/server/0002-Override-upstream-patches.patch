@@ -51,32 +51,6 @@ index c9ae7e88afb1ca8349a118c6b491a1e1e83517a7..5c6596990f0f3064c691735b07d87cff
 +    }
 +    // KioCG end
  }
-diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6b5bcc87e96619877737fc8200075bdb99d59230..9fa4a02ce780923fd2baef723820510005fdc829 100644
---- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
-+++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2168,7 +2168,7 @@ public class ServerPlayer extends Player {
- 
-     public void resetLastActionTime() {
-         this.lastActionTime = Util.getMillis();
--        this.setAfk(false); // Purpur
-+        //this.setAfk(false); // Purpur // KioCG - 使用插件控制AFK
-     }
- 
-     // Purpur Start
-diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 6638d769a34287d54b22e4416003556915e153f1..c9dd4ef1a5152ab014d116311b5f9273dbd6b9ed 100644
---- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-+++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -405,7 +405,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
- 
-         if (this.player.getLastActionTime() > 0L && this.server.getPlayerIdleTimeout() > 0 && Util.getMillis() - this.player.getLastActionTime() > (long) this.server.getPlayerIdleTimeout() * 1000L * 60L && !this.player.wonGame) { // Paper - Prevent AFK kick while watching end credits.
-             // Purpur start
--            this.player.setAfk(true);
-+            //this.player.setAfk(true); // KioCG - 使用插件控制AFK
-             if (!this.player.level().purpurConfig.idleTimeoutKick || (!Boolean.parseBoolean(System.getenv("PURPUR_FORCE_IDLE_KICK")) && kickPermissionCache.getUnchecked(this.player.getBukkitEntity()))) {
-                 return;
-             }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index aa7ef9bcd6caffa9b987ae4ae759f89358e3001d..1a0078acc26b546688d4c2d3f6b6433a097aebf9 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
