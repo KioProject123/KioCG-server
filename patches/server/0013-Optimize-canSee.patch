@@ -1,21 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 16 Jun 2023 05:29:40 +0800
+Date: Thu, 26 Oct 2023 11:26:17 +0800
 Subject: [PATCH] Optimize canSee
 
 
-diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 3f4df62773dfe1045914325ce5bc13162192679c..69a44e173562fe6b22e1ea2d4175489f328ee52f 100644
---- a/src/main/java/net/minecraft/server/level/ChunkMap.java
-+++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -1302,6 +1302,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
-                 // Paper end - check Y
- 
-                 // CraftBukkit start - respect vanish API
-+                if (flag) // KioCG
-                 if (!player.getBukkitEntity().canSee(this.entity.getBukkitEntity())) {
-                     flag = false;
-                 }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 index 4482e9401be4af7b16991f37d319e90602af2227..17df63621d23cbd7f9d0d8c82859eb8130fbcb21 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java

@@ -18,10 +18,10 @@ index 3c83fc78af6ce549a821c0e030d3dea1790dca47..0ad63914b010cafee06c997dbb6fea58
      private WarningState warningState = WarningState.DEFAULT;
      public String minimumAPI;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 52b48e40c3ee5f483c6cb04409459cf25abc3f0d..49056ad9ece2cf38532db6c5710cf20600f59fa1 100644
+index 42040939ae5e1e576c59cd0e1e3bcdb51899139f..be0e677586e7c1e740dacde413355a012857847f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -151,7 +151,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -152,7 +152,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      private final BiomeProvider biomeProvider;
      private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
      private final BlockMetadataStore blockMetadata = new BlockMetadataStore(this);
