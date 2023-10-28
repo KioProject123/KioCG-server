@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 13 Oct 2023 22:09:59 +0800
+Date: Sat, 28 Oct 2023 13:56:54 +0800
 Subject: [PATCH] Vanilla recipe excludes model items
 
 
@@ -68,7 +68,7 @@ index 8de3c3aac56415dca3815d5b103c7501f6d33f7e..78e541c95df64fe7b505e5c51c6c3561
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index bf6778438dcfc5b83f40d06a291f58d5521999ce..8c9a6154268e4d7a5fc3724ee19eedc85857d2aa 100644
+index 558ad172058ef6f21364cc1a324ddc7beca3d5c3..1548271b5f7922e3d37ab5bea7ef34e2a80da97d 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -177,9 +177,10 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -78,7 +78,7 @@ index bf6778438dcfc5b83f40d06a291f58d5521999ce..8c9a6154268e4d7a5fc3724ee19eedc8
 -                    if (k <= 0) {
 +                    if (k <= 0 || io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), itemstack2)) { // KioCG
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
-                         this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
+                         this.cost.set(AnvilMenu.DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
 +                        sendAllDataToRemote(); // KioCG
                          return;
                      }
@@ -90,7 +90,7 @@ index bf6778438dcfc5b83f40d06a291f58d5521999ce..8c9a6154268e4d7a5fc3724ee19eedc8
 -                    if (!flag && (!itemstack1.is(itemstack2.getItem()) || !itemstack1.isDamageableItem())) {
 +                    if (!flag && (!itemstack1.is(itemstack2.getItem()) || !itemstack1.isDamageableItem() || io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), itemstack2))) { // KioCG
                          org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(this.getBukkitView(), ItemStack.EMPTY); // CraftBukkit
-                         this.cost.set(DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
+                         this.cost.set(AnvilMenu.DEFAULT_DENIED_COST); // CraftBukkit - use a variable for set a cost for denied item
 +                        sendAllDataToRemote(); // KioCG
                          return;
                      }
@@ -162,7 +162,7 @@ index d604b7ec46f08993647979ed220a84842e3fe325..e4654f8362adb1c369e164d04fcbded4
  
                      if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
-index 3b721092a7a73472756064e0eb91d3220fdc4bc8..de54f9d19caad1546f67e8043409dfc4044ca7bf 100644
+index b1eacb9691b320a10de3420fae3632bb9d5b7ae3..fa1639ef4e87c49e4aa680799e24db557b69234e 100644
 --- a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 @@ -213,6 +213,13 @@ public class GrindstoneMenu extends AbstractContainerMenu {
@@ -215,7 +215,7 @@ index 146006af2af0881de199a0607a1b8f33de4c3f4f..e507461477e05f83006441c80d3778db
          if (!itemstack.isEmpty() && !itemstack1.isEmpty()) {
              itemstack2 = itemstack.copyWithCount(1);
 diff --git a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
-index 9db5275c43f25ea8ab595017a1b1a8d9db08cb4c..97c887586234f15a0375e0956be2f05cf7c06d38 100644
+index 857f65be8c4d9ec3a0586017b3f3e8e35cb78b97..5270f97d6f4f627a840e461c7e1f6a84397ab1e3 100644
 --- a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
 @@ -109,6 +109,13 @@ public class SmithingMenu extends ItemCombinerMenu {

@@ -5,7 +5,7 @@ Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 9e448dc490fc7c03ed542097849798d1294c47b1..5bc2a304cd71cd4629bff401969ce48c05ca29e9 100644
+index 37cd820098d9078c84c21e11aa5f32fae0cb048f..5953587ccd3dfbd9c2033ba7fd64f805b343a688 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -270,7 +270,7 @@ public abstract class PlayerList {

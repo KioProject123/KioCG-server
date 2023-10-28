@@ -163,7 +163,7 @@ index 2fd376789bb24b14101e289733631a9a4b68fa1c..622ba48ea8c2e2d1a25106d3bed57c45
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bc0dfdad161936d1881066f61de02e6c9a7ed8a7..8994381c6d5fbe19a7f6a606e753ec92f7b9166b 100644
+index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..d855b7a56ffb415df2f8945e22d185b674c08b45 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1403,6 +1403,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -210,7 +210,7 @@ index bc0dfdad161936d1881066f61de02e6c9a7ed8a7..8994381c6d5fbe19a7f6a606e753ec92
  
      private ServerStatus buildServerStatus() {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f86d6d6625f2ea6c4fce02fd19ffb9ac7cd64925..59f216c94cb5df9f898f72fe491d7c492f902cea 100644
+index c3239a2823d152b8de1f760216323936c8b3a1ff..1605615f806d158a91e4e3509b550d45e94fd2c7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1454,6 +1454,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -248,7 +248,7 @@ index f86d6d6625f2ea6c4fce02fd19ffb9ac7cd64925..59f216c94cb5df9f898f72fe491d7c49
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6b5bcc87e96619877737fc8200075bdb99d59230..2839deae5fe44df8996236c08fef14e5e113a106 100644
+index 989c452392d1de960c469ea9638a632781fc4275..539636243616448d95a5ba838a3ee4e835573568 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -278,6 +278,7 @@ public class ServerPlayer extends Player {
@@ -324,7 +324,7 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 0e192a128c87124956fcec552362ab763bac5e55..7c4f8897b190b5dcc95271562a5d4c32e2b8075b 100644
+index 067302709a2291274eeecd1e4e04662b6914da12..7f88c1852d863cf73a6cd727e66ddaff990235bd 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -5010,4 +5010,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -383,7 +383,7 @@ index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f02
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 73e020c3ab15dcc04b64a116c215285986e52b67..6a93363ccd614aa478f867543d767e81827e828e 100644
+index 904e3fce62a193b9c866d9f4c200e83d685a8669..0c8971f995d82eee875bfcc555f6b429c69b5f3e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -369,4 +369,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
@@ -399,7 +399,7 @@ index 73e020c3ab15dcc04b64a116c215285986e52b67..6a93363ccd614aa478f867543d767e81
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 20c3d3c9d2150574e9b4761dc1bda11cee04862f..0a1fe7eae831a4f1ac103dca8bdd299c76207282 100644
+index 724329ded5d72eb230db392972d30e7ba4e69ceb..ccae22d627df53dc40e49369bf3d5f2f1f369521 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -2508,4 +2508,11 @@ public abstract class Player extends LivingEntity {
@@ -431,7 +431,7 @@ index b0a559dfefac693bda8692a30fbaa5ac8062ef27..caf115c0571e85aa512d683ec77b79be
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 496ce7bdf640357405cc866603a540fc0bc11488..43b1d167037246597902ac7727faecea3e14bfd8 100644
+index ae07a81576d2c52acb2bc020000668b8c10edc24..7be7a0a810a424d83aaa12ab2a4682e5ffa60bc8 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -85,6 +85,7 @@ public class LevelChunk extends ChunkAccess {

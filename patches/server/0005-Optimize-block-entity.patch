@@ -135,7 +135,7 @@ index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 220e1dbf70e7d51ea69d964eb7e84f55aa5a32d7..496ce7bdf640357405cc866603a540fc0bc11488 100644
+index 66656c4cf157228c9f52b33b358713ef0172f9ff..ae07a81576d2c52acb2bc020000668b8c10edc24 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -587,7 +587,7 @@ public class LevelChunk extends ChunkAccess {

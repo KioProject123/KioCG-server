@@ -5,7 +5,7 @@ Subject: [PATCH] Adjust enchantment
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 91e83c2ce7539c3004435baf12f13795e4bad874..bf6778438dcfc5b83f40d06a291f58d5521999ce 100644
+index 0951f89827ca959357a4febef3213044169e7579..558ad172058ef6f21364cc1a324ddc7beca3d5c3 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -229,6 +229,7 @@ public class AnvilMenu extends ItemCombinerMenu {

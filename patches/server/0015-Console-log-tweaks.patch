@@ -18,7 +18,7 @@ index e4fd372a1d585887287253a02531cd192929377b..f839aee9a42cbbe280daf54def782787
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 21da8b6b0df40b6b88a325ced5d6553ad5912d31..5a258943f3ca9695a7f0a64b4a534b619d8a9ec9 100644
+index a51306bb36d403ab627cd8b2fc8d8f7a3e6ca918..01fc1095a5f1eb9c55042b78315c91155d9666bd 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -181,7 +181,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -40,7 +40,7 @@ index 21da8b6b0df40b6b88a325ced5d6553ad5912d31..5a258943f3ca9695a7f0a64b4a534b61
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 5c38df8170033dbfee267520991a3cc3285d219e..9e448dc490fc7c03ed542097849798d1294c47b1 100644
+index d83f360d5f28f39fffca2949c5dbc114c04e7629..37cd820098d9078c84c21e11aa5f32fae0cb048f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1442,7 +1442,7 @@ public abstract class PlayerList {

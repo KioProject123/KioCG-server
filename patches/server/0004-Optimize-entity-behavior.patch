@@ -244,7 +244,7 @@ index d13eed85d5399cd6991b3ad90f05a5805a3a2678..2b22e378c642fa2b37db013c49842b80
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 3f00634dd8d426f4578a3d6362f7a52f57e09d3b..d9e520a5d08bb3b739c19151bbe186a226a728f3 100644
+index 19d7f16827b5c4fe9186e9d41824acff67034a28..aeb9cb200a396a2b1b54cd9253abd5c913bfe698 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -164,7 +164,7 @@ public class Zombie extends Monster {
@@ -266,7 +266,7 @@ index 3f00634dd8d426f4578a3d6362f7a52f57e09d3b..d9e520a5d08bb3b739c19151bbe186a2
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index d8a4b1aaa180fc0c837bc0d8efab781a578898a5..73e020c3ab15dcc04b64a116c215285986e52b67 100644
+index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d685a8669 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -117,6 +117,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
@@ -288,7 +288,7 @@ index d8a4b1aaa180fc0c837bc0d8efab781a578898a5..73e020c3ab15dcc04b64a116c2152859
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index eae9bf47521ded2a4b7972978f3bd801c685d56a..fd1df60eebb54d404ba284e7a984e146c6318c71 100644
+index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707fe4121aa 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -303,6 +303,7 @@ public class ActivationRange

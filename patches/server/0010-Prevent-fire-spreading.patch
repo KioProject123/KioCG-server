@@ -5,7 +5,7 @@ Subject: [PATCH] Prevent fire spreading
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/FireBlock.java b/src/main/java/net/minecraft/world/level/block/FireBlock.java
-index 4002e0fffb60556e7af1aeff71b4be244f02b0f5..bd5208773e6d1ffebb1c0109ee32c00195fcbcfd 100644
+index 2c7847aebabe14da44b9a42f5ecae77858fb9dd3..0fad1cb2e737ef6803c9fbdc594ebef003948570 100644
 --- a/src/main/java/net/minecraft/world/level/block/FireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FireBlock.java
 @@ -213,6 +213,8 @@ public class FireBlock extends BaseFireBlock {
