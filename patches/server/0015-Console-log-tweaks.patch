@@ -40,7 +40,7 @@ index a51306bb36d403ab627cd8b2fc8d8f7a3e6ca918..01fc1095a5f1eb9c55042b78315c9115
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index d83f360d5f28f39fffca2949c5dbc114c04e7629..37cd820098d9078c84c21e11aa5f32fae0cb048f 100644
+index 50720000069a4914c11ef5c402a39c469966196f..d04de3cf8675a837d753ecea37a33051f6c589f0 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1442,7 +1442,7 @@ public abstract class PlayerList {

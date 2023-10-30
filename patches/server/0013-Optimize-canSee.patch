@@ -17,7 +17,7 @@ index a18bc175d0a6d55492edd02cdc407a52d58346c1..a7349ac5f254a7a3f11414d985649e5e
              if (visible) {
                  // Making visible by default, reset and show to all players
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b9966e639b671aa97cdbfc1da49a172be99ded1e..6cbf135097d726e699513c4b0d7c2187058a54b5 100644
+index afb0229d0d895f20dcc8475430118ec83e0f12e9..9c0efe6b69dbed5491d11d8906c3fdc82b08201f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1850,6 +1850,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
