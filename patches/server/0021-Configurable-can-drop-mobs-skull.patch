@@ -69,7 +69,7 @@ index b5462ca1e67c87eeb447b8c4536c4bba897be186..85b10c2d5d08af3307771e44c9b37982
                  this.spawnAtLocation((ItemLike) Items.WITHER_SKELETON_SKULL);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index aeb9cb200a396a2b1b54cd9253abd5c913bfe698..da97b5225329c001cded3bd78b66ef50329f263d 100644
+index 7e041c50c7ea22b97d4e266ee428e2e36bca2fad..ea2506956b0484e808bea5dd79a5c462b80079b2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -644,7 +644,7 @@ public class Zombie extends Monster {

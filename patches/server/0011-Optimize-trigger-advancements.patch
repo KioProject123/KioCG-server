@@ -43,7 +43,7 @@ index b046d9ebbaf4badb6908b10c8b5c38ac279ade46..79b92aa192ffbec93c3e846e102f7fd8
              }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 29f301bde378bd320d5c44f2c1b6bf9dc185e286..55b1a8e9f7401539ae8c99e470f275bf321db279 100644
+index 8f73e9e9da595805a2cbb7995b89aac05417d45a..27a08f131647d7b7dc733b1d2a6515fa6a40c632 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 @@ -233,14 +233,32 @@ public abstract class AbstractContainerMenu {
