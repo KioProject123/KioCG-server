@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable persistent when picked up items
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..a0b96ca74ab21f8a15bc42d0d9268af2a1efcdb9 100644
+index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..01432740baaf1008f61981bed6d2857927414f8f 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 @@ -560,6 +560,8 @@ public class WorldConfiguration extends ConfigurationPart {
@@ -13,19 +13,19 @@ index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..a0b96ca74ab21f8a15bc42d0d9268af2
                  public boolean canDropPiglinSkull = true;
              }
 +
-+            public boolean persistentWhenPickedUpItems = true;
++            public boolean persistentOnlyWhenPickedUpEnchantedItems = false;
          }
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..261577ef60f2b22c98ea1f0a90c7221dccef9ca2 100644
+index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..9068b33246d9f3ba6da0f0ea024260f7a95bc5a4 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -391,6 +391,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
          if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
              this.discard();
-+            if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
++            if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
          }
      }
      // Purpur end
@@ -33,7 +33,7 @@ index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..261577ef60f2b22c98ea1f0a90c7221d
      protected void setItemSlotAndDropWhenKilled(EquipmentSlot slot, ItemStack stack) {
          this.setItemSlot(slot, stack);
          this.setGuaranteedDrop(slot);
-+        if (this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) // KioCG
++        if (!this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems || stack.isEnchanted()) // KioCG
          this.persistenceRequired = true;
      }
  
@@ -66,7 +66,7 @@ index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..261577ef60f2b22c98ea1f0a90c7221d
  
                  if (d0 > (double) j && this.removeWhenFarAway(d0)) {
                      this.discard();
-+                    if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
++                    if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
                  }
  
                  int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - custom despawn distances
@@ -74,7 +74,7 @@ index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..261577ef60f2b22c98ea1f0a90c7221d
  
                  if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double) l && this.removeWhenFarAway(d0)) {
                      this.discard();
-+                    if (!this.level().paperConfig().kiocgConfig.entities.persistentWhenPickedUpItems) this.dropPickedUpItems(); // KioCG
++                    if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
                  } else if (d0 < (double) l) {
                      this.noActionTime = 0;
                  }
