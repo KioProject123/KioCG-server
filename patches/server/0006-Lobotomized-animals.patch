@@ -62,7 +62,7 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 33bba12f2c1007c786dce782efa32f126881ad66..1add7b080b564b8cea0b026e983b95577be9b47f 100644
+index 90619ffb0295c3505527936f49bd1b8fb96f90d6..8fd024a42e456b3af9206ab5500955ea376bb2d5 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -309,7 +309,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 81bb48853acb34ad2f26da43b4d81620a9bfcc4f..15728d1ea218d6d6cb94787c2b6dd6d4131326f0 100644
+index 02df0bf09f2ef91e4dafbdcea590b4634b2abf08..7a5409ae7f7dfea779564e94ffe84c3bec21e04c 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

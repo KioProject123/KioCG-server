@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable persistent when picked up items
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..01432740baaf1008f61981bed6d2857927414f8f 100644
+index 153c95b6fd771e5e21ed7caa1ec3224d024cf2a2..597d641a590fc82096536f3b8908dd3ad47f9523 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -560,6 +560,8 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -559,6 +559,8 @@ public class WorldConfiguration extends ConfigurationPart {
                  public boolean canDropZombieSkull = true;
                  public boolean canDropPiglinSkull = true;
              }
@@ -18,7 +18,7 @@ index 177d4804ac23a4749fc38b36df76e5bb48d90b5a..01432740baaf1008f61981bed6d28579
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 67d7f22a0dad94f41160fdb00c2a6227b93a08a8..9068b33246d9f3ba6da0f0ea024260f7a95bc5a4 100644
+index c6c187d55873b9562c43ace470f72b0221e419c8..97b9853d0ee3e1a207c0b05050654ed017b03858 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -391,6 +391,7 @@ public abstract class Mob extends LivingEntity implements Targeting {

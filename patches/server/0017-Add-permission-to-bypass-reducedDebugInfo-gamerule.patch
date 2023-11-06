@@ -5,10 +5,10 @@ Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index d04de3cf8675a837d753ecea37a33051f6c589f0..8ce5121f60b5fe03b217d8c07cf8610c71efc469 100644
+index d8f647a19cf03f5c9a76f160b4b77d867dee6651..aa8f93b2e76e1c7faf0f2b208a17a0d921dcae57 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -270,7 +270,7 @@ public abstract class PlayerList {
+@@ -291,7 +291,7 @@ public abstract class PlayerList {
          ServerGamePacketListenerImpl playerconnection = new ServerGamePacketListenerImpl(this.server, connection, player, clientData);
          GameRules gamerules = worldserver1.getGameRules();
          boolean flag = gamerules.getBoolean(GameRules.RULE_DO_IMMEDIATE_RESPAWN);
@@ -17,7 +17,7 @@ index d04de3cf8675a837d753ecea37a33051f6c589f0..8ce5121f60b5fe03b217d8c07cf8610c
          boolean flag2 = gamerules.getBoolean(GameRules.RULE_LIMITED_CRAFTING);
  
          // Spigot - view distance
-@@ -1307,7 +1307,7 @@ public abstract class PlayerList {
+@@ -1328,7 +1328,7 @@ public abstract class PlayerList {
          player.getEntityData().refresh(player); // CraftBukkkit - SPIGOT-7218: sync metadata
          player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules

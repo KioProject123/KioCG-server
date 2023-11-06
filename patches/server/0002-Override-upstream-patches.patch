@@ -35,10 +35,10 @@ index a6f58b3457b7477015c5c6d969e7d83017dd3fa1..8de3c3aac56415dca3815d5b103c7501
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index c9ae7e88afb1ca8349a118c6b491a1e1e83517a7..5c6596990f0f3064c691735b07d87cff3e8172dd 100644
+index ed79d30f33b2674863b2d73b1abdb48433c33412..0fcaa6642e9ee592c9782b8a32f0dfd35e8536e1 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -536,4 +536,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -535,4 +535,12 @@ public class WorldConfiguration extends ConfigurationPart {
              VANILLA, EIGENCRAFT, ALTERNATE_CURRENT
          }
      }
@@ -52,7 +52,7 @@ index c9ae7e88afb1ca8349a118c6b491a1e1e83517a7..5c6596990f0f3064c691735b07d87cff
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 105770551539444c0872cb25b7be197389ad525e..f06fa5b0ab091136f03d3d595dbdcf5ebb32f094 100644
+index 02f4a2a0bfd66a557f5167ac9ccd13ff9f3dd763..1aed53291097f77e07e37cebde919737862b7ebe 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {

@@ -18,7 +18,7 @@ index 3fad786583be8ef3077ab8edd18ead5b6b3040a2..c796eb31b3326264a6569d458db5c41a
      private WarningState warningState = WarningState.DEFAULT;
      public String minimumAPI;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3b153d96b08c5591b4a322a2bbd5986257d4609a..8d3afea35c3700b8ff32224b7e5467d3869c4e82 100644
+index c2e9e44f7399ba7236ab30bfd1ab7f8a69cef4b8..5455de07d3080e2004faf3aec9615f8d9337bdb9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -152,7 +152,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
