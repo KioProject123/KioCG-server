@@ -207,7 +207,7 @@ index 0e36e3e672de4c806e2d534b437489a3a349a722..d701c94c55339c31f3a7ce82da5c714c
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 2e268aa614522b40fbffabce4017b228db5bcba8..3283d19434769cb6948b7641f1b5287b589d3142 100644
+index a434d91b8dfff30cff81df964ea8149caa8cb604..ac5d8f4ae71acdeeae5901df2a70d562d2e242c1 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -42,6 +42,7 @@ public abstract class Animal extends AgeableMob {

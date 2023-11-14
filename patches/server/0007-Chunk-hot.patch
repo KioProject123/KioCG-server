@@ -324,7 +324,7 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d61d7ae47285d9779221011212f871c4ef7de830..c439521e3cfe1ec5502b02ef36df56a94d4fa0c7 100644
+index c53f071d183fb7e13f7d7c4e5c82589b33bd7147..f3f486d8532b98064c115fcff363b188546c1b54 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -5022,4 +5022,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -335,7 +335,7 @@ index d61d7ae47285d9779221011212f871c4ef7de830..c439521e3cfe1ec5502b02ef36df56a9
 +    public boolean shouldTickHot() { return this.tickCount > 20*10 && this.isAlive(); } // KioCG
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LightningBolt.java b/src/main/java/net/minecraft/world/entity/LightningBolt.java
-index 471275c5362b61ce8b5b9dd5c85b3e93cabd3f76..c0c34d055c4e4a532c996c352150371619695d05 100644
+index 841ee02f6ad19d737534a2bf9f52d0d09785660f..b79909ce752442e7309000e1965bd6c359de5ad2 100644
 --- a/src/main/java/net/minecraft/world/entity/LightningBolt.java
 +++ b/src/main/java/net/minecraft/world/entity/LightningBolt.java
 @@ -286,4 +286,11 @@ public class LightningBolt extends Entity {

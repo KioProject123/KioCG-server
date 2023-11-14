@@ -5,10 +5,10 @@ Subject: [PATCH] Death drop protection
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 70cb5d2aec1ad1cb071860e7a02f42f1ff0c1716..eb77cdc243467ccf5359079197018320afa09368 100644
+index f33d6e9785acbd21a0b366587aa170cc1509bf58..68f3bad20b7977bf910f9e9d032c7753ff6f5b48 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1007,7 +1007,12 @@ public class CraftEventFactory {
+@@ -1009,7 +1009,12 @@ public class CraftEventFactory {
          for (org.bukkit.inventory.ItemStack stack : event.getDrops()) {
              if (stack == null || stack.getType() == Material.AIR) continue;
  
