@@ -26,24 +26,36 @@ index 79b92aa192ffbec93c3e846e102f7fd8d5beefc3..77e3febb900c2a97c609f31372c353b3
              if (this.oldLevel == -1) {
                  this.oldLevel = this.experienceLevel;
 diff --git a/src/main/java/net/minecraft/world/level/StructureManager.java b/src/main/java/net/minecraft/world/level/StructureManager.java
-index 09c85ed428b8eaf51f8b3c6e45cce925f05ab354..fffc4bb9c3fb1e0043d2324f6ebe18ee5fd50d91 100644
+index 09c85ed428b8eaf51f8b3c6e45cce925f05ab354..ec580ed175f68d9d23d4cc6de62ad3638a0e39d0 100644
 --- a/src/main/java/net/minecraft/world/level/StructureManager.java
 +++ b/src/main/java/net/minecraft/world/level/StructureManager.java
-@@ -158,6 +158,21 @@ public class StructureManager {
+@@ -158,6 +158,33 @@ public class StructureManager {
          return this.level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_REFERENCES).hasAnyStructureReferences();
      }
  
 +    // KioCG start
 +    public boolean hasAnyStructureAtExact(BlockPos pos) {
++        net.minecraft.world.level.levelgen.structure.BoundingBox boundingBox = new net.minecraft.world.level.levelgen.structure.BoundingBox
++            (pos.getX() - 4, pos.getY() - 4, pos.getZ() - 4, pos.getX() + 4, pos.getY() + 4, pos.getZ() + 4);
 +        for (Map.Entry<Structure, LongSet> entry : this.getAllStructuresAt(pos).entrySet()) {
 +            java.util.concurrent.atomic.AtomicBoolean hasPieceAt = new java.util.concurrent.atomic.AtomicBoolean(false);
 +            this.fillStartsForStructure(entry.getKey(), entry.getValue(), structureStart -> {
-+                if (this.structureHasPieceAt(pos, structureStart)) {
++                if (this.structureHasPieceIntersects(boundingBox, structureStart)) {
 +                    hasPieceAt.set(true);
 +                }
 +            });
 +            if (hasPieceAt.get()) return true;
 +        }
++        return false;
++    }
++
++    public boolean structureHasPieceIntersects(net.minecraft.world.level.levelgen.structure.BoundingBox boundingBox, StructureStart structureStart) {
++        for (StructurePiece structurePiece : structureStart.getPieces()) {
++            if (structurePiece.getBoundingBox().intersects(boundingBox)) {
++                return true;
++            }
++        }
++
 +        return false;
 +    }
 +    // KioCG end
