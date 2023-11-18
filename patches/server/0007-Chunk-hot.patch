@@ -248,7 +248,7 @@ index c3239a2823d152b8de1f760216323936c8b3a1ff..1605615f806d158a91e4e3509b550d45
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a19c2d10385d3bc81061f188e2874fe118ddd425..b046d9ebbaf4badb6908b10c8b5c38ac279ade46 100644
+index a19c2d10385d3bc81061f188e2874fe118ddd425..bb5d311d0d5c65ee0b1444eba70038d1c3fd89c5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -278,6 +278,7 @@ public class ServerPlayer extends Player {
@@ -259,7 +259,7 @@ index a19c2d10385d3bc81061f188e2874fe118ddd425..b046d9ebbaf4badb6908b10c8b5c38ac
  
      // Paper start - replace player chunk loader
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
-@@ -774,6 +775,47 @@ public class ServerPlayer extends Player {
+@@ -774,6 +775,51 @@ public class ServerPlayer extends Player {
              }
          }
          // Purpur end
@@ -268,16 +268,20 @@ index a19c2d10385d3bc81061f188e2874fe118ddd425..b046d9ebbaf4badb6908b10c8b5c38ac
 +        if (this.server.getTickCount() % 20 == 1) {
 +            this.nearbyChunkHot = this.refreshNearbyChunkHot();
 +            if (this.nearbyChunkHot < this.level().paperConfig().kiocgConfig.chunkHot.phaseOne) {
++                this.hasVisualFire = false;
 +                chunkHotPhaseOneTick = 0;
 +                chunkHotPhaseTwoTick = 0;
 +            } else if (this.nearbyChunkHot < this.level().paperConfig().kiocgConfig.chunkHot.phaseTwo && ++chunkHotPhaseOneTick >= 10) {
++                this.hasVisualFire = false;
 +                if (this.isAfk || MinecraftServer.getServer().lagging) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                }
 +            } else if (++chunkHotPhaseTwoTick >= 10) {
++                this.hasVisualFire = false;
 +                if (this.isAfk || MinecraftServer.getServer().lagging) {
 +                    this.connection.disconnect(Component.translatable("multiplayer.disconnect.idling"), org.bukkit.event.player.PlayerKickEvent.Cause.IDLING);
 +                } else {
++                    this.hasVisualFire = true;
 +                    this.hurt(this.damageSources().generic(), 2.0F);
 +                    this.sendActionBarMessage("<red><italic>你所在的区域太热辣!");
 +                }
