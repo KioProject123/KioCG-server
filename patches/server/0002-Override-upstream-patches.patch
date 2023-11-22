@@ -51,6 +51,19 @@ index 84e6fc5bac43ee0499b391827726bc02f6d3e46f..78a68121b1ad0af49711b574b7f37a77
 +    }
 +    // KioCG end
  }
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..9445a9724b3c52e9473235c6e7e1cc288dfba6c0 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1159,7 +1159,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                         this.recentTps[3] = tps15.getAverage();
+                         // Purpur end
+                     // Paper end
+-                        lagging = recentTps[0] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur
++                        lagging = recentTps[1] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur // KioCG - 防止TPS瞬时波动
+                     tickSection = curTime;
+                 }
+                 // Spigot end
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index 02f4a2a0bfd66a557f5167ac9ccd13ff9f3dd763..1aed53291097f77e07e37cebde919737862b7ebe 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
