@@ -134,10 +134,10 @@ index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 0fcaa6642e9ee592c9782b8a32f0dfd35e8536e1..46c4b9d1114475c2fd9f22e913a78fe33b84e754 100644
+index 78a68121b1ad0af49711b574b7f37a773691b6c2..3cbd53f6cf77b6b54bdd7664c536a8c71f91af6d 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -540,7 +540,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -541,7 +541,12 @@ public class WorldConfiguration extends ConfigurationPart {
      public KiocgConfig kiocgConfig;
  
      public class KiocgConfig extends ConfigurationPart {
@@ -210,7 +210,7 @@ index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..d855b7a56ffb415df2f8945e22d185b6
  
      private ServerStatus buildServerStatus() {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c3239a2823d152b8de1f760216323936c8b3a1ff..1605615f806d158a91e4e3509b550d45e94fd2c7 100644
+index 1c8724fb56e790922c7e8fc73bc97442b7a6df83..f66ec9bebd8441bdfbfcd9cca23a5c885122e814 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1454,6 +1454,8 @@ public class ServerLevel extends Level implements WorldGenLevel {

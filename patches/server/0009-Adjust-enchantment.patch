@@ -17,7 +17,7 @@ index 0951f89827ca959357a4febef3213044169e7579..558ad172058ef6f21364cc1a324ddc7b
  
                              if (this.player.getAbilities().instabuild || itemstack.is(Items.ENCHANTED_BOOK)) {
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index 2c51a73ebfd05af21b0f5d731fc9f1df77fed1a1..0ef0aa2d44690a18914f472984b0640db1ae7aae 100644
+index 2c51a73ebfd05af21b0f5d731fc9f1df77fed1a1..de3f4b10a98edf8b8afc178d7f78bca26ede6391 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 @@ -317,6 +317,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {

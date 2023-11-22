@@ -35,10 +35,10 @@ index a6f58b3457b7477015c5c6d969e7d83017dd3fa1..8de3c3aac56415dca3815d5b103c7501
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index ed79d30f33b2674863b2d73b1abdb48433c33412..0fcaa6642e9ee592c9782b8a32f0dfd35e8536e1 100644
+index 84e6fc5bac43ee0499b391827726bc02f6d3e46f..78a68121b1ad0af49711b574b7f37a773691b6c2 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -535,4 +535,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -536,4 +536,12 @@ public class WorldConfiguration extends ConfigurationPart {
              VANILLA, EIGENCRAFT, ALTERNATE_CURRENT
          }
      }

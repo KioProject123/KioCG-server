@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable persistent when picked up items
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 153c95b6fd771e5e21ed7caa1ec3224d024cf2a2..597d641a590fc82096536f3b8908dd3ad47f9523 100644
+index 93d155a3a03077db31f08f18e01b76f3712c6e25..19ac1583ab58b81774329bc00bc6cc8cfe900449 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -559,6 +559,8 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -560,6 +560,8 @@ public class WorldConfiguration extends ConfigurationPart {
                  public boolean canDropZombieSkull = true;
                  public boolean canDropPiglinSkull = true;
              }
