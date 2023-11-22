@@ -1,0 +1,58 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Wed, 22 Nov 2023 23:42:24 +0800
+Subject: [PATCH] Healing campfire
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index 0768313cbdadcce708e819b3d9f682bdaebfa415..ade680e03d0e1b8d8c120c3002dadfea45a87094 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -191,6 +191,7 @@ public abstract class Player extends LivingEntity {
+     public int sixRowEnderchestSlotCount = -1; // Purpur
+     public int burpDelay = 0; // Purpur
+     public boolean canPortalInstant = false; // Purpur
++    public int campfireHealTick; // KioCG
+ 
+     // CraftBukkit start
+     public boolean fauxSleeping;
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
+index d239b7c87a065917fefaf57e22a18b55bc419f48..88f70cebcf2c9c96fe3cf97e22be18fe654cfd59 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
+@@ -115,12 +115,35 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+             }
+         }
+ 
++        // KioCG start
++        if (state.is(net.minecraft.world.level.block.Blocks.CAMPFIRE) && world.getGameTime() % 80L == 0L) {
++            CampfireBlockEntity.applyEffects(world, pos);
++        }
++        // KioCG end
++
+         if (flag) {
+             setChanged(world, pos, state);
+         }
+ 
+     }
+ 
++    // KioCG start
++    private static void applyEffects(Level world, BlockPos pos) {
++        net.minecraft.world.phys.AABB axisalignedbb = (new net.minecraft.world.phys.AABB(pos)).inflate(3, 2, 3).move(0.0, 1.0, 0.0);
++        java.util.List<net.minecraft.world.entity.player.Player> list1 = world.getEntitiesOfClass(net.minecraft.world.entity.player.Player.class, axisalignedbb);
++        if (!list1.isEmpty()) {
++            java.util.Iterator iterator = list1.iterator();
++            while (iterator.hasNext()) {
++                net.minecraft.world.entity.player.Player entityhuman = (net.minecraft.world.entity.player.Player) iterator.next();
++                if (entityhuman.campfireHealTick != entityhuman.tickCount) {
++                    entityhuman.campfireHealTick = entityhuman.tickCount;
++                    entityhuman.heal(1.0F, org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason.REGEN);
++                }
++            }
++        }
++    }
++    // KioCG end
++
+     public static void cooldownTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
+         boolean flag = false;
+ 
