@@ -59,7 +59,7 @@ index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c53
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..6b838382426bf97bd794af401deedd97cb8d6af5 100644
+index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..9f2538daf735bc5c4e2c1f7efb1df47b9dff9c4c 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -157,7 +157,7 @@ index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..6b838382426bf97bd794af401deedd97
 +                // KioCG start
 +                if (direction == Direction.UP && !HopperBlockEntity.suckInFilter(destination, item)) {
 +                    cooldownHopper(hopper);
-+                    return false;
++                    continue;
 +                }
 +                // KioCG end
 +
