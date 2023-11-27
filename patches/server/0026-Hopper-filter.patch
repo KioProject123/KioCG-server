@@ -1,0 +1,202 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Mon, 27 Nov 2023 05:18:28 +0800
+Subject: [PATCH] Hopper filter
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index 19ac1583ab58b81774329bc00bc6cc8cfe900449..75c8994599ff3d0fd2b8bdb8c7248acf98074f7f 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -563,6 +563,9 @@ public class WorldConfiguration extends ConfigurationPart {
+ 
+             public boolean persistentOnlyWhenPickedUpEnchantedItems = false;
+         }
++
++        public boolean hopperPullsLockedContainer = true;
++        public boolean hopperPullsEntityOwnedItem = true;
+     }
+     // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..ecdfb62ea792a677eafae7dd5334d63371602a94 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
+ 
+ public class MinecartHopper extends AbstractMinecartContainer implements Hopper {
+     private boolean enabled = true;
++    @javax.annotation.Nullable public net.minecraft.world.item.Item[] itemFilter; // KioCG
+ 
+     public MinecartHopper(EntityType<? extends MinecartHopper> type, Level world) {
+         super(type, world);
+@@ -88,6 +89,14 @@ public class MinecartHopper extends AbstractMinecartContainer implements Hopper
+ 
+     }
+ 
++    // KioCG start
++    @Override
++    public void setCustomName(@javax.annotation.Nullable net.minecraft.network.chat.Component name) {
++        super.setCustomName(name);
++        this.itemFilter = this.hasCustomName() ? HopperBlockEntity.parseItemFilter(org.bukkit.craftbukkit.util.CraftChatMessage.fromComponent(this.getCustomName())) : null; // KioCG
++    }
++    // KioCG end
++
+     public boolean suckInItems() {
+         if (HopperBlockEntity.suckInItems(this.level(), this)) {
+             this.immunize();  // Paper
+diff --git a/src/main/java/net/minecraft/world/level/block/DropperBlock.java b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
+index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c5377ca1dba 100644
+--- a/src/main/java/net/minecraft/world/level/block/DropperBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
+@@ -65,6 +65,8 @@ public class DropperBlock extends DispenserBlock {
+                     if (iinventory == null) {
+                         itemstack1 = DropperBlock.DISPENSE_BEHAVIOUR.dispense(sourceblock, itemstack);
+                     } else {
++                        if (enumdirection == Direction.DOWN && !HopperBlockEntity.suckInFilter(iinventory, itemstack)) return; // KioCG - Hopper filter
++
+                         // CraftBukkit start - Fire event when pushing items into other inventories
+                         CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
+ 
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
+index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..eb080b473b593d1fcd1083093bd6d0eb53418055 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
+@@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+     // Pufferfish end
+     private int cooldownTime;
+     private long tickedGameTime;
++    @Nullable private net.minecraft.world.item.Item[] itemFilter; // KioCG
+ 
+     // CraftBukkit start - add fields and methods
+     public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+@@ -122,6 +123,75 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         }
+ 
+         this.cooldownTime = nbt.getInt("TransferCooldown");
++
++        // KioCG start
++        this.itemFilter = this.name != null ? HopperBlockEntity.parseItemFilter(org.bukkit.craftbukkit.util.CraftChatMessage.fromComponent(this.name)) : null;
++    }
++
++    @Override
++    public void setCustomName(Component customName) {
++        super.setCustomName(customName);
++        this.itemFilter = this.hasCustomName() ? HopperBlockEntity.parseItemFilter(org.bukkit.craftbukkit.util.CraftChatMessage.fromComponent(this.getCustomName())) : null; // KioCG
++    }
++
++    @Nullable
++    public static net.minecraft.world.item.Item[] parseItemFilter(String string) {
++        java.util.Set<net.minecraft.world.item.Item> filter = new java.util.HashSet<>();
++
++        for (String split : string.toLowerCase().split(" ")) {
++            if (!split.isEmpty()) {
++                if (split.startsWith("tag:")) {
++                    split = split.substring("tag:".length());
++
++                    net.minecraft.tags.TagKey<net.minecraft.world.item.Item> itemTagKey = net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM, new net.minecraft.resources.ResourceLocation(split));
++                    java.util.Optional<net.minecraft.core.HolderSet.Named<net.minecraft.world.item.Item>> tag = net.minecraft.core.registries.BuiltInRegistries.ITEM.getTag(itemTagKey);
++                    if (tag.isEmpty()) {
++                        return null;
++                    }
++
++                    for (net.minecraft.core.Holder<net.minecraft.world.item.Item> itemHolder : tag.get()) {
++                        filter.add(itemHolder.value());
++                    }
++                } else {
++                    if (split.startsWith("item:")) {
++                        split = split.substring("item:".length());
++                    }
++
++                    final net.minecraft.world.item.Item item = net.minecraft.core.registries.BuiltInRegistries.ITEM.get(new net.minecraft.resources.ResourceLocation(split));
++                    if (item == net.minecraft.world.item.Items.AIR) {
++                        return null;
++                    }
++
++                    filter.add(item);
++                }
++            }
++        }
++
++        return !filter.isEmpty() ? filter.toArray(net.minecraft.world.item.Item[]::new) : null;
++    }
++
++    public static boolean suckInFilter(Container hopper, ItemStack itemstack) {
++        if (hopper instanceof HopperBlockEntity blockEntity) {
++            if (blockEntity.itemFilter != null) {
++                for (net.minecraft.world.item.Item item : blockEntity.itemFilter) {
++                    if (itemstack.is(item)) {
++                        return true;
++                    }
++                }
++                return false;
++            }
++        } else if (hopper instanceof net.minecraft.world.entity.vehicle.MinecartHopper minecartHopper) {
++            if (minecartHopper.itemFilter != null) {
++                for (net.minecraft.world.item.Item item : minecartHopper.itemFilter) {
++                    if (itemstack.is(item)) {
++                        return true;
++                    }
++                }
++                return false;
++            }
++        }
++        return true;
++        // KioCG end
+     }
+ 
+     @Override
+@@ -218,6 +288,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         if (world.isClientSide) {
+             return false;
+         } else {
++            if (!world.paperConfig().kiocgConfig.hopperPullsLockedContainer && !blockEntity.lockKey.key.isEmpty()) return false; // KioCG
+             if (!blockEntity.isOnCooldown() && (Boolean) state.getValue(HopperBlock.ENABLED)) {
+                 boolean flag = false;
+ 
+@@ -269,6 +340,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         for (int i = 0; i < hopper.getContainerSize(); ++i) {
+             final ItemStack item = hopper.getItem(i);
+             if (!item.isEmpty()) {
++                // KioCG start
++                if (direction == Direction.UP && !HopperBlockEntity.suckInFilter(destination, item)) {
++                    cooldownHopper(hopper);
++                    return false;
++                }
++                // KioCG end
++
+                 foundItem = true;
+                 ItemStack origItemStack = item;
+                 ItemStack movedItem = origItemStack;
+@@ -309,6 +387,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+     }
+ 
+     private static boolean hopperPull(final Level level, final Hopper hopper, final Container container, ItemStack origItemStack, final int i) {
++        // KioCG start
++        if (!HopperBlockEntity.suckInFilter(hopper, origItemStack)) {
++            cooldownHopper(hopper);
++            return false; // 返回false来正确循环下一个物品
++        }
++        // KioCG end
++
+         ItemStack movedItem = origItemStack;
+         final int originalItemCount = origItemStack.getCount();
+         final int movedItemCount = Math.min(level.spigotConfig.hopperAmount, originalItemCount);
+@@ -568,6 +653,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+                 }
+                 return false;
+             } else {
++                if (!world.paperConfig().kiocgConfig.hopperPullsLockedContainer && iinventory instanceof BaseContainerBlockEntity lockable && !lockable.lockKey.key.isEmpty()) return true; // KioCG
+                 for (int slot = 0, max = iinventory.getContainerSize(); slot < max; ++slot) {
+                     ItemStack item = iinventory.getItem(slot);
+                     if (item.isEmpty() || !canTakeItemFromContainer(hopper, iinventory, item, slot, enumdirection)) {
+@@ -649,6 +735,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+     }
+ 
+     public static boolean addItem(Container inventory, ItemEntity itemEntity) {
++        if (!HopperBlockEntity.suckInFilter(inventory, itemEntity.getItem())) return false; // KioCG - Hopper filter
++        if (!itemEntity.level().paperConfig().kiocgConfig.hopperPullsEntityOwnedItem && itemEntity.target != null) return false; // KioCG
++
+         boolean flag = false;
+         // CraftBukkit start
+         if (InventoryPickupItemEvent.getHandlerList().getRegisteredListeners().length > 0) { // Paper - optimize hoppers
