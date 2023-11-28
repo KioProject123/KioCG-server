@@ -65,7 +65,7 @@ index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..9445a9724b3c52e9473235c6e7e1cc28
                  }
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 02f4a2a0bfd66a557f5167ac9ccd13ff9f3dd763..1aed53291097f77e07e37cebde919737862b7ebe 100644
+index c0d9c8d42410335509bb228f394e2e65cda86c87..347bebabc4058ae2a6b7ee537d419247d9bc50ca 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {

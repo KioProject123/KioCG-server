@@ -248,7 +248,7 @@ index 1c8724fb56e790922c7e8fc73bc97442b7a6df83..f66ec9bebd8441bdfbfcd9cca23a5c88
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a19c2d10385d3bc81061f188e2874fe118ddd425..bb5d311d0d5c65ee0b1444eba70038d1c3fd89c5 100644
+index 9adff73223a7e699fb7ba22c1a0bdb53d94ef132..775c21bbc005a2ad2eaf536535bdb9abb94ffbb6 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -278,6 +278,7 @@ public class ServerPlayer extends Player {
