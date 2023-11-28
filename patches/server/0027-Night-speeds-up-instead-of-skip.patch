@@ -30,7 +30,7 @@ index a0efcf1646232f8446f08b2f839b4d2d12e4e227..5b1c98bb529514516e65418d14990cd9
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..2e963be7f4c7c15dbff21786b231bfaae8ce82dd 100644
+index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..17c23fa22bbaae3e615e31e45cb5dfd29ceede74 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -216,6 +216,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -56,7 +56,7 @@ index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..2e963be7f4c7c15dbff21786b231bfaa
 +                if (this.paperConfig().kiocgConfig.nightSpeedsUpInsteadOfSkip) {
 +                    int speedUp = 9 + (this.sleepStatus.amountReallySleeping() - 1) * 2;
 +                    if (!(skipNight = speedUp >= event.getSkipAmount())) {
-+                        event.setSkipAmount(speedUp);
++                        event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.CUSTOM, speedUp);
 +                    }
 +                }
 +                // KioCG end
