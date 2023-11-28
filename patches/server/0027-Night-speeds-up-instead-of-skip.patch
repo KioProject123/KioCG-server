@@ -1,0 +1,124 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Tue, 28 Nov 2023 07:17:32 +0800
+Subject: [PATCH] Night speeds up instead of skip
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index 75c8994599ff3d0fd2b8bdb8c7248acf98074f7f..ffeca792aa7fcd1ccae29936450bc004ed240ab1 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -566,6 +566,7 @@ public class WorldConfiguration extends ConfigurationPart {
+ 
+         public boolean hopperPullsLockedContainer = true;
+         public boolean hopperPullsEntityOwnedItem = true;
++        public boolean nightSpeedsUpInsteadOfSkip = false;
+     }
+     // KioCG end
+ }
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index a0efcf1646232f8446f08b2f839b4d2d12e4e227..5b1c98bb529514516e65418d14990cd94a3b8f16 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1557,7 +1557,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             long worldTime = level.getGameTime();
+             final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
+             for (Player entityhuman : level.players()) {
+-                if (!(entityhuman instanceof ServerPlayer) || (!level.isForceTime() && (tickCount + entityhuman.getId()) % 20 != 0)) { // Purpur
++                if (!(entityhuman instanceof ServerPlayer) || (!level.isForceTime() && !level.isForceTimeNight() && (tickCount + entityhuman.getId()) % 20 != 0)) { // Purpur // KioCG
+                     continue;
+                 }
+                 ServerPlayer entityplayer = (ServerPlayer) entityhuman;
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..2e963be7f4c7c15dbff21786b231bfaae8ce82dd 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -216,6 +216,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+     private final boolean tickTime;
+     private double preciseTime; // Purpur
+     private boolean forceTime; // Purpur
++    private boolean forceTimeNight; public boolean isForceTimeNight() { return this.forceTimeNight; } // KioCG
+     private final RandomSequences randomSequences;
+     public long lastMidTickExecuteFailure; // Paper - execute chunk tasks mid tick
+ 
+@@ -833,17 +834,29 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
+         long j;
+ 
++        this.forceTimeNight = false; // KioCG
+         if (this.purpurConfig.playersSkipNight && this.sleepStatus.areEnoughSleeping(i) && this.sleepStatus.areEnoughDeepSleeping(i, this.players)) {
++            boolean skipNight = true; // KioCG
+             // CraftBukkit start
+             j = this.levelData.getDayTime() + 24000L;
+             TimeSkipEvent event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.NIGHT_SKIP, (j - j % 24000L) - this.getDayTime());
+             if (this.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
++                // KioCG start
++                if (this.paperConfig().kiocgConfig.nightSpeedsUpInsteadOfSkip) {
++                    int speedUp = 9 + (this.sleepStatus.amountReallySleeping() - 1) * 2;
++                    if (!(skipNight = speedUp >= event.getSkipAmount())) {
++                        event.setSkipAmount(speedUp);
++                    }
++                }
++                // KioCG end
+                 this.getCraftServer().getPluginManager().callEvent(event);
+                 if (!event.isCancelled()) {
+                     this.setDayTime(this.getDayTime() + event.getSkipAmount());
++                    this.forceTimeNight = true; // KioCG - 强制同步时间
+                 }
+             }
+ 
++            if (skipNight) { // KioCG
+             if (!event.isCancelled()) {
+                 this.wakeUpAllPlayers();
+             }
+@@ -851,6 +864,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
+                 this.resetWeatherCycle();
+             }
++            } // KioCG
+         }
+ 
+         this.updateSkyBrightness();
+diff --git a/src/main/java/net/minecraft/server/players/SleepStatus.java b/src/main/java/net/minecraft/server/players/SleepStatus.java
+index caa8a69bde0c212c36dd990a67836ac2f95548c0..62010f013412382c6eb0e6e3c0e4b03ab5bc0aca 100644
+--- a/src/main/java/net/minecraft/server/players/SleepStatus.java
++++ b/src/main/java/net/minecraft/server/players/SleepStatus.java
+@@ -10,6 +10,7 @@ public class SleepStatus {
+ 
+     private int activePlayers;
+     private int sleepingPlayers;
++    private int reallySleepingPlayers; // KioCG
+ 
+     public SleepStatus() {}
+ 
+@@ -32,18 +33,22 @@ public class SleepStatus {
+ 
+     public void removeAllSleepers() {
+         this.sleepingPlayers = 0;
++        this.reallySleepingPlayers = 0; // KioCG
+     }
+ 
+     public int amountSleeping() {
+         return this.sleepingPlayers;
+     }
+ 
++    public int amountReallySleeping() { return this.reallySleepingPlayers; } // KioCG
++
+     public boolean update(List<ServerPlayer> players) {
+         int i = this.activePlayers;
+         int j = this.sleepingPlayers;
+ 
+         this.activePlayers = 0;
+         this.sleepingPlayers = 0;
++        this.reallySleepingPlayers = 0; // KioCG
+         Iterator iterator = players.iterator();
+         boolean anySleep = false; // CraftBukkit
+ 
+@@ -55,6 +60,7 @@ public class SleepStatus {
+                 if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur
+                     ++this.sleepingPlayers;
+                 }
++                if (entityplayer.isSleeping()) ++this.reallySleepingPlayers; // KioCG
+                 // CraftBukkit start
+                 if (entityplayer.isSleeping()) {
+                     anySleep = true;
