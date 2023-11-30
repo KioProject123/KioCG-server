@@ -5,18 +5,33 @@ Subject: [PATCH] Death drop protection
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f33d6e9785acbd21a0b366587aa170cc1509bf58..68f3bad20b7977bf910f9e9d032c7753ff6f5b48 100644
+index f33d6e9785acbd21a0b366587aa170cc1509bf58..47aef62ae8e2d0dacd86631772bb88a8a8824538 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1009,7 +1009,12 @@ public class CraftEventFactory {
+@@ -986,6 +986,7 @@ public class CraftEventFactory {
+     }
+ 
+     public static PlayerDeathEvent callPlayerDeathEvent(ServerPlayer victim, List<org.bukkit.inventory.ItemStack> drops, net.kyori.adventure.text.Component deathMessage, String stringDeathMessage, boolean keepInventory) { // Paper - Adventure
++        List<org.bukkit.inventory.ItemStack> originalDrops = new ArrayList<>(drops); // KioCG
+         CraftPlayer entity = victim.getBukkitEntity();
+         PlayerDeathEvent event = new PlayerDeathEvent(entity, drops, victim.getExpReward(), 0, deathMessage, stringDeathMessage); // Paper - Adventure
+         event.setKeepInventory(keepInventory);
+@@ -1009,7 +1010,19 @@ public class CraftEventFactory {
          for (org.bukkit.inventory.ItemStack stack : event.getDrops()) {
              if (stack == null || stack.getType() == Material.AIR) continue;
  
-+            // KioCG start
-+            Item item =
++            Item item = // KioCG
              world.dropItem(entity.getLocation(), stack);
-+            item.setOwner(entity.getUniqueId());
-+            ((org.bukkit.craftbukkit.entity.CraftItem) item).getHandle().age = -32767;
++            // KioCG start
++            java.util.Iterator<org.bukkit.inventory.ItemStack> iterator = originalDrops.iterator();
++            while (iterator.hasNext()) {
++                if (stack == iterator.next()) {
++                    item.setOwner(entity.getUniqueId());
++                    ((org.bukkit.craftbukkit.entity.CraftItem) item).getHandle().age = -32767;
++                    iterator.remove();
++                    break;
++                }
++            }
 +            // KioCG end
          }
  
