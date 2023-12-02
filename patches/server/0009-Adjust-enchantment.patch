@@ -5,17 +5,28 @@ Subject: [PATCH] Adjust enchantment
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 0951f89827ca959357a4febef3213044169e7579..558ad172058ef6f21364cc1a324ddc7beca3d5c3 100644
+index 0951f89827ca959357a4febef3213044169e7579..7656afc1276df784bd9b760619abe430530efb11 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -229,6 +229,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -227,8 +227,10 @@ public class AnvilMenu extends ItemCombinerMenu {
+                             int l1 = (Integer) map.getOrDefault(enchantment, 0);
+                             int i2 = (Integer) map1.get(enchantment);
  
++                            if (i2 != 0) // KioCG - level 0
                              i2 = l1 == i2 ? i2 + 1 : Math.max(i2, l1);
                              boolean flag3 = canDoUnsafeEnchants || (org.purpurmc.purpur.PurpurConfig.allowUnsafeEnchants && org.purpurmc.purpur.PurpurConfig.allowInapplicableEnchants) || enchantment.canEnchant(itemstack); // Purpur
 +                            flag3 = flag3 || enchantment instanceof net.minecraft.world.item.enchantment.BindingCurseEnchantment && net.minecraft.world.item.enchantment.EnchantmentCategory.VANISHABLE.canEnchant(itemstack.getItem()); // KioCG
                              boolean flag4 = true; // Purpur
  
                              if (this.player.getAbilities().instabuild || itemstack.is(Items.ENCHANTED_BOOK)) {
+@@ -242,6 +244,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+ 
+                                 if (enchantment1 != enchantment && !enchantment.isCompatibleWith(enchantment1)) {
+                                     flag4 = canDoUnsafeEnchants || (org.purpurmc.purpur.PurpurConfig.allowUnsafeEnchants && org.purpurmc.purpur.PurpurConfig.allowIncompatibleEnchants); // Purpur flag3 -> flag4
++                                    flag4 = flag4 || i2 == 0; // KioCG - 修复0级魔咒在冲突时不能生效的问题 (主要针对神器)
+                                     if (!flag4 && org.purpurmc.purpur.PurpurConfig.replaceIncompatibleEnchants) {
+                                         iterator1.remove();
+                                         flag4 = true;
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 index 2c51a73ebfd05af21b0f5d731fc9f1df77fed1a1..de3f4b10a98edf8b8afc178d7f78bca26ede6391 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
