@@ -5,7 +5,7 @@ Subject: [PATCH] Adjust enchantment
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 0951f89827ca959357a4febef3213044169e7579..7656afc1276df784bd9b760619abe430530efb11 100644
+index 0951f89827ca959357a4febef3213044169e7579..e03860f341aacead6b9bcc0f25c427a3211231eb 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -227,8 +227,10 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -27,6 +27,14 @@ index 0951f89827ca959357a4febef3213044169e7579..7656afc1276df784bd9b760619abe430
                                      if (!flag4 && org.purpurmc.purpur.PurpurConfig.replaceIncompatibleEnchants) {
                                          iterator1.remove();
                                          flag4 = true;
+@@ -279,6 +282,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+                                     j2 = Math.max(1, j2 / 2);
+                                 }
+ 
++                                if (i2 == 0) { ++i; } else // KioCG - level 0
+                                 i += j2 * i2;
+                                 if (itemstack.getCount() > 1) {
+                                     i = 40;
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 index 2c51a73ebfd05af21b0f5d731fc9f1df77fed1a1..de3f4b10a98edf8b8afc178d7f78bca26ede6391 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java

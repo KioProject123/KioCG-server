@@ -80,7 +80,7 @@ index a96df02ea2eae8eb6725ccbc797f803c1468492d..18608f979287744c1ce78856471dc97b
              return false;
          } else if (this.items.isPresent() && !stack.is(this.items.get())) {
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 7656afc1276df784bd9b760619abe430530efb11..747e0b330ae555e8ae226b550f72488f650ab429 100644
+index e03860f341aacead6b9bcc0f25c427a3211231eb..07663334ca99d472b4c87d0c42a74198633d6528 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -177,9 +177,10 @@ public class AnvilMenu extends ItemCombinerMenu {
