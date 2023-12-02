@@ -68,14 +68,14 @@ index 8de3c3aac56415dca3815d5b103c7501f6d33f7e..78e541c95df64fe7b505e5c51c6c3561
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java b/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
-index a96df02ea2eae8eb6725ccbc797f803c1468492d..32bde11c397b45ad5a95d2b1e1fab29448c6ea01 100644
+index a96df02ea2eae8eb6725ccbc797f803c1468492d..18608f979287744c1ce78856471dc97b275c9717 100644
 --- a/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
 +++ b/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
 @@ -36,6 +36,7 @@ public record ItemPredicate(Optional<TagKey<Item>> tag, Optional<HolderSet<Item>
      });
  
      public boolean matches(ItemStack stack) {
-+        if (stack.getCustomModelData() != null) return false; // KioCG
++        if (!stack.getItem().canBeDepleted() && stack.getCustomModelData() != null) return false; // KioCG
          if (this.tag.isPresent() && !stack.is(this.tag.get())) {
              return false;
          } else if (this.items.isPresent() && !stack.is(this.items.get())) {
