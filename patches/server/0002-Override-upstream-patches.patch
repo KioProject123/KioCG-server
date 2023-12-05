@@ -64,6 +64,19 @@ index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..9445a9724b3c52e9473235c6e7e1cc28
                      tickSection = curTime;
                  }
                  // Spigot end
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 9adff73223a7e699fb7ba22c1a0bdb53d94ef132..e0ce519c05eb305d6702b51453e41ba9fa777e22 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -2212,7 +2212,7 @@ public class ServerPlayer extends Player {
+             if (afk) {
+                 getBukkitEntity().setPlayerListName(org.purpurmc.purpur.PurpurConfig.afkTabListPrefix + prefix + scoreboardName + suffix + org.purpurmc.purpur.PurpurConfig.afkTabListSuffix, true);
+             } else {
+-                getBukkitEntity().setPlayerListName(prefix + scoreboardName + suffix);
++                getBukkitEntity().setPlayerListName(prefix + scoreboardName + suffix, true); // KioCG - use minimessage
+             }
+         }
+ 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index c0d9c8d42410335509bb228f394e2e65cda86c87..347bebabc4058ae2a6b7ee537d419247d9bc50ca 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
