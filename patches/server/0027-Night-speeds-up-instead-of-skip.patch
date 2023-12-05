@@ -30,7 +30,7 @@ index a0efcf1646232f8446f08b2f839b4d2d12e4e227..5b1c98bb529514516e65418d14990cd9
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..17c23fa22bbaae3e615e31e45cb5dfd29ceede74 100644
+index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..2be17ebe982b71cb6fae02978c8ee1a0dbeed79c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -216,6 +216,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -54,7 +54,7 @@ index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..17c23fa22bbaae3e615e31e45cb5dfd2
              if (this.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
 +                // KioCG start
 +                if (this.paperConfig().kiocgConfig.nightSpeedsUpInsteadOfSkip) {
-+                    int speedUp = 9 + (this.sleepStatus.amountReallySleeping() - 1) * 2;
++                    int speedUp = 9 + (this.sleepStatus.amountSleeping() - this.sleepStatus.sleepersNeeded(i)) * 2;
 +                    if (!(skipNight = speedUp >= event.getSkipAmount())) {
 +                        event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.CUSTOM, speedUp);
 +                    }
@@ -80,45 +80,34 @@ index f66ec9bebd8441bdfbfcd9cca23a5c885122e814..17c23fa22bbaae3e615e31e45cb5dfd2
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/net/minecraft/server/players/SleepStatus.java b/src/main/java/net/minecraft/server/players/SleepStatus.java
-index caa8a69bde0c212c36dd990a67836ac2f95548c0..62010f013412382c6eb0e6e3c0e4b03ab5bc0aca 100644
+index caa8a69bde0c212c36dd990a67836ac2f95548c0..ac09bf01c49e4a7321c08dbf4c7d9637acd9656e 100644
 --- a/src/main/java/net/minecraft/server/players/SleepStatus.java
 +++ b/src/main/java/net/minecraft/server/players/SleepStatus.java
-@@ -10,6 +10,7 @@ public class SleepStatus {
+@@ -51,6 +51,7 @@ public class SleepStatus {
+             ServerPlayer entityplayer = (ServerPlayer) iterator.next();
  
-     private int activePlayers;
-     private int sleepingPlayers;
-+    private int reallySleepingPlayers; // KioCG
- 
-     public SleepStatus() {}
- 
-@@ -32,18 +33,22 @@ public class SleepStatus {
- 
-     public void removeAllSleepers() {
-         this.sleepingPlayers = 0;
-+        this.reallySleepingPlayers = 0; // KioCG
-     }
- 
-     public int amountSleeping() {
-         return this.sleepingPlayers;
-     }
- 
-+    public int amountReallySleeping() { return this.reallySleepingPlayers; } // KioCG
-+
-     public boolean update(List<ServerPlayer> players) {
-         int i = this.activePlayers;
-         int j = this.sleepingPlayers;
- 
-         this.activePlayers = 0;
-         this.sleepingPlayers = 0;
-+        this.reallySleepingPlayers = 0; // KioCG
-         Iterator iterator = players.iterator();
-         boolean anySleep = false; // CraftBukkit
- 
-@@ -55,6 +60,7 @@ public class SleepStatus {
+             if (!entityplayer.isSpectator()) {
++                if (!entityplayer.level().purpurConfig.idleTimeoutSleepingCountBypass || !entityplayer.isAfk()) // KioCG
+                 ++this.activePlayers;
                  if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur
                      ++this.sleepingPlayers;
-                 }
-+                if (entityplayer.isSleeping()) ++this.reallySleepingPlayers; // KioCG
-                 // CraftBukkit start
-                 if (entityplayer.isSleeping()) {
-                     anySleep = true;
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+index b9d1117885a8dd15f207e55ce5e402d8cefe0226..fe1fda29976d7707727517cc0348bb4f0c0265b1 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
+@@ -421,6 +421,7 @@ public class PurpurWorldConfig {
+     public boolean idleTimeoutKick = true;
+     public boolean idleTimeoutTickNearbyEntities = true;
+     public boolean idleTimeoutCountAsSleeping = false;
++    public boolean idleTimeoutSleepingCountBypass = false; // KioCG
+     public boolean idleTimeoutUpdateTabList = false;
+     public boolean idleTimeoutTargetPlayer = true;
+     public String playerDeathExpDropEquation = "expLevel * 7";
+@@ -451,6 +452,7 @@ public class PurpurWorldConfig {
+         idleTimeoutKick = System.getenv("PURPUR_FORCE_IDLE_KICK") == null ? getBoolean("gameplay-mechanics.player.idle-timeout.kick-if-idle", idleTimeoutKick) : Boolean.parseBoolean(System.getenv("PURPUR_FORCE_IDLE_KICK"));
+         idleTimeoutTickNearbyEntities = getBoolean("gameplay-mechanics.player.idle-timeout.tick-nearby-entities", idleTimeoutTickNearbyEntities);
+         idleTimeoutCountAsSleeping = getBoolean("gameplay-mechanics.player.idle-timeout.count-as-sleeping", idleTimeoutCountAsSleeping);
++        idleTimeoutSleepingCountBypass = getBoolean("gameplay-mechanics.player.idle-timeout.sleeping-count-bypass", idleTimeoutSleepingCountBypass); // KioCG
+         idleTimeoutUpdateTabList = getBoolean("gameplay-mechanics.player.idle-timeout.update-tab-list", idleTimeoutUpdateTabList);
+         idleTimeoutTargetPlayer = getBoolean("gameplay-mechanics.player.idle-timeout.mobs-target", idleTimeoutTargetPlayer);
+         playerDeathExpDropEquation = getString("gameplay-mechanics.player.exp-dropped-on-death.equation", playerDeathExpDropEquation);
