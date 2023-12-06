@@ -4,6 +4,18 @@ Date: Fri, 13 Oct 2023 21:10:24 +0800
 Subject: [PATCH] Optimize block entity
 
 
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..39c9049008944457e1a112c2eae2e5d8bd20889e 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+@@ -89,6 +89,7 @@ public class MinecartHopper extends AbstractMinecartContainer implements Hopper
+     }
+ 
+     public boolean suckInItems() {
++        if (isCompletelyFull(null)) return false; // KioCG
+         if (HopperBlockEntity.suckInItems(this.level(), this)) {
+             this.immunize();  // Paper
+             return true;
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 index cfa02b274286374c7555919d0e8d66a2c8fb8b88..61f3dc1536d477238fe93eba498dfd0d6460f489 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
