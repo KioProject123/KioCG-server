@@ -4,6 +4,18 @@ Date: Fri, 13 Oct 2023 21:10:24 +0800
 Subject: [PATCH] Optimize block entity
 
 
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..9c681f39695f7a2b6321b848472be9019fd8bac6 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
+@@ -89,6 +89,7 @@ public class MinecartHopper extends AbstractMinecartContainer implements Hopper
+     }
+ 
+     public boolean suckInItems() {
++        if (HopperBlockEntity.isFullContainer(this, null)) return false; // KioCG
+         if (HopperBlockEntity.suckInItems(this.level(), this)) {
+             this.immunize();  // Paper
+             return true;
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 index cfa02b274286374c7555919d0e8d66a2c8fb8b88..61f3dc1536d477238fe93eba498dfd0d6460f489 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
@@ -135,24 +147,18 @@ index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..987d7f20e2522adc118aab4115a31d93faaf8d83 100644
+index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..e2f11aec0a3546d94ad5f97540de1fa99b612ef4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -548,6 +548,14 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -516,7 +516,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         return inventory instanceof WorldlyContainer ? IntStream.of(((WorldlyContainer) inventory).getSlotsForFace(side)) : IntStream.range(0, inventory.getContainerSize());
      }
  
-     public static boolean suckInItems(Level world, Hopper hopper) {
-+        // KioCG start
-+        if (isFullContainer(hopper, null)) {
-+            if (world.paperConfig().hopper.cooldownWhenFull) {
-+                cooldownHopper(hopper);
-+            }
-+            return false;
-+        }
-+        // KioCG end
-         Container iinventory = HopperBlockEntity.getSourceContainer(world, hopper);
- 
-         if (iinventory != null) {
+-    private static boolean isFullContainer(Container inventory, Direction direction) {
++    public static boolean isFullContainer(Container inventory, Direction direction) { // KioCG - private -> public
+         if (true) return inventory.isCompletelyFull(direction); // Pufferfish - use bitsets
+         // Paper start - optimize hoppers
+         if (inventory instanceof WorldlyContainer worldlyContainer) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 index 66656c4cf157228c9f52b33b358713ef0172f9ff..ae07a81576d2c52acb2bc020000668b8c10edc24 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
