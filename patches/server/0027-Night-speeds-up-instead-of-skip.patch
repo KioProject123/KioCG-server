@@ -5,10 +5,10 @@ Subject: [PATCH] Night speeds up instead of skip
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 75c8994599ff3d0fd2b8bdb8c7248acf98074f7f..ffeca792aa7fcd1ccae29936450bc004ed240ab1 100644
+index 27b3e0be3eab20e8bb5caa882ba3e4e134ced54f..61e8ce3bfa11644a8760db58f2172d6c5e15cf5f 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -566,6 +566,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -568,6 +568,7 @@ public class WorldConfiguration extends ConfigurationPart {
  
          public boolean hopperPullsLockedContainer = true;
          public boolean hopperPullsEntityOwnedItem = true;

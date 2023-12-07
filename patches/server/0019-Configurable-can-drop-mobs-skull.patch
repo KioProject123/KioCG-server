@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable can drop mobs skull
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 3cbd53f6cf77b6b54bdd7664c536a8c71f91af6d..93d155a3a03077db31f08f18e01b76f3712c6e25 100644
+index f68ed46ca9ac9b67557fc39c7518b0fe9914393b..e0dd4cbd8dca87e979445cf7ba7cffe457ef41f1 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -547,6 +547,20 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -549,6 +549,20 @@ public class WorldConfiguration extends ConfigurationPart {
              public long phaseOne = 300000L;
              public long phaseTwo = 700000L;
          }

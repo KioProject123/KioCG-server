@@ -134,10 +134,10 @@ index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 78a68121b1ad0af49711b574b7f37a773691b6c2..3cbd53f6cf77b6b54bdd7664c536a8c71f91af6d 100644
+index 4a3c4a60ef1c2ebc4cb9ea1ec5e899a30e0733a7..f68ed46ca9ac9b67557fc39c7518b0fe9914393b 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -541,7 +541,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -543,7 +543,12 @@ public class WorldConfiguration extends ConfigurationPart {
      public KiocgConfig kiocgConfig;
  
      public class KiocgConfig extends ConfigurationPart {
@@ -248,7 +248,7 @@ index 1c8724fb56e790922c7e8fc73bc97442b7a6df83..f66ec9bebd8441bdfbfcd9cca23a5c88
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e0ce519c05eb305d6702b51453e41ba9fa777e22..47bc2d24d4e632ecc2c2f6c8410d6c30d1325b44 100644
+index 8b0c8dc7260a5ccee791e363cfd661923cfceef8..169188ecd6d3b588d23ed239e1b13c3c2d988a4e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -278,6 +278,7 @@ public class ServerPlayer extends Player {
@@ -328,10 +328,10 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index c53f071d183fb7e13f7d7c4e5c82589b33bd7147..f3f486d8532b98064c115fcff363b188546c1b54 100644
+index 2615cdf8b86101403109a4ff66c609c8563d1947..e36b9b26a9fbab48c5a5ecdf0537f211768885d2 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5022,4 +5022,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -5048,4 +5048,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return false;
      }
      // Purpur end

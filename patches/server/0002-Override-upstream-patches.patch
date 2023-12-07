@@ -35,10 +35,10 @@ index a6f58b3457b7477015c5c6d969e7d83017dd3fa1..8de3c3aac56415dca3815d5b103c7501
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 84e6fc5bac43ee0499b391827726bc02f6d3e46f..78a68121b1ad0af49711b574b7f37a773691b6c2 100644
+index 071d3877e386a0c7c4d2f2e8ddd06e0765c49d0d..4a3c4a60ef1c2ebc4cb9ea1ec5e899a30e0733a7 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -536,4 +536,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -538,4 +538,12 @@ public class WorldConfiguration extends ConfigurationPart {
              VANILLA, EIGENCRAFT, ALTERNATE_CURRENT
          }
      }
@@ -65,10 +65,10 @@ index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..9445a9724b3c52e9473235c6e7e1cc28
                  }
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9adff73223a7e699fb7ba22c1a0bdb53d94ef132..e0ce519c05eb305d6702b51453e41ba9fa777e22 100644
+index 7b72be8dcaf3fc5c7151c847faa2dfc75ef9eeb7..8b0c8dc7260a5ccee791e363cfd661923cfceef8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2212,7 +2212,7 @@ public class ServerPlayer extends Player {
+@@ -2210,7 +2210,7 @@ public class ServerPlayer extends Player {
              if (afk) {
                  getBukkitEntity().setPlayerListName(org.purpurmc.purpur.PurpurConfig.afkTabListPrefix + prefix + scoreboardName + suffix + org.purpurmc.purpur.PurpurConfig.afkTabListSuffix, true);
              } else {
@@ -78,7 +78,7 @@ index 9adff73223a7e699fb7ba22c1a0bdb53d94ef132..e0ce519c05eb305d6702b51453e41ba9
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index c0d9c8d42410335509bb228f394e2e65cda86c87..347bebabc4058ae2a6b7ee537d419247d9bc50ca 100644
+index 18b12edbbdc2d974e2bc48c5d33848dc3bc9f976..93098ea133ca76e05788b61311f47c22cccd58f1 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {

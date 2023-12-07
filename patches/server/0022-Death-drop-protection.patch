@@ -1,38 +1,27 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 24 Oct 2023 15:42:36 +0800
+Date: Thu, 7 Dec 2023 14:22:10 +0800
 Subject: [PATCH] Death drop protection
 
 
-diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f33d6e9785acbd21a0b366587aa170cc1509bf58..47aef62ae8e2d0dacd86631772bb88a8a8824538 100644
---- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-+++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -986,6 +986,7 @@ public class CraftEventFactory {
-     }
- 
-     public static PlayerDeathEvent callPlayerDeathEvent(ServerPlayer victim, List<org.bukkit.inventory.ItemStack> drops, net.kyori.adventure.text.Component deathMessage, String stringDeathMessage, boolean keepInventory) { // Paper - Adventure
-+        List<org.bukkit.inventory.ItemStack> originalDrops = new ArrayList<>(drops); // KioCG
-         CraftPlayer entity = victim.getBukkitEntity();
-         PlayerDeathEvent event = new PlayerDeathEvent(entity, drops, victim.getExpReward(), 0, deathMessage, stringDeathMessage); // Paper - Adventure
-         event.setKeepInventory(keepInventory);
-@@ -1009,7 +1010,19 @@ public class CraftEventFactory {
-         for (org.bukkit.inventory.ItemStack stack : event.getDrops()) {
-             if (stack == null || stack.getType() == Material.AIR) continue;
- 
-+            Item item = // KioCG
-             world.dropItem(entity.getLocation(), stack);
-+            // KioCG start
-+            java.util.Iterator<org.bukkit.inventory.ItemStack> iterator = originalDrops.iterator();
-+            while (iterator.hasNext()) {
-+                if (stack == iterator.next()) {
-+                    item.setOwner(entity.getUniqueId());
-+                    ((org.bukkit.craftbukkit.entity.CraftItem) item).getHandle().age = -32767;
-+                    iterator.remove();
-+                    break;
-+                }
-+            }
-+            // KioCG end
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 944a7e5c7f3eef5732e93c7591ef4c31d1fd3c8d..4be647359ba20539477d418f460deefa90633f56 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -1010,7 +1010,15 @@ public class ServerPlayer extends Player {
+         if (!keepInventory) {
+             for (ItemStack item : this.getInventory().getContents()) {
+                 if (!item.isEmpty() && !EnchantmentHelper.hasVanishingCurse(item)) {
+-                    loot.add(new DefaultDrop(item, stack -> this.drop(stack, true, false))); // Paper - drop function taken from Inventory#dropAll
++                    // KioCG start
++                    loot.add(new DefaultDrop(item, stack -> {
++                        ItemEntity droped = this.drop(stack, true, false);
++                        if (droped != null) {
++                            droped.setTarget(this.getUUID());
++                            droped.age = -32767;
++                        }
++                    })); // Paper - drop function taken from Inventory#dropAll
++                    // KioCG end
+                 }
+             }
          }
- 
-         return event;
