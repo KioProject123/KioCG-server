@@ -19,7 +19,7 @@ index 2e13b2107bbdcc35d616235849af2bd1dec1fa44..27b3e0be3eab20e8bb5caa882ba3e4e1
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
-index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..5e7cfe839ab01a973898fa104faaee846b291cf1 100644
+index 9c681f39695f7a2b6321b848472be9019fd8bac6..a3555514e37229e863d20cc4396c2a61c7013691 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartHopper.java
 @@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
@@ -43,8 +43,8 @@ index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..5e7cfe839ab01a973898fa104faaee84
 +    // KioCG end
 +
      public boolean suckInItems() {
+         if (HopperBlockEntity.isFullContainer(this, null)) return false; // KioCG
          if (HopperBlockEntity.suckInItems(this.level(), this)) {
-             this.immunize();  // Paper
 diff --git a/src/main/java/net/minecraft/world/level/block/DropperBlock.java b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
 index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c5377ca1dba 100644
 --- a/src/main/java/net/minecraft/world/level/block/DropperBlock.java
@@ -59,7 +59,7 @@ index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c53
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 987d7f20e2522adc118aab4115a31d93faaf8d83..8dbde781528dfc3566f49f52a13f2c13c76a2b7a 100644
+index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e454b9314d4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -175,7 +175,7 @@ index 987d7f20e2522adc118aab4115a31d93faaf8d83..8dbde781528dfc3566f49f52a13f2c13
          ItemStack movedItem = origItemStack;
          final int originalItemCount = origItemStack.getCount();
          final int movedItemCount = Math.min(level.spigotConfig.hopperAmount, originalItemCount);
-@@ -576,6 +654,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -568,6 +646,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
                  }
                  return false;
              } else {
@@ -183,7 +183,7 @@ index 987d7f20e2522adc118aab4115a31d93faaf8d83..8dbde781528dfc3566f49f52a13f2c13
                  for (int slot = 0, max = iinventory.getContainerSize(); slot < max; ++slot) {
                      ItemStack item = iinventory.getItem(slot);
                      if (item.isEmpty() || !canTakeItemFromContainer(hopper, iinventory, item, slot, enumdirection)) {
-@@ -657,6 +736,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -649,6 +728,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      public static boolean addItem(Container inventory, ItemEntity itemEntity) {
