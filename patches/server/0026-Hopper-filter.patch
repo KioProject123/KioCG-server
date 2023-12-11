@@ -46,10 +46,10 @@ index 9c681f39695f7a2b6321b848472be9019fd8bac6..a3555514e37229e863d20cc4396c2a61
          if (HopperBlockEntity.isFullContainer(this, null)) return false; // KioCG
          if (HopperBlockEntity.suckInItems(this.level(), this)) {
 diff --git a/src/main/java/net/minecraft/world/level/block/DropperBlock.java b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
-index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c5377ca1dba 100644
+index 675644974ae6fb5380a6496a2ac3ec4d1ef7c924..a1bb15b16bdd591773f95be1a5bc8f856161e6e6 100644
 --- a/src/main/java/net/minecraft/world/level/block/DropperBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
-@@ -65,6 +65,8 @@ public class DropperBlock extends DispenserBlock {
+@@ -72,6 +72,8 @@ public class DropperBlock extends DispenserBlock {
                      if (iinventory == null) {
                          itemstack1 = DropperBlock.DISPENSE_BEHAVIOUR.dispense(sourceblock, itemstack);
                      } else {
@@ -59,18 +59,18 @@ index b1ba2c1da9d7b59a5316574deb8247406b55d28d..3a59b44a2d779981c41eefb8fefe3c53
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e454b9314d4 100644
+index 6c5ebfe9643e247d4b4dc4d24b7cef555e619581..4d97b60f9b0a615aeee3ba67dc3565b803778948 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-     // Pufferfish end
+@@ -50,6 +50,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+     private NonNullList<ItemStack> items;
      private int cooldownTime;
      private long tickedGameTime;
 +    @Nullable private java.util.Set<net.minecraft.world.item.Item> itemFilter; // KioCG
  
      // CraftBukkit start - add fields and methods
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
-@@ -122,6 +123,68 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -96,6 +97,68 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          }
  
          this.cooldownTime = nbt.getInt("TransferCooldown");
@@ -139,7 +139,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
      }
  
      @Override
-@@ -218,6 +281,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -192,6 +255,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          if (world.isClientSide) {
              return false;
          } else {
@@ -147,7 +147,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
              if (!blockEntity.isOnCooldown() && (Boolean) state.getValue(HopperBlock.ENABLED)) {
                  boolean flag = false;
  
-@@ -269,6 +333,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -243,6 +307,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          for (int i = 0; i < hopper.getContainerSize(); ++i) {
              final ItemStack item = hopper.getItem(i);
              if (!item.isEmpty()) {
@@ -161,7 +161,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
                  foundItem = true;
                  ItemStack origItemStack = item;
                  ItemStack movedItem = origItemStack;
-@@ -309,6 +380,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -283,6 +354,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      private static boolean hopperPull(final Level level, final Hopper hopper, final Container container, ItemStack origItemStack, final int i) {
@@ -175,7 +175,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
          ItemStack movedItem = origItemStack;
          final int originalItemCount = origItemStack.getCount();
          final int movedItemCount = Math.min(level.spigotConfig.hopperAmount, originalItemCount);
-@@ -568,6 +646,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -537,6 +615,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
                  }
                  return false;
              } else {
@@ -183,7 +183,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
                  for (int slot = 0, max = iinventory.getContainerSize(); slot < max; ++slot) {
                      ItemStack item = iinventory.getItem(slot);
                      if (item.isEmpty() || !canTakeItemFromContainer(hopper, iinventory, item, slot, enumdirection)) {
-@@ -649,6 +728,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -618,6 +697,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      public static boolean addItem(Container inventory, ItemEntity itemEntity) {

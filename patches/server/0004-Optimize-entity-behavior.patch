@@ -5,11 +5,11 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 5930e45bae5aa86b3cedb811c4c9bb92099bc1b5..695f1dd8d0412d89d225893c4b1b349e0ea01f0f 100644
+index 9793a5c9a36201b00ba32f2ac928cfabfbdb98e1..414ee8e8fa00adf3f2bfc766392901aa1a7813ff 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -282,7 +282,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
-     public static final EntityType<Warden> WARDEN = EntityType.register("warden", EntityType.Builder.of(Warden::new, MobCategory.MONSTER).sized(0.9F, 2.9F).clientTrackingRange(16).fireImmune());
+@@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     public static final EntityType<WindCharge> WIND_CHARGE = EntityType.register("wind_charge", EntityType.Builder.of(WindCharge::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).requiredFeatures(FeatureFlags.UPDATE_1_21));
      public static final EntityType<Witch> WITCH = EntityType.register("witch", EntityType.Builder.of(Witch::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
      public static final EntityType<WitherBoss> WITHER = EntityType.register("wither", EntityType.Builder.of(WitherBoss::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.9F, 3.5F).clientTrackingRange(10));
 -    public static final EntityType<WitherSkeleton> WITHER_SKELETON = EntityType.register("wither_skeleton", EntityType.Builder.of(WitherSkeleton::new, MobCategory.MONSTER).fireImmune().immuneTo(Blocks.WITHER_ROSE).sized(0.7F, 2.4F).clientTrackingRange(8));
@@ -86,10 +86,10 @@ index 6e5b4a50b8d2dddbd7f099426b4866b35bcb798a..03490dac43a6077d59aac655f9030570
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index d97ca9d567df224c34eba306b4c9b7df65f31824..1cf6c211be5a2bc8767343d4be05cbd3f5829886 100644
+index 351b580611bf4b92d7addcc402c3276f7cb4e639..ee035e827a347f61a6549b6e03a605b03ea46cdf 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-@@ -238,9 +238,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
+@@ -239,9 +239,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
          this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
          this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
          this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 5.0F, 1.0F, true));
@@ -215,7 +215,7 @@ index 28eb98d383d6846a25c29f8cd8ff211c360a56dc..afa38036e799c37d4b85b923d3a2609b
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-index 63a1cf5604c14025171d7be7434e2d6b64c98107..e90de7d4d303f0c908a15ef9c4b7e9697d1943bf 100644
+index 034bb2d1292dde6276885c3ea71d886c3894311c..00b6005500637a1388787c1a3959d153d9a4f8f1 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 @@ -147,7 +147,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -244,7 +244,7 @@ index d13eed85d5399cd6991b3ad90f05a5805a3a2678..2b22e378c642fa2b37db013c49842b80
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 1be1bfb831198b68d8e20bf5ff922edff8832114..7e041c50c7ea22b97d4e266ee428e2e36bca2fad 100644
+index f6dd5fd56926215830ccebbd46098d4bc08e17e4..5142f647e7ca56b4001ecfbcfc136d1307e6420f 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -164,7 +164,7 @@ public class Zombie extends Monster {
@@ -288,10 +288,10 @@ index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707fe4121aa 100644
+index a828dbdd755368b74501cc0bab2e38e7fde6f2bd..f449efed7b704d4a0bc0fb756d303601b193201e 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -303,6 +303,7 @@ public class ActivationRange
+@@ -280,6 +280,7 @@ public class ActivationRange
              return 100; // Paper
          }
          // Paper start
@@ -299,7 +299,7 @@ index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707
          if ( !entity.onGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
          {
              return 100;
-@@ -312,6 +313,11 @@ public class ActivationRange
+@@ -289,6 +290,11 @@ public class ActivationRange
          {
              if ( (!entity.onGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
@@ -311,7 +311,7 @@ index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707
                  return 10; // Paper
              }
          } else if ( !( (AbstractArrow) entity ).inGround )
-@@ -403,7 +409,7 @@ public class ActivationRange
+@@ -380,7 +386,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

@@ -104,7 +104,7 @@ index 20ca96baf8f73fd5835422c6551f515a394cb168..31a64f0ff9385a7e9038fc07870e26dd
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Shulker.java b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
-index 81caa18fca658f70846ba437ac02906f5e9653b9..248efc34a3b27fb0446ee585175efe69689a82e4 100644
+index 22669a188c1961783341b22551325e19aaeb8088..15417c15b47c0bcf29419c89859a60a5b013e3d5 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Shulker.java
 @@ -249,7 +249,7 @@ public class Shulker extends AbstractGolem implements VariantHolder<Optional<Dye

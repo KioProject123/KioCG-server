@@ -18,7 +18,7 @@ index e4fd372a1d585887287253a02531cd192929377b..f839aee9a42cbbe280daf54def782787
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 5c6027a3ab7c52087dfebb1e21468a511ec09fa1..3d9dfc2ac901e4b5fa18282061d0e5471a6f2536 100644
+index 2e70ac06c1a6414d9fbbc7a929968e804f0a91f5..3ded50f4c1c62d5827da91679a68ec1157fd26f7 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -181,7 +181,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -30,7 +30,7 @@ index 5c6027a3ab7c52087dfebb1e21468a511ec09fa1..3d9dfc2ac901e4b5fa18282061d0e547
              DedicatedServer.LOGGER.warn("****************************");
              DedicatedServer.LOGGER.warn("YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.");
              DedicatedServer.LOGGER.warn("YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.");
-@@ -316,7 +316,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -313,7 +313,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          String proxyFlavor = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "Velocity" : "BungeeCord";
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end
@@ -40,7 +40,7 @@ index 5c6027a3ab7c52087dfebb1e21468a511ec09fa1..3d9dfc2ac901e4b5fa18282061d0e547
              DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
              // Spigot start
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 182acaad79e14e5e120094916a0d295a4584de7a..d8f647a19cf03f5c9a76f160b4b77d867dee6651 100644
+index 2e3a43b92fb86e55a75a557663bc465e604c4156..500b2fb4f6b0db9e0e4f6bf51634b0250d5b2739 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1463,7 +1463,7 @@ public abstract class PlayerList {

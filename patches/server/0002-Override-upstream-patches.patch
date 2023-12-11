@@ -52,23 +52,23 @@ index 071d3877e386a0c7c4d2f2e8ddd06e0765c49d0d..4a3c4a60ef1c2ebc4cb9ea1ec5e899a3
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b61c4d1ebb9c15a7ecd7bec5eb864851c053fb7e..9445a9724b3c52e9473235c6e7e1cc288dfba6c0 100644
+index 39ecb12d4296852ee5865dcfa2b8b6c3233a4804..0ef633213d26f30665a5631438020149a13eff1a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1159,7 +1159,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1213,7 +1213,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          this.recentTps[3] = tps15.getAverage();
                          // Purpur end
                      // Paper end
 -                        lagging = recentTps[0] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur
 +                        lagging = recentTps[1] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur // KioCG - 防止TPS瞬时波动
                      tickSection = curTime;
-                 }
+                 } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7b72be8dcaf3fc5c7151c847faa2dfc75ef9eeb7..8b0c8dc7260a5ccee791e363cfd661923cfceef8 100644
+index 07c6e9c5a32ef7155525924d1a0e433943787819..cd871ef34b1ddc8b3a4c0454122da607bee90281 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2210,7 +2210,7 @@ public class ServerPlayer extends Player {
+@@ -2311,7 +2311,7 @@ public class ServerPlayer extends Player {
              if (afk) {
                  getBukkitEntity().setPlayerListName(org.purpurmc.purpur.PurpurConfig.afkTabListPrefix + prefix + scoreboardName + suffix + org.purpurmc.purpur.PurpurConfig.afkTabListSuffix, true);
              } else {
@@ -78,7 +78,7 @@ index 7b72be8dcaf3fc5c7151c847faa2dfc75ef9eeb7..8b0c8dc7260a5ccee791e363cfd66192
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 18b12edbbdc2d974e2bc48c5d33848dc3bc9f976..93098ea133ca76e05788b61311f47c22cccd58f1 100644
+index ac57b2d31019eeb12a0d63266b900c606d90b05e..d618f46a26aac5d65d621284b4ced7f1b6bbeded 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -121,7 +121,7 @@ index 27d76e0c4809d333c548379bf78ec2db083b027e..0951f89827ca959357a4febef3213044
                              if (player.hasPermission("purpur.anvil.format")) {
                                  java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
-index ea8b928b6d82689e71bbcc39ab497491072dfba6..fa0e4ed180fad984f49459f911602d6875fbccde 100644
+index d0d951f867390fa12cae2ba2a49212354b10d7b0..03f0ab2a650762231e6c74f9f5958e7bd5607e1a 100644
 --- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 +++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 @@ -98,7 +98,7 @@ public class PhantomFlames extends LlamaSpit {

@@ -5,10 +5,10 @@ Subject: [PATCH] Support FoodFlight plugin
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 4be647359ba20539477d418f460deefa90633f56..a98d5d1475825c155e983a8c7c3391dc57c694a9 100644
+index 5feb9a39ea77d9384f67540df72fec6935f43e20..c8c8749bbbc540830b68ad3c1fa8e453700539d5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -894,6 +894,16 @@ public class ServerPlayer extends Player {
+@@ -901,6 +901,16 @@ public class ServerPlayer extends Player {
                  CriteriaTriggers.LOCATION.trigger(this);
              }
  

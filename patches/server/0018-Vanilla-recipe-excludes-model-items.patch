@@ -68,10 +68,10 @@ index 8de3c3aac56415dca3815d5b103c7501f6d33f7e..78e541c95df64fe7b505e5c51c6c3561
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java b/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
-index a96df02ea2eae8eb6725ccbc797f803c1468492d..18608f979287744c1ce78856471dc97b275c9717 100644
+index 6bd963516ad994f77aeea90628c421705ae3da95..db0639fb0f6a022db9fc62cdda8199c53ecbb894 100644
 --- a/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
 +++ b/src/main/java/net/minecraft/advancements/critereon/ItemPredicate.java
-@@ -36,6 +36,7 @@ public record ItemPredicate(Optional<TagKey<Item>> tag, Optional<HolderSet<Item>
+@@ -31,6 +31,7 @@ public record ItemPredicate(Optional<TagKey<Item>> tag, Optional<HolderSet<Item>
      });
  
      public boolean matches(ItemStack stack) {
@@ -272,10 +272,10 @@ index f8129dcdcae12ed66ec58e8c749fa88ec3cd85d8..0a96c13ad111cb5d9ae35b2f1c0d817d
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 2776b124dd15e4c84edcfbf98ba44d53ef149e43..06ab8ee413480f70986b6a03d85d853e62b3514f 100644
+index 0505969be72d080c00733615ef5619fa2f4a36d4..afd3f9a2195814486f9e80f547cc43628706f5c2 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -891,6 +891,16 @@ public final class ItemStack {
+@@ -916,6 +916,16 @@ public final class ItemStack {
          return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
      }
  

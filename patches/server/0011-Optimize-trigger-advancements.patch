@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 169188ecd6d3b588d23ed239e1b13c3c2d988a4e..944a7e5c7f3eef5732e93c7591ef4c31d1fd3c8d 100644
+index d3ca73a38e3fe469a1e546dcaf757fa330bc0380..90958ab4022113ada08a809edaeb7e3018f18a0b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -711,6 +711,7 @@ public class ServerPlayer extends Player {
+@@ -718,6 +718,7 @@ public class ServerPlayer extends Player {
  
      @Override
      protected void onInsideBlock(BlockState state) {
@@ -16,7 +16,7 @@ index 169188ecd6d3b588d23ed239e1b13c3c2d988a4e..944a7e5c7f3eef5732e93c7591ef4c31
          CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
      }
  
-@@ -735,7 +736,7 @@ public class ServerPlayer extends Player {
+@@ -742,7 +743,7 @@ public class ServerPlayer extends Player {
  
          // Paper start - Configurable container update tick rate
          if (--containerUpdateDelay <= 0) {
@@ -25,7 +25,7 @@ index 169188ecd6d3b588d23ed239e1b13c3c2d988a4e..944a7e5c7f3eef5732e93c7591ef4c31
              containerUpdateDelay = this.level().paperConfig().tickRates.containerUpdate;
          }
          // Paper end
-@@ -758,6 +759,7 @@ public class ServerPlayer extends Player {
+@@ -765,6 +766,7 @@ public class ServerPlayer extends Player {
              }
          }
  
@@ -33,7 +33,7 @@ index 169188ecd6d3b588d23ed239e1b13c3c2d988a4e..944a7e5c7f3eef5732e93c7591ef4c31
          CriteriaTriggers.TICK.trigger(this);
          if (this.levitationStartPos != null) {
              CriteriaTriggers.LEVITATION.trigger(this, this.levitationStartPos, this.tickCount - this.levitationStartTime);
-@@ -888,7 +890,7 @@ public class ServerPlayer extends Player {
+@@ -895,7 +897,7 @@ public class ServerPlayer extends Player {
                  this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
              }
  
@@ -43,7 +43,7 @@ index 169188ecd6d3b588d23ed239e1b13c3c2d988a4e..944a7e5c7f3eef5732e93c7591ef4c31
              }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 6a754ecd4e9d6c3ebc7bd91b1de797fdbf3c4290..4365dffb0704f7ad4e0e77f013f8a73f2306d055 100644
+index 1af23da6b3ccb4759e46e37cfa2ca85cf78f3ec2..867c1985ac1a9da8f4580d914e13401b640f078b 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 @@ -233,14 +233,32 @@ public abstract class AbstractContainerMenu {

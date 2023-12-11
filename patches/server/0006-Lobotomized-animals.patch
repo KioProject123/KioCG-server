@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 17 Oct 2023 19:16:08 +0800
+Date: Mon, 11 Dec 2023 20:16:15 +0800
 Subject: [PATCH] Lobotomized animals
 
 
@@ -62,7 +62,7 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 28ab90dfbb6436e0180f8074fb7abf2a25532440..de3e3ce532b0b5c803273e122b4942d6dd41392e 100644
+index 2f9cdedebc5f4b00cc515dadca28636611fad658..ab55b7750b96a4a99962bcc735a313c4a6307b11 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -207,7 +207,7 @@ index 0e36e3e672de4c806e2d534b437489a3a349a722..d701c94c55339c31f3a7ce82da5c714c
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index a434d91b8dfff30cff81df964ea8149caa8cb604..ac5d8f4ae71acdeeae5901df2a70d562d2e242c1 100644
+index 8df8a48bd1dbbb4a6835f68bd700eac2b5acf91b..c916d96caed8a0090e56fcaf48d74dcd8561a7b7 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -42,6 +42,7 @@ public abstract class Animal extends AgeableMob {
@@ -273,10 +273,10 @@ index a434d91b8dfff30cff81df964ea8149caa8cb604..ac5d8f4ae71acdeeae5901df2a70d562
  
      public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor world, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Bee.java b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc324fa82825 100644
+index bdb78cc701543cfe91a6bafd1786fe2ea0bf1ddc..4760e5accf6a35d7279487771d491fa6d6b24037 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Bee.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Bee.java
-@@ -1111,6 +1111,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1118,6 +1118,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -284,7 +284,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
              return Bee.this.hivePos != null && !Bee.this.hasRestriction() && Bee.this.wantsToEnterHive() && !this.hasReachedTarget(Bee.this.hivePos) && Bee.this.level().getBlockState(Bee.this.hivePos).is(BlockTags.BEEHIVES);
          }
  
-@@ -1227,6 +1228,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1234,6 +1235,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -292,7 +292,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
              return Bee.this.savedFlowerPos != null && !Bee.this.hasRestriction() && this.wantsToGoToKnownFlower() && Bee.this.isFlowerValid(Bee.this.savedFlowerPos) && !Bee.this.closerThan(Bee.this.savedFlowerPos, 2);
          }
  
-@@ -1279,6 +1281,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1286,6 +1288,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canBeeUse() {
@@ -300,7 +300,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
              return Bee.this.getCropsGrownSincePollination() >= 10 ? false : (Bee.this.random.nextFloat() < 0.3F ? false : Bee.this.hasNectar() && Bee.this.isHiveValid());
          }
  
-@@ -1343,6 +1346,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
+@@ -1350,6 +1353,7 @@ public class Bee extends Animal implements NeutralMob, FlyingAnimal {
  
          @Override
          public boolean canUse() {
@@ -309,7 +309,7 @@ index 38a3dcec138d9233a46e5d523bcc6d64bc7fffd0..5ebd4cb2ecdec3e12b7ee27e31e5bc32
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 02df0bf09f2ef91e4dafbdcea590b4634b2abf08..7a5409ae7f7dfea779564e94ffe84c3bec21e04c 100644
+index fe68013f8efa35e6dfcf658df3b33d9d3df73979..cd2a5683f951b45f90f7e979e5c3aab281913f79 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -321,8 +321,8 @@ index 02df0bf09f2ef91e4dafbdcea590b4634b2abf08..7a5409ae7f7dfea779564e94ffe84c3b
 +    private boolean isLobotomized = false; @Override public boolean isLobotomized() { return this.lobotomized.isLobotomized(); } // Purpur // KioCG - 使用更好的检测
      private int notLobotomizedCount = 0; // Purpur
  
-     public long nextGolemPanic = -1; // Pufferfish
-@@ -243,6 +244,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public Villager(EntityType<? extends Villager> entityType, Level world) {
+@@ -241,6 +242,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return !bottom.hasCollision && !top.hasCollision;
      }
  
@@ -346,24 +346,24 @@ index 02df0bf09f2ef91e4dafbdcea590b4634b2abf08..7a5409ae7f7dfea779564e94ffe84c3b
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -346,14 +364,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -343,14 +361,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level().purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
 -            inactive = inactive || checkLobotomized();
 +            inactive = this.lobotomized.checkLobotomized(this) || inactive; // KioCG - 使用更好的检测
          } else {
-             // clean up state for API
              this.isLobotomized = false;
          }
-         if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) // Purpur - only use brain if no rider
+         // if (!inactive && (getRider() == null || !this.isControllable()) && this.behaviorTick++ % this.activatedPriority == 0) { // Purpur - only use brain if no rider // Purpur - TODO: Pufferfish
+         if (!inactive && (getRider() == null || !this.isControllable())) { // Purpur - only use brain if no rider
              this.getBrain().tick((ServerLevel) this.level(), this); // Paper
--        else if (this.isLobotomized && shouldRestock()) restock();
-+        else if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
+-        } else if (this.isLobotomized && shouldRestock()) restock();
++        } else if (this.lobotomized.isLobotomized() && shouldRestock()) restock(); // KioCG - 使用更好的检测
          // Purpur end
          //this.level().getProfiler().pop(); // Purpur
          if (this.assignProfessionWhenSpawned) {
-@@ -658,6 +676,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -655,6 +673,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -372,7 +372,7 @@ index 02df0bf09f2ef91e4dafbdcea590b4634b2abf08..7a5409ae7f7dfea779564e94ffe84c3b
      }
  
      @Override
-@@ -698,6 +718,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -695,6 +715,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  

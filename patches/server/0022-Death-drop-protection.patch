@@ -5,10 +5,10 @@ Subject: [PATCH] Death drop protection
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 944a7e5c7f3eef5732e93c7591ef4c31d1fd3c8d..4be647359ba20539477d418f460deefa90633f56 100644
+index 90958ab4022113ada08a809edaeb7e3018f18a0b..5feb9a39ea77d9384f67540df72fec6935f43e20 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1010,7 +1010,15 @@ public class ServerPlayer extends Player {
+@@ -1017,7 +1017,15 @@ public class ServerPlayer extends Player {
          if (!keepInventory) {
              for (ItemStack item : this.getInventory().getContents()) {
                  if (!item.isEmpty() && !EnchantmentHelper.hasVanishingCurse(item)) {
