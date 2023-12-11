@@ -138,3 +138,15 @@ index c4245ecf24066c708beb434a3b610fc7c6b07044..84550504d647224cb9e8559cf40aa6e9
      @Override
      public int getMinCost(int level) {
          return 15;
+diff --git a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
+index f782e8dd9d3456f345859dffd69e5830d576ccd1..a1fbf86234bc2eff09951981392bcf1d9b6404e0 100644
+--- a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
++++ b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
+@@ -82,6 +82,7 @@ public class CraftEnchantment extends Enchantment {
+             case VANISHABLE -> EnchantmentTarget.VANISHABLE;
+             case BOW_AND_CROSSBOW -> EnchantmentTarget.BOW_AND_CROSSBOW; // Purpur
+             case WEAPON_AND_SHEARS -> EnchantmentTarget.WEAPON_AND_SHEARS; // Purpur
++            case TOOL_AND_SHEARS -> EnchantmentTarget.TOOL_AND_SHEARS; // KioCG
+         };
+     }
+ 

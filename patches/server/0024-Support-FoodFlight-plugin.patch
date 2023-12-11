@@ -5,7 +5,7 @@ Subject: [PATCH] Support FoodFlight plugin
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5feb9a39ea77d9384f67540df72fec6935f43e20..c8c8749bbbc540830b68ad3c1fa8e453700539d5 100644
+index 5feb9a39ea77d9384f67540df72fec6935f43e20..ebb21ed083628576ad5ae26f6c7cf78905682c44 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -901,6 +901,16 @@ public class ServerPlayer extends Player {
@@ -13,8 +13,8 @@ index 5feb9a39ea77d9384f67540df72fec6935f43e20..c8c8749bbbc540830b68ad3c1fa8e453
              }
  
 +            // KioCG start - 饥饿飞行功能: 判断是否在任意结构内
-+            if (this.tickCount % 20 == 0 && this.serverLevel().isLoaded(this.blockPosition)) {
-+                if (this.serverLevel().structureManager().hasAnyStructureAtExact(this.blockPosition)) {
++            if (this.tickCount % 20 == 0 && this.serverLevel().isLoaded(this.blockPosition())) {
++                if (this.serverLevel().structureManager().hasAnyStructureAtExact(this.blockPosition())) {
 +                    this.addTag("KioCG_inStructure");
 +                } else {
 +                    this.removeTag("KioCG_inStructure");
