@@ -1,0 +1,90 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Sun, 17 Dec 2023 14:26:29 +0800
+Subject: [PATCH] Transform spawned via mob spawner
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index 58f1d21e654472c36e343e366503c6de3bbd6ad8..9252bb6c9110f566211a818d743eb5cca6c501bf 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -1529,6 +1529,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+                     return null;
+                 }
+                 this.level().addFreshEntity(t0, spawnReason);
++                t0.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+                 // CraftBukkit end
+                 if (this.isPassenger()) {
+                     Entity entity = this.getVehicle();
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
+index 6d00b3cd4a9cb0fc8a9e9c27f37429a25fcf6e9d..f65a0dfe7b80c09f442b2ebcd210219dffdfbe6a 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
+@@ -233,6 +233,7 @@ public class Cow extends Animal {
+             return InteractionResult.PASS;
+         }
+         this.level().addFreshEntity(mooshroom);
++        mooshroom.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+         this.remove(RemovalReason.DISCARDED);
+         if (!player.getAbilities().instabuild) {
+             stack.shrink(1);
+diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
+index 6ce116dc3173d17b19c4c03fe9cf494dd022f0d5..96764fce967ecc6c6573956a7486181ca20fab81 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
++++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
+@@ -235,6 +235,7 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
+                     return;
+                 }
+                 this.level().addFreshEntity(entitycow, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SHEARED);
++                entitycow.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+ 
+                 this.discard(); // CraftBukkit - from above
+                 // CraftBukkit end
+diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+index 1e86f144d6139cff52ccc48f03f3283aa6517736..e3d5ceff864ad65df935ae07dee1731a42a466c8 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
++++ b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+@@ -284,6 +284,7 @@ public class Tadpole extends AbstractFish {
+                 // CraftBukkit end
+                 this.playSound(SoundEvents.TADPOLE_GROW_UP, 0.15F, 1.0F);
+                 worldserver.addFreshEntityWithPassengers(frog, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.METAMORPHOSIS); // CraftBukkit - add SpawnReason
++                frog.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+                 this.discard();
+             }
+         }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
+index 82bcce358099a24e38c81b75b541bc38933d7885..d6d8da50850520a0067925b57fc0839d1564c4ca 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
+@@ -234,6 +234,7 @@ public class Skeleton extends AbstractSkeleton {
+         }
+ 
+         this.level().addFreshEntity(skeleton);
++        skeleton.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+         this.remove(RemovalReason.DISCARDED);
+         if (!player.getAbilities().instabuild) {
+             stack.shrink(1);
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
+index 8b6f8fca8402c177c399824c6bf0bdef2c24ec55..f8f6441d5581874a6737723cf10b9bb09499340e 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
+@@ -337,6 +337,7 @@ public class Slime extends Mob implements Enemy {
+             }
+             for (LivingEntity living : slimes) {
+                 this.level().addFreshEntity(living, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SLIME_SPLIT); // CraftBukkit - SpawnReason
++                living.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+             }
+             // CraftBukkit end
+         }
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index eae4b1a38ab90b0a77cc6886434f87a4fbf7583a..148af6e3f96524a578aacfa500da99cf50657317 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -1023,6 +1023,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+                     return;
+                 }
+                 world.addFreshEntityWithPassengers(entitywitch, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
++                entitywitch.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
+                 // CraftBukkit end
+                 this.releaseAllPois();
+                 this.discard();
