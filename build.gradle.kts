@@ -39,6 +39,7 @@ subprojects {
     tasks.withType<JavaCompile> {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
+        options.compilerArgs.add("-Xlint:none")
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
