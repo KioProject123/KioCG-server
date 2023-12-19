@@ -157,17 +157,20 @@ index 4c8ce073094e55ea0df67fe02c0d1cc8aef76562..568d42d3dd0131ff78542fb2b14f00f3
                  }
              }
 diff --git a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
-index d604b7ec46f08993647979ed220a84842e3fe325..e4654f8362adb1c369e164d04fcbded4305e7cdd 100644
+index d604b7ec46f08993647979ed220a84842e3fe325..b9eff1e2e460ebfa6e040a4f17fdd3b7d5813b00 100644
 --- a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
-@@ -213,6 +213,12 @@ public class EnchantmentMenu extends AbstractContainerMenu {
+@@ -213,6 +213,15 @@ public class EnchantmentMenu extends AbstractContainerMenu {
  
                      PrepareItemEnchantEvent event = new PrepareItemEnchantEvent(this.player, this.getBukkitView(), this.access.getLocation().getBlock(), item, offers, i);
                      event.setCancelled(!itemstack.isEnchantable());
 +                    // KioCG start
-+                    ItemStack itemstack1 = inventory.getItem(1);
-+                    if (!itemstack1.isEmpty() && io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), itemstack1)) {
-+                        event.setCancelled(true); // KioCG
++                    if (!event.isCancelled()) {
++                        ItemStack itemstack1 = inventory.getItem(1);
++                        if (itemstack.is(Items.BOOK) && io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), itemstack)
++                            || !itemstack1.isEmpty() && io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), itemstack1)) {
++                            event.setCancelled(true); // KioCG
++                        }
 +                    }
 +                    // KioCG end
                      world.getCraftServer().getPluginManager().callEvent(event);
