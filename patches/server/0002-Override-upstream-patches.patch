@@ -120,6 +120,76 @@ index 27d76e0c4809d333c548379bf78ec2db083b027e..0951f89827ca959357a4febef3213044
                              }
                              if (player.hasPermission("purpur.anvil.format")) {
                                  java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
+diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
+index c4eca9db159d6a581d863558ebc3008d51d25cfb..fc266cbe85b1aae64a4f284dc128378d88fe5a01 100644
+--- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
+@@ -110,6 +110,24 @@ public class FarmBlock extends Block {
+     @Override
+     public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+         super.fallOn(world, state, pos, entity, fallDistance); // CraftBukkit - moved here as game rules / events shouldn't affect fall damage.
++        // KioCG start - moved from below
++        // Purpur start
++        if (world.purpurConfig.farmlandTramplingDisabled) return;
++        if (world.purpurConfig.farmlandTramplingOnlyPlayers && !(entity instanceof Player)) return;
++        if (world.purpurConfig.farmlandAlpha) {
++            Block block = world.getBlockState(pos.below()).getBlock();
++            if (block instanceof FenceBlock || block instanceof WallBlock) {
++                return;
++            }
++        }
++        if (world.purpurConfig.farmlandTramplingFeatherFalling) {
++            Iterator<net.minecraft.world.item.ItemStack> armor = entity.getArmorSlots().iterator();
++            if (armor.hasNext() && net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.FALL_PROTECTION, armor.next()) >= (int) entity.fallDistance) {
++                return;
++            }
++        }
++        // Purpur end
++        // KioCG end - moved from below
+         if (!world.isClientSide && (world.purpurConfig.farmlandTrampleHeight >= 0D ? fallDistance >= world.purpurConfig.farmlandTrampleHeight : world.random.nextFloat() < fallDistance - 0.5F) && entity instanceof LivingEntity && (entity instanceof Player || world.purpurConfig.farmlandBypassMobGriefing || world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) { // Purpur
+             // CraftBukkit start - Interact soil
+             org.bukkit.event.Cancellable cancellable;
+@@ -124,22 +142,24 @@ public class FarmBlock extends Block {
+                 return;
+             }
+ 
+-            // Purpur start
+-            if (world.purpurConfig.farmlandTramplingDisabled) return;
+-            if (world.purpurConfig.farmlandTramplingOnlyPlayers && !(entity instanceof Player)) return;
+-            if (world.purpurConfig.farmlandAlpha) {
+-                Block block = world.getBlockState(pos.below()).getBlock();
+-                if (block instanceof FenceBlock || block instanceof WallBlock) {
+-                    return;
+-                }
+-            }
+-            if (world.purpurConfig.farmlandTramplingFeatherFalling) {
+-                Iterator<net.minecraft.world.item.ItemStack> armor = entity.getArmorSlots().iterator();
+-                if (armor.hasNext() && net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.FALL_PROTECTION, armor.next()) >= (int) entity.fallDistance) {
+-                    return;
+-                }
+-            }
+-            // Purpur end
++            // KioCG start
++//            // Purpur start
++//            if (world.purpurConfig.farmlandTramplingDisabled) return;
++//            if (world.purpurConfig.farmlandTramplingOnlyPlayers && !(entity instanceof Player)) return;
++//            if (world.purpurConfig.farmlandAlpha) {
++//                Block block = world.getBlockState(pos.below()).getBlock();
++//                if (block instanceof FenceBlock || block instanceof WallBlock) {
++//                    return;
++//                }
++//            }
++//            if (world.purpurConfig.farmlandTramplingFeatherFalling) {
++//                Iterator<net.minecraft.world.item.ItemStack> armor = entity.getArmorSlots().iterator();
++//                if (armor.hasNext() && net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.FALL_PROTECTION, armor.next()) >= (int) entity.fallDistance) {
++//                    return;
++//                }
++//            }
++//            // Purpur end
++            // KioCG end
+             if (!CraftEventFactory.callEntityChangeBlockEvent(entity, pos, Blocks.DIRT.defaultBlockState())) {
+                 return;
+             }
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 index d0d951f867390fa12cae2ba2a49212354b10d7b0..03f0ab2a650762231e6c74f9f5958e7bd5607e1a 100644
 --- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
