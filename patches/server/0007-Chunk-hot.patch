@@ -248,7 +248,7 @@ index 90fd350cec2ca726ff6707ab2cd3c7afb28def7f..a48ae09309f8152b65db3d42dcd58b9c
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cd871ef34b1ddc8b3a4c0454122da607bee90281..d3ca73a38e3fe469a1e546dcaf757fa330bc0380 100644
+index 3163caeb293f4e24f4a66a75a998004c932849a8..e12fdf99371d66acf4feb5b34f84feea3af837a5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -285,6 +285,7 @@ public class ServerPlayer extends Player {
@@ -328,10 +328,10 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index ef9c44206739d95efead0d6584566f97b6a56c6a..1c68081025e014273479410dd8b938e2bec68499 100644
+index b21dd27e77632435ea53b48861fe16ee03d5ba06..9b7d89faf7ba3a70513abb03ef88963744899394 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5025,4 +5025,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -5020,4 +5020,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
          return false;
      }
      // Purpur end

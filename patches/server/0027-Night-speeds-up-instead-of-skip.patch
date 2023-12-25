@@ -92,7 +92,7 @@ index caa8a69bde0c212c36dd990a67836ac2f95548c0..ac09bf01c49e4a7321c08dbf4c7d9637
                  if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur
                      ++this.sleepingPlayers;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index d24664bc4d373804e373266a189eb6de1e0b261d..667e37a2206459578d52ba321b704d7a6126d0e9 100644
+index bbf371428e343cfad0ae118c387fd2342541fe53..d5e29e083c8e4294df821a55e4b66af337988a02 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -421,6 +421,7 @@ public class PurpurWorldConfig {

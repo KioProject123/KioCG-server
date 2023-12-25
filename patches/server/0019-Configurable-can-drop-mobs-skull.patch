@@ -30,7 +30,7 @@ index f68ed46ca9ac9b67557fc39c7518b0fe9914393b..e0dd4cbd8dca87e979445cf7ba7cffe4
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 304ea7fdcd410a7c88ec61143364e14de8db0b0c..61804db25c09b8d6a92dd9778472dd83fa1b2889 100644
+index 64f6b5f44db4fd90e789032e3833da60cfcfbef1..664ddea3f82a620130df968b28b50e68ba15cd81 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -300,7 +300,7 @@ public class Creeper extends Monster implements PowerableMob {

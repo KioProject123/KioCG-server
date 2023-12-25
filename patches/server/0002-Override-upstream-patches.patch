@@ -65,7 +65,7 @@ index 39ecb12d4296852ee5865dcfa2b8b6c3233a4804..0ef633213d26f30665a5631438020149
                  } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 07c6e9c5a32ef7155525924d1a0e433943787819..cd871ef34b1ddc8b3a4c0454122da607bee90281 100644
+index f5bb6c9585d1f542cd03c7801a1c79f9c376a99e..3163caeb293f4e24f4a66a75a998004c932849a8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2311,7 +2311,7 @@ public class ServerPlayer extends Player {

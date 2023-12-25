@@ -5,19 +5,19 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fb1837bd5d0cb1970a6c236e72654a1c09502c48..9b43246dce03177211862ff0291846f6bcdc6458 100644
+index 12f4b3d753b56947e3759888ba3d98fa693c2a3f..9be9976a629fe01edcae203d1ff79d73884a2996 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -28,7 +28,7 @@ repositories {
+@@ -14,7 +14,7 @@ val alsoShade: Configuration by configurations.creating
+ 
  dependencies {
-     extraRuntime(platform("net.kyori:adventure-bom:4.15.0-SNAPSHOT"))
      // Purpur start
 -    implementation(project(":purpur-api"))
 +    implementation(project(":kiocg-api")) // KioCG
      implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
          exclude("io.papermc.paper", "paper-api")
      }
-@@ -92,7 +92,7 @@ tasks.jar {
+@@ -78,7 +78,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
