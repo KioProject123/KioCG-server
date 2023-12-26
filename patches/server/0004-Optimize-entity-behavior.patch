@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 9793a5c9a36201b00ba32f2ac928cfabfbdb98e1..414ee8e8fa00adf3f2bfc766392901aa1a7813ff 100644
+index 38845300ceb7092de4cd8e31ef8782728892f656..4face83fe4e63df3759e8a016e5468a85ba50bd1 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -288,10 +288,10 @@ index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index a828dbdd755368b74501cc0bab2e38e7fde6f2bd..f449efed7b704d4a0bc0fb756d303601b193201e 100644
+index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707fe4121aa 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -280,6 +280,7 @@ public class ActivationRange
+@@ -303,6 +303,7 @@ public class ActivationRange
              return 100; // Paper
          }
          // Paper start
@@ -299,7 +299,7 @@ index a828dbdd755368b74501cc0bab2e38e7fde6f2bd..f449efed7b704d4a0bc0fb756d303601
          if ( !entity.onGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
          {
              return 100;
-@@ -289,6 +290,11 @@ public class ActivationRange
+@@ -312,6 +313,11 @@ public class ActivationRange
          {
              if ( (!entity.onGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
@@ -311,7 +311,7 @@ index a828dbdd755368b74501cc0bab2e38e7fde6f2bd..f449efed7b704d4a0bc0fb756d303601
                  return 10; // Paper
              }
          } else if ( !( (AbstractArrow) entity ).inGround )
-@@ -380,7 +386,7 @@ public class ActivationRange
+@@ -403,7 +409,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

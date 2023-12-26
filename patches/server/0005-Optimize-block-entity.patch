@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Mon, 11 Dec 2023 20:12:47 +0800
+Date: Tue, 26 Dec 2023 12:44:23 +0800
 Subject: [PATCH] Optimize block entity
 
 
@@ -147,23 +147,23 @@ index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index d4dcf7fe26474ae07374e7761d823bc5c8b54f97..6c5ebfe9643e247d4b4dc4d24b7cef555e619581 100644
+index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..e2f11aec0a3546d94ad5f97540de1fa99b612ef4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -490,7 +490,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -516,7 +516,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          return inventory instanceof WorldlyContainer ? IntStream.of(((WorldlyContainer) inventory).getSlotsForFace(side)) : IntStream.range(0, inventory.getContainerSize());
      }
  
 -    private static boolean isFullContainer(Container inventory, Direction direction) {
 +    public static boolean isFullContainer(Container inventory, Direction direction) { // KioCG - private -> public
+         if (true) return inventory.isCompletelyFull(direction); // Pufferfish - use bitsets
          // Paper start - optimize hoppers
          if (inventory instanceof WorldlyContainer worldlyContainer) {
-             for (final int slot : worldlyContainer.getSlotsForFace(direction)) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 5efb3e1d04cc22a8fa37a25e2bef07f9e2842adc..6076c1ce708c83d44bd212677cda1d75b8dfec6d 100644
+index 66656c4cf157228c9f52b33b358713ef0172f9ff..ae07a81576d2c52acb2bc020000668b8c10edc24 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -573,7 +573,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -587,7 +587,7 @@ public class LevelChunk extends ChunkAccess {
              } else {
                  ServerLevel worldserver = (ServerLevel) world;
  

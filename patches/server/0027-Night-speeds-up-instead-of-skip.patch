@@ -17,10 +17,10 @@ index 27b3e0be3eab20e8bb5caa882ba3e4e134ced54f..61e8ce3bfa11644a8760db58f2172d6c
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a7b995eff299f22f7e8f32c08fbbb98bec5008fa..f2d01091abc6a3ade59bb8d064b4c7760036a5d4 100644
+index f17bba46598a56fa8938ad2223e2d8753b37a1b3..e61a8d2667efc012eed621b659a8c25b8c695de9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1724,7 +1724,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1726,7 +1726,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -30,7 +30,7 @@ index a7b995eff299f22f7e8f32c08fbbb98bec5008fa..f2d01091abc6a3ade59bb8d064b4c776
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a48ae09309f8152b65db3d42dcd58b9c73bec611..12e275dd9b5f9dca05525b98a890c0494a1d069e 100644
+index 4949522f59eae4a7b34655ef79b8c635a78e31bc..3847ab9d747eb513f23c73dbbb8229425d905d02 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -218,6 +218,7 @@ public class ServerLevel extends Level implements WorldGenLevel {

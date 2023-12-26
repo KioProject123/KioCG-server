@@ -18,10 +18,10 @@ index e0dd4cbd8dca87e979445cf7ba7cffe457ef41f1..2e13b2107bbdcc35d616235849af2bd1
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 6d5b16b8eb7ce152e91979062f675f00a8a11db6..58f1d21e654472c36e343e366503c6de3bbd6ad8 100644
+index bd657c4554e5cb4b783f5a50176e73f4117bb142..de71fd8239ca7683f699818d0af001f6cf8aeb98 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -390,6 +390,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -392,6 +392,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
          if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
              this.discard();
@@ -29,7 +29,7 @@ index 6d5b16b8eb7ce152e91979062f675f00a8a11db6..58f1d21e654472c36e343e366503c6de
          }
      }
      // Purpur end
-@@ -793,9 +794,32 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -795,9 +796,32 @@ public abstract class Mob extends LivingEntity implements Targeting {
      protected void setItemSlotAndDropWhenKilled(EquipmentSlot slot, ItemStack stack) {
          this.setItemSlot(slot, stack);
          this.setGuaranteedDrop(slot);
@@ -62,7 +62,7 @@ index 6d5b16b8eb7ce152e91979062f675f00a8a11db6..58f1d21e654472c36e343e366503c6de
      public void setGuaranteedDrop(EquipmentSlot slot) {
          switch (slot.getType()) {
              case HAND:
-@@ -905,6 +929,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -907,6 +931,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
  
                  if (d0 > (double) j && this.removeWhenFarAway(d0)) {
                      this.discard();
@@ -70,7 +70,7 @@ index 6d5b16b8eb7ce152e91979062f675f00a8a11db6..58f1d21e654472c36e343e366503c6de
                  }
  
                  int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - custom despawn distances
-@@ -912,6 +937,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -914,6 +939,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
  
                  if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double) l && this.removeWhenFarAway(d0)) {
                      this.discard();

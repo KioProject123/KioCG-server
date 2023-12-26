@@ -52,10 +52,10 @@ index 071d3877e386a0c7c4d2f2e8ddd06e0765c49d0d..4a3c4a60ef1c2ebc4cb9ea1ec5e899a3
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 39ecb12d4296852ee5865dcfa2b8b6c3233a4804..0ef633213d26f30665a5631438020149a13eff1a 100644
+index f69976dcba060027c67c2e1b49fa28d3f28f66f0..18d1301f0e5296934fb8364460be4bc86cdc297a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1213,7 +1213,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1215,7 +1215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          this.recentTps[3] = tps15.getAverage();
                          // Purpur end
                      // Paper end
@@ -65,7 +65,7 @@ index 39ecb12d4296852ee5865dcfa2b8b6c3233a4804..0ef633213d26f30665a5631438020149
                  } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index f5bb6c9585d1f542cd03c7801a1c79f9c376a99e..3163caeb293f4e24f4a66a75a998004c932849a8 100644
+index 8e36b261a4f8ea82bab778d3abd3326aa347d19a..3a6be79bc889d0735a9705291d1fd60cfffa8f47 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2311,7 +2311,7 @@ public class ServerPlayer extends Player {
@@ -78,10 +78,10 @@ index f5bb6c9585d1f542cd03c7801a1c79f9c376a99e..3163caeb293f4e24f4a66a75a998004c
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ac57b2d31019eeb12a0d63266b900c606d90b05e..d618f46a26aac5d65d621284b4ced7f1b6bbeded 100644
+index 1425a8321e3bc988a88ca45e3d3f0fcee18df58f..d182b6ace0224f37ddfbe2756708f9bbb52b8da7 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -427,7 +427,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {

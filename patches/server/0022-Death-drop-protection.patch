@@ -5,7 +5,7 @@ Subject: [PATCH] Death drop protection
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3230813517261532b7625c24c5dc112744b49d29..2ed6491f5581375f37b619b40dc1d385958645ed 100644
+index 3083f211db779fac990e82c4bccd17624bb7b7e6..fba730dfc55c865f5c41b3090212e6b560a1fb51 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1017,7 +1017,15 @@ public class ServerPlayer extends Player {

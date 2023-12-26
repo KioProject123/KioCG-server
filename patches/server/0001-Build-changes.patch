@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Mon, 11 Dec 2023 20:09:31 +0800
+Date: Tue, 26 Dec 2023 12:40:17 +0800
 Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 12f4b3d753b56947e3759888ba3d98fa693c2a3f..9be9976a629fe01edcae203d1ff79d73884a2996 100644
+index 790835a0c4889d17b4efd06cb463744973642a48..57fc51bd7495dcac9eac500f99e1c45b99e1b57c 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,7 +14,7 @@ val alsoShade: Configuration by configurations.creating
@@ -17,25 +17,25 @@ index 12f4b3d753b56947e3759888ba3d98fa693c2a3f..9be9976a629fe01edcae203d1ff79d73
      implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
          exclude("io.papermc.paper", "paper-api")
      }
-@@ -78,7 +78,7 @@ tasks.jar {
+@@ -93,7 +93,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Purpur-$implementationVersion", // Purpur
-+            "Implementation-Version" to "git-kiocg-$implementationVersion", // Purpur // KioCG
+-            "Implementation-Version" to "git-Purpur-$implementationVersion", // Pufferfish // Purpur
++            "Implementation-Version" to "git-kiocg-$implementationVersion", // Pufferfish // Purpur // KioCG
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index fb87620c742ff7912f5e8ccd2a7930dd605576d9..bfb879097c4d90d4715c341d7202d72bbf4a4e3e 100644
+index 99597258e8e88cd9e2c901c4ac3ff7faeeabee2b..39535e2d9d509f9d8d92cc66c9fe653731a73738 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
      public static String getBukkitVersion() {
          String result = "Unknown-Version";
  
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Purpur
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.kiocg.purpurfork/kiocg-api/pom.properties"); // Purpur // KioCG
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Pufferfish // Purpur
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.kiocg.purpurfork/kiocg-api/pom.properties"); // Pufferfish // Purpur // KioCG
          Properties properties = new Properties();
  
          if (stream != null) {

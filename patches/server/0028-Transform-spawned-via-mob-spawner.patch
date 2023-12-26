@@ -5,10 +5,10 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 58f1d21e654472c36e343e366503c6de3bbd6ad8..9252bb6c9110f566211a818d743eb5cca6c501bf 100644
+index de71fd8239ca7683f699818d0af001f6cf8aeb98..a8455a899ab63a80f7de185a60cbfb77a10ba239 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1529,6 +1529,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
                      return null;
                  }
                  this.level().addFreshEntity(t0, spawnReason);
@@ -41,10 +41,10 @@ index 6ce116dc3173d17b19c4c03fe9cf494dd022f0d5..96764fce967ecc6c6573956a7486181c
                  this.discard(); // CraftBukkit - from above
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
-index 1e86f144d6139cff52ccc48f03f3283aa6517736..e3d5ceff864ad65df935ae07dee1731a42a466c8 100644
+index 14135dac80dec4224715e21cef6556d22e569026..2a883c24548aa0208f9dfefb65b694d63ba62a4b 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
-@@ -284,6 +284,7 @@ public class Tadpole extends AbstractFish {
+@@ -285,6 +285,7 @@ public class Tadpole extends AbstractFish {
                  // CraftBukkit end
                  this.playSound(SoundEvents.TADPOLE_GROW_UP, 0.15F, 1.0F);
                  worldserver.addFreshEntityWithPassengers(frog, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.METAMORPHOSIS); // CraftBukkit - add SpawnReason
@@ -77,10 +77,10 @@ index 8b6f8fca8402c177c399824c6bf0bdef2c24ec55..f8f6441d5581874a6737723cf10b9bb0
              // CraftBukkit end
          }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index eae4b1a38ab90b0a77cc6886434f87a4fbf7583a..148af6e3f96524a578aacfa500da99cf50657317 100644
+index 822c6d1474e170a3cdd5876adcbeb6c4ee5681b7..4f61fe8857f7f3f8df911064cfbba134ceb84e46 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -1023,6 +1023,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -1025,6 +1025,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                      return;
                  }
                  world.addFreshEntityWithPassengers(entitywitch, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
