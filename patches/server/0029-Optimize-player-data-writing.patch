@@ -1,0 +1,46 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Joket_abc <15005771700@qq.com>
+Date: Fri, 29 Dec 2023 18:30:32 +0800
+Subject: [PATCH] Optimize player data writing
+
+
+diff --git a/src/main/java/net/minecraft/stats/ServerRecipeBook.java b/src/main/java/net/minecraft/stats/ServerRecipeBook.java
+index a0cb49233b1dbf53ce9d1bcc52b8967829d0530e..74aaa6052c4a10d355f1db7d9b453904f7d9fced 100644
+--- a/src/main/java/net/minecraft/stats/ServerRecipeBook.java
++++ b/src/main/java/net/minecraft/stats/ServerRecipeBook.java
+@@ -86,7 +86,7 @@ public class ServerRecipeBook extends RecipeBook {
+         ListTag nbttaglist = new ListTag();
+         Iterator iterator = this.known.iterator();
+ 
+-        while (iterator.hasNext()) {
++        while (iterator.hasNext() && false) { // KioCG
+             ResourceLocation minecraftkey = (ResourceLocation) iterator.next();
+ 
+             nbttaglist.add(StringTag.valueOf(minecraftkey.toString()));
+@@ -96,7 +96,7 @@ public class ServerRecipeBook extends RecipeBook {
+         ListTag nbttaglist1 = new ListTag();
+         Iterator iterator1 = this.highlight.iterator();
+ 
+-        while (iterator1.hasNext()) {
++        while (iterator1.hasNext() && false) { // KioCG
+             ResourceLocation minecraftkey1 = (ResourceLocation) iterator1.next();
+ 
+             nbttaglist1.add(StringTag.valueOf(minecraftkey1.toString()));
+@@ -114,9 +114,17 @@ public class ServerRecipeBook extends RecipeBook {
+         ListTag nbttaglist1 = nbt.getList("toBeDisplayed", 8);
+ 
+         this.loadRecipes(nbttaglist1, this::addHighlight, recipeManager);
++
++        // KioCG start
++        recipeManager.getRecipeIds().forEach(resourceLocation -> {
++            add(resourceLocation);
++            addHighlight(resourceLocation);
++        });
++        // KioCG end
+     }
+ 
+     private void loadRecipes(ListTag list, Consumer<RecipeHolder<?>> handler, RecipeManager recipeManager) {
++        if (true) return; // KioCG
+         for (int i = 0; i < list.size(); ++i) {
+             String s = list.getString(i);
+ 
