@@ -5,7 +5,7 @@ Subject: [PATCH] Healing campfire
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 9b27bf6e393eaa5ebe24a8cb7b2b1e61704e9879..05c9e2f70881c78f1975cc17f20bdfa350b0f806 100644
+index 136ab9899aba8ffd7a72b053b88191f8f4d47ed4..8f21ac7a659630cfa90b533e510a02a648cfeaa2 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -186,6 +186,7 @@ public abstract class Player extends LivingEntity {
@@ -17,10 +17,10 @@ index 9b27bf6e393eaa5ebe24a8cb7b2b1e61704e9879..05c9e2f70881c78f1975cc17f20bdfa3
      // CraftBukkit start
      public boolean fauxSleeping;
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index d239b7c87a065917fefaf57e22a18b55bc419f48..88f70cebcf2c9c96fe3cf97e22be18fe654cfd59 100644
+index 84a99e44a225dcf09ca80155de0339477f66426d..d13e1790a9ce0c8f3e7f352cc8b8f8841ba0b8a4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -115,12 +115,35 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -118,12 +118,35 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
              }
          }
  

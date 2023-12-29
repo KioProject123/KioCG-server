@@ -372,7 +372,7 @@ index 7af18eac34f3eb424180f8603b4ccc824b0b3480..ae887c60f7ef962ce6cef038132c5c7a
  
          if (owner != null) {
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index ca86ee6ffc185a011fa9a01c6eca6812e3f15c5a..d239b7c87a065917fefaf57e22a18b55bc419f48 100644
+index 008a1c85451a812ebf1656bf715cd812389b8cb2..84a99e44a225dcf09ca80155de0339477f66426d 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 @@ -79,9 +79,23 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {

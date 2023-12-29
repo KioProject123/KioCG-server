@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Fri, 13 Oct 2023 20:56:34 +0800
+Date: Sat, 30 Dec 2023 05:31:03 +0800
 Subject: [PATCH] Override upstream patches
 
 
@@ -78,7 +78,7 @@ index 8e36b261a4f8ea82bab778d3abd3326aa347d19a..3a6be79bc889d0735a9705291d1fd60c
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1425a8321e3bc988a88ca45e3d3f0fcee18df58f..d182b6ace0224f37ddfbe2756708f9bbb52b8da7 100644
+index 8fd6e46882a1828abdf858c0b10f955c9f2718eb..1a6356ea198b54f8b63ece439e766c361ed7b4bd 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -427,7 +427,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -96,18 +96,18 @@ index 1425a8321e3bc988a88ca45e3d3f0fcee18df58f..d182b6ace0224f37ddfbe2756708f9bb
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 8b364fe9f3a3d47ae6daa331b8f16941ca17432a..fae47a2e8dd212bd0ad3fa768a6bcc9898fde95a 100644
+index 58e101a3963be08c21e6d8c80731d45c0883be8d..3bc93e292f44e372e502d1217b6aa92c780561f9 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -228,7 +228,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
-             this.setPumpkin(false);
-             this.forceDrops = true; // CraftBukkit
-             if (level().purpurConfig.snowGolemDropsPumpkin) // Purpur
--            for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur
-+            // for (int i = 0; i < 1 + (org.purpurmc.purpur.PurpurConfig.allowShearsLooting ? looting : 0); i++) // Purpur // KioCG - fix dupe
-             this.spawnAtLocation(new ItemStack(Items.CARVED_PUMPKIN), 1.7F);
-             this.forceDrops = false; // CraftBukkit
+@@ -240,7 +240,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+         if (!level().purpurConfig.snowGolemDropsPumpkin) {
+             return Shearable.super.generateDefaultDrops(0);
          }
+-        if (org.purpurmc.purpur.PurpurConfig.allowShearsLooting) {
++        if (org.purpurmc.purpur.PurpurConfig.allowShearsLooting && false) { // KioCG - fix dupe
+             java.util.ArrayList<ItemStack> list = new java.util.ArrayList<>();
+             for (int i = 0; i < 1 + looting; i++) {
+                 list.add(new ItemStack(Items.CARVED_PUMPKIN));
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 index 27d76e0c4809d333c548379bf78ec2db083b027e..0951f89827ca959357a4febef3213044169e7579 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java

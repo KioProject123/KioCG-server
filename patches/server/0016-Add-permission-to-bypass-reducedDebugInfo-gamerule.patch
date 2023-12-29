@@ -5,7 +5,7 @@ Subject: [PATCH] Add permission to bypass reducedDebugInfo gamerule
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 500b2fb4f6b0db9e0e4f6bf51634b0250d5b2739..9a94519738b45443c48ebf8314cfccf339bd0822 100644
+index 1869e44c499650fb556c590f205470efd4286477..78410751858eb82c94fa94b84c89aaf6ad0b86f0 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -289,7 +289,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index 500b2fb4f6b0db9e0e4f6bf51634b0250d5b2739..9a94519738b45443c48ebf8314cfccf3
          boolean flag2 = gamerules.getBoolean(GameRules.RULE_LIMITED_CRAFTING);
  
          // Spigot - view distance
-@@ -1328,7 +1328,7 @@ public abstract class PlayerList {
+@@ -1334,7 +1334,7 @@ public abstract class PlayerList {
          player.getEntityData().refresh(player); // CraftBukkkit - SPIGOT-7218: sync metadata
          player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules

@@ -210,7 +210,7 @@ index 18d1301f0e5296934fb8364460be4bc86cdc297a..f17bba46598a56fa8938ad2223e2d875
          float f;
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index dd0ef00d29d4caa3a1fe8513ec82d72f64fc308f..4949522f59eae4a7b34655ef79b8c635a78e31bc 100644
+index 76fd80b1d5674b89f9b13df5b5d70fbc822296e5..b001c4fdd463c0753923671c70ca84ee26f6cad4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1478,6 +1478,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -355,10 +355,10 @@ index 1e76230c078ef07418345b0bc50c574cf63c9094..dfa6a890435cdc0613711ab7a248300c
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index a92518aae7bc4d45772056c6a7e0053966a1e96b..bd657c4554e5cb4b783f5a50176e73f4117bb142 100644
+index ba47e9e3f25a94eb09ba929d5b503c5983d0e29f..51f18317fe39bb47e38cf4c969b33fe8aabf5662 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1854,4 +1854,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1858,4 +1858,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
      }
      // Purpur end
@@ -403,10 +403,10 @@ index 904e3fce62a193b9c866d9f4c200e83d685a8669..0c8971f995d82eee875bfcc555f6b429
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index f1fe8a0c1ff1514d9a158e18dc6d234d54388573..daab7e276f97606fc2091e3132f726e5077c566d 100644
+index 738aca99196c5b88ed5d561d410964c71625578d..e3f8db45e9fe203946f522931b918c268918b374 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -2448,4 +2448,11 @@ public abstract class Player extends LivingEntity {
+@@ -2464,4 +2464,11 @@ public abstract class Player extends LivingEntity {
              return this.message;
          }
      }

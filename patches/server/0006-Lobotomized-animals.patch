@@ -62,7 +62,7 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1680b51a4a145de7d7a9ca10d0645075ebac399e..2734355080ef7357dc2ae71ba187d994d4cc9549 100644
+index 776f6edd2aaa748ffd72bce05a9883d5ec285931..f62a68fd73db64da993c80d7b4fd7e2e6bdc41cb 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -304,6 +304,8 @@ public abstract class LivingEntity extends Entity implements Attackable {

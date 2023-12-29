@@ -110,10 +110,10 @@ index c57efcb9a79337ec791e4e8f6671612f0a82b441..7af18eac34f3eb424180f8603b4ccc82
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812e3f15c5a 100644
+index 18d3cb828f85e17ec27dbb5b33c6f17fff178a1d..008a1c85451a812ebf1656bf715cd812389b8cb2 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -123,6 +123,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -126,6 +126,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
  
      }
  
@@ -138,7 +138,7 @@ index d80855b22dc10dbf697578d5f78664ed7b6ac572..ca86ee6ffc185a011fa9a01c6eca6812
      public static void particleTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
          RandomSource randomsource = world.random;
          int i;
-@@ -250,6 +268,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -253,6 +271,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
      public void dowse() {
          if (this.level != null) {
              this.markUpdated();
