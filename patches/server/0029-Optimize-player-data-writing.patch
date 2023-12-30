@@ -4,6 +4,19 @@ Date: Fri, 29 Dec 2023 18:30:32 +0800
 Subject: [PATCH] Optimize player data writing
 
 
+diff --git a/src/main/java/net/minecraft/nbt/NbtIo.java b/src/main/java/net/minecraft/nbt/NbtIo.java
+index c2044d2e8ce2d4747aa73ba90e5b975b1b7d2c19..dfebd8274e1b3832d2f8098488e4ffac61a97472 100644
+--- a/src/main/java/net/minecraft/nbt/NbtIo.java
++++ b/src/main/java/net/minecraft/nbt/NbtIo.java
+@@ -26,7 +26,7 @@ import net.minecraft.util.FastBufferedInputStream;
+ 
+ public class NbtIo {
+ 
+-    private static final OpenOption[] SYNC_OUTPUT_OPTIONS = new OpenOption[]{StandardOpenOption.SYNC, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING};
++    private static final OpenOption[] SYNC_OUTPUT_OPTIONS = new OpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING}; // KioCG - Async write
+ 
+     public NbtIo() {}
+ 
 diff --git a/src/main/java/net/minecraft/stats/ServerRecipeBook.java b/src/main/java/net/minecraft/stats/ServerRecipeBook.java
 index a0cb49233b1dbf53ce9d1bcc52b8967829d0530e..74aaa6052c4a10d355f1db7d9b453904f7d9fced 100644
 --- a/src/main/java/net/minecraft/stats/ServerRecipeBook.java
