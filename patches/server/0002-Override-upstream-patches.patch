@@ -65,10 +65,10 @@ index f69976dcba060027c67c2e1b49fa28d3f28f66f0..18d1301f0e5296934fb8364460be4bc8
                  } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8e36b261a4f8ea82bab778d3abd3326aa347d19a..3a6be79bc889d0735a9705291d1fd60cfffa8f47 100644
+index 37a3ce5da2cb89675e0180c4ed937e5851cd002b..0ba662c4668bf9cc4164f99cf0274c3d6df404b8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -2311,7 +2311,7 @@ public class ServerPlayer extends Player {
+@@ -2312,7 +2312,7 @@ public class ServerPlayer extends Player {
              if (afk) {
                  getBukkitEntity().setPlayerListName(org.purpurmc.purpur.PurpurConfig.afkTabListPrefix + prefix + scoreboardName + suffix + org.purpurmc.purpur.PurpurConfig.afkTabListSuffix, true);
              } else {
