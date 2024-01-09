@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 38845300ceb7092de4cd8e31ef8782728892f656..4face83fe4e63df3759e8a016e5468a85ba50bd1 100644
+index 770d74e3c3226306a8f246920798ae72fdafe2c5..21f28d8ed09f68fe5dcabfd3866e4fd3bcdd4c1e 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -288,7 +288,7 @@ index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 0b03dae85e6008283e68b07fa438daccf0e4f5fa..76f4d2c2b88910fb6b1ff44e17a46707fe4121aa 100644
+index 2b73e291e44987c4d63f2064091f7f8e28276b90..4c87ebe7626777ab2731a4c1c95e45911cc4a990 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -303,6 +303,7 @@ public class ActivationRange

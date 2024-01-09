@@ -5,7 +5,7 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 2d4164a848a0b49e53aade60e3a28e744ca88f4b..6f40c92b609927a60dcdd9e90e191194d7081250 100644
+index 9dd54d8927ed2594fa1d90d8ed4a286405ba6b2b..76ef7066bc562c3b87b5e0786915a5bbc7721f28 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -29,7 +29,7 @@ index 6d00b3cd4a9cb0fc8a9e9c27f37429a25fcf6e9d..f65a0dfe7b80c09f442b2ebcd210219d
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index 9ac87800d1d15ae3431caaf4e86d4fe10e105972..a6e24b5de040e262ab501494b668fd20164795d2 100644
+index 4a520ff6ce7f6011838430b3972e99b8b916db7e..bee8c860e102d6c7c0aebf52bef8326245961c7a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 @@ -258,6 +258,7 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo

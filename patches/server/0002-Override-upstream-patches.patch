@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sat, 30 Dec 2023 05:31:03 +0800
+Date: Tue, 9 Jan 2024 20:35:05 +0800
 Subject: [PATCH] Override upstream patches
 
 
@@ -35,10 +35,10 @@ index a6f58b3457b7477015c5c6d969e7d83017dd3fa1..8de3c3aac56415dca3815d5b103c7501
 +    // KioCG end
  }
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 071d3877e386a0c7c4d2f2e8ddd06e0765c49d0d..4a3c4a60ef1c2ebc4cb9ea1ec5e899a30e0733a7 100644
+index 385ca2c1022e0985550a5cc2bbff953f1aa33f5c..cf2fec7817c4077e56b4db7932e9df3404b72bd1 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -538,4 +538,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -545,4 +545,12 @@ public class WorldConfiguration extends ConfigurationPart {
              VANILLA, EIGENCRAFT, ALTERNATE_CURRENT
          }
      }
@@ -96,13 +96,13 @@ index 8fd6e46882a1828abdf858c0b10f955c9f2718eb..1a6356ea198b54f8b63ece439e766c36
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index 58e101a3963be08c21e6d8c80731d45c0883be8d..3bc93e292f44e372e502d1217b6aa92c780561f9 100644
+index c30b00e5637d3def256c93cc227a15ddaf99bc56..c86ca83ecb13b07442e09557487c1486b1fd29aa 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-@@ -240,7 +240,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
-         if (!level().purpurConfig.snowGolemDropsPumpkin) {
-             return Shearable.super.generateDefaultDrops(0);
-         }
+@@ -237,7 +237,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
+     @Override
+     // Purpur start
+     public java.util.List<ItemStack> generateDefaultDrops(int looting) {
 -        if (org.purpurmc.purpur.PurpurConfig.allowShearsLooting) {
 +        if (org.purpurmc.purpur.PurpurConfig.allowShearsLooting && false) { // KioCG - fix dupe
              java.util.ArrayList<ItemStack> list = new java.util.ArrayList<>();

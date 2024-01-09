@@ -5,10 +5,10 @@ Subject: [PATCH] Hopper filter
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 2e13b2107bbdcc35d616235849af2bd1dec1fa44..27b3e0be3eab20e8bb5caa882ba3e4e134ced54f 100644
+index e7f35737769dc907dbf227fb7c696a5386644c68..71a684323a518b2c4092e731c8b382952e42a8bf 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -565,6 +565,9 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -572,6 +572,9 @@ public class WorldConfiguration extends ConfigurationPart {
  
              public boolean persistentOnlyWhenPickedUpEnchantedItems = false;
          }

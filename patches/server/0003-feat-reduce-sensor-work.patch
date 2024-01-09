@@ -42,7 +42,7 @@ index 1a6356ea198b54f8b63ece439e766c361ed7b4bd..776f6edd2aaa748ffd72bce05a9883d5
              // Purpur start
              if (entity instanceof LivingEntity entityliving) {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 5fe8838b4512ba6676a5fe7f3ab412ff87f07667..ba47e9e3f25a94eb09ba929d5b503c5983d0e29f 100644
+index c802c0807897a5c162223b47be1eef43f8b2d58e..6fbdf1eacd5ae00b205b70a227bf8f6cecc14b79 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -936,10 +936,10 @@ public abstract class Mob extends LivingEntity implements Targeting {

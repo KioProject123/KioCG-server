@@ -134,10 +134,10 @@ index 0000000000000000000000000000000000000000..70d1613313bede45414ac046d539e3a8
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 4a3c4a60ef1c2ebc4cb9ea1ec5e899a30e0733a7..f68ed46ca9ac9b67557fc39c7518b0fe9914393b 100644
+index cf2fec7817c4077e56b4db7932e9df3404b72bd1..ee6c4ac72efd674c3a35fcbec5b9f363f2f5413d 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -543,7 +543,12 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -550,7 +550,12 @@ public class WorldConfiguration extends ConfigurationPart {
      public KiocgConfig kiocgConfig;
  
      public class KiocgConfig extends ConfigurationPart {
@@ -151,7 +151,7 @@ index 4a3c4a60ef1c2ebc4cb9ea1ec5e899a30e0733a7..f68ed46ca9ac9b67557fc39c7518b0fe
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 815af29d1aae935264a400bdb9c3d676e81a841a..cef12a43d1aff04742d8059a3c5e5f1b06622291 100644
+index f50258436fd80e0793d867c67ad5653cb13b6609..55e7b42824021000c40c128bb31305a90bcbf40c 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -258,6 +258,7 @@ public class Commands {
@@ -210,10 +210,10 @@ index 18d1301f0e5296934fb8364460be4bc86cdc297a..f17bba46598a56fa8938ad2223e2d875
          float f;
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 76fd80b1d5674b89f9b13df5b5d70fbc822296e5..b001c4fdd463c0753923671c70ca84ee26f6cad4 100644
+index ac3e1d0f5b8def2bdace6f3b680ff9e929c515fb..6b0ccd400de500a14a3822f1b6466ae83526a169 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1478,6 +1478,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1483,6 +1483,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
          // Paper start- timings
          final boolean isActive = org.spigotmc.ActivationRange.checkIfActive(entity);
          //timer = isActive ? entity.getType().tickTimer.startTiming() : entity.getType().inactiveTickTimer.startTiming(); // Paper // Purpur
@@ -222,7 +222,7 @@ index 76fd80b1d5674b89f9b13df5b5d70fbc822296e5..b001c4fdd463c0753923671c70ca84ee
          //try { // Purpur
          // Paper end - timings
          entity.setOldPosAndRot();
-@@ -1495,6 +1497,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1500,6 +1502,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          } else { entity.inactiveTick(); } // Paper - EAR 2
          //this.getProfiler().pop(); // Purpur
          //} finally { timer.stopTiming(); } // Paper - timings // Purpur
@@ -230,7 +230,7 @@ index 76fd80b1d5674b89f9b13df5b5d70fbc822296e5..b001c4fdd463c0753923671c70ca84ee
          Iterator iterator = entity.getPassengers().iterator();
  
          while (iterator.hasNext()) {
-@@ -1518,6 +1521,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1523,6 +1526,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  // Paper - EAR 2
                  final boolean isActive = org.spigotmc.ActivationRange.checkIfActive(passenger);
                  //co.aikar.timings.Timing timer = isActive ? passenger.getType().passengerTickTimer.startTiming() : passenger.getType().passengerInactiveTickTimer.startTiming(); // Paper // Purpur
@@ -239,7 +239,7 @@ index 76fd80b1d5674b89f9b13df5b5d70fbc822296e5..b001c4fdd463c0753923671c70ca84ee
                  //try { // Purpur
                  // Paper end
                  passenger.setOldPosAndRot();
-@@ -1549,6 +1554,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1554,6 +1559,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  }
  
              //} finally { timer.stopTiming(); }// Paper - EAR2 timings // Purpur
@@ -328,10 +328,10 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a9d5a9b9bff5631f3f458fba7d88c3fc642416b8..9a7cd7cc8c15bb3b58c0a78e148e982953eb7919 100644
+index 251b336c1915f173c975fd0c568dfb04182fc91b..af55ec75f897694a8e67e80241142a6b2ef58569 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5084,4 +5084,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -5095,4 +5095,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
          return false;
      }
      // Purpur end
@@ -355,7 +355,7 @@ index 1e76230c078ef07418345b0bc50c574cf63c9094..dfa6a890435cdc0613711ab7a248300c
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index ba47e9e3f25a94eb09ba929d5b503c5983d0e29f..51f18317fe39bb47e38cf4c969b33fe8aabf5662 100644
+index 6fbdf1eacd5ae00b205b70a227bf8f6cecc14b79..5fffd5be17d35612f2158985f24fd2b4fee0549f 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1858,4 +1858,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
