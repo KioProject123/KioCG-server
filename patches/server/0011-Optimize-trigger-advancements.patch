@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cdf7e716323bb02fd40fd862a0d3bec8c858b490..544c16f6a6cd530c392ed7918fb3902bea2c0f3a 100644
+index cdf7e716323bb02fd40fd862a0d3bec8c858b490..5dd6f1243ed437c0bee48f1e3625b92e4b9f4fd3 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -718,6 +718,7 @@ public class ServerPlayer extends Player {
@@ -16,15 +16,6 @@ index cdf7e716323bb02fd40fd862a0d3bec8c858b490..544c16f6a6cd530c392ed7918fb3902b
          CriteriaTriggers.ENTER_BLOCK.trigger(this, state);
      }
  
-@@ -742,7 +743,7 @@ public class ServerPlayer extends Player {
- 
-         // Paper start - Configurable container update tick rate
-         if (--containerUpdateDelay <= 0) {
--            this.containerMenu.broadcastChanges();
-+            this.containerMenu.broadcastChanges(false); // KioCG
-             containerUpdateDelay = this.level().paperConfig().tickRates.containerUpdate;
-         }
-         // Paper end
 @@ -765,6 +766,7 @@ public class ServerPlayer extends Player {
              }
          }
@@ -43,30 +34,23 @@ index cdf7e716323bb02fd40fd862a0d3bec8c858b490..544c16f6a6cd530c392ed7918fb3902b
              }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 1af23da6b3ccb4759e46e37cfa2ca85cf78f3ec2..867c1985ac1a9da8f4580d914e13401b640f078b 100644
+index 1af23da6b3ccb4759e46e37cfa2ca85cf78f3ec2..bfaf4271b4ce1d2b63df39fe80242f04b44358db 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-@@ -233,14 +233,32 @@ public abstract class AbstractContainerMenu {
+@@ -232,15 +232,25 @@ public abstract class AbstractContainerMenu {
+         return nonnulllist;
      }
  
++    private int triggerTick = -1; // KioCG
++
      public void broadcastChanges() {
-+    // KioCG start
-+        this.broadcastChanges(true);
-+    }
-+
-+    private int triggerTick = -1;
-+
-+    public void broadcastChanges(boolean triggerSlotListeners) {
-+    // KioCG end
          int i;
  
 +        // KioCG start - 每刻只触发一次
-+        if (triggerSlotListeners) {
-+            triggerSlotListeners = false;
-+            if (net.minecraft.server.MinecraftServer.currentTick != triggerTick) {
-+                triggerTick = net.minecraft.server.MinecraftServer.currentTick;
-+                triggerSlotListeners = true;
-+            }
++        boolean triggerSlotListeners = false;
++        if (net.minecraft.server.MinecraftServer.currentTick != triggerTick) {
++            triggerTick = net.minecraft.server.MinecraftServer.currentTick;
++            triggerSlotListeners = true;
 +        }
 +        // KioCG end - 每刻只触发一次
          for (i = 0; i < this.slots.size(); ++i) {
@@ -79,7 +63,7 @@ index 1af23da6b3ccb4759e46e37cfa2ca85cf78f3ec2..867c1985ac1a9da8f4580d914e13401b
              this.triggerSlotListeners(i, itemstack, supplier);
              this.synchronizeSlotToRemote(i, itemstack, supplier);
          }
-@@ -263,6 +281,14 @@ public abstract class AbstractContainerMenu {
+@@ -263,6 +273,14 @@ public abstract class AbstractContainerMenu {
      public void broadcastFullState() {
          int i;
  

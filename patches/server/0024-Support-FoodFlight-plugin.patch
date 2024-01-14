@@ -5,7 +5,7 @@ Subject: [PATCH] Support FoodFlight plugin
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b50f9226a758eb24f802bd5a4d1040fb53a681d7..133b5fc28a91fdec16df374a006f6055b7ef3631 100644
+index 98e99d00ae9514d8b448fb0322e2f0ac0cc408bd..d3b5ed7e216276c308ff09ac1979f6751d59ef92 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -901,6 +901,16 @@ public class ServerPlayer extends Player {
