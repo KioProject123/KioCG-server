@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 770d74e3c3226306a8f246920798ae72fdafe2c5..21f28d8ed09f68fe5dcabfd3866e4fd3bcdd4c1e 100644
+index bf4338521cfb3527164f83baf0c6c7065215771d..4872372a12c05aebb7e42f790827a1dbedad7a5d 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -202,7 +202,7 @@ index aea5864957e54798a08cc350e1a5d2f5f3c03353..b721d14310fd6569f037b6f6793156e0
                      }
                  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 28eb98d383d6846a25c29f8cd8ff211c360a56dc..afa38036e799c37d4b85b923d3a2609bb41ecfa4 100644
+index 68f45498405f5fd9a6f5525b9a59518a8b506aa8..a7f352ef8fcaf1ead9a1bbb42dfbb9f35b5d3dff 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -82,7 +82,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -288,7 +288,7 @@ index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 2b73e291e44987c4d63f2064091f7f8e28276b90..4c87ebe7626777ab2731a4c1c95e45911cc4a990 100644
+index 9357539c71e3a8408b1f055527ffd192b5f9f1d9..2d4efee0db6d21f8844e685ade6a57de15eccb63 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -303,6 +303,7 @@ public class ActivationRange

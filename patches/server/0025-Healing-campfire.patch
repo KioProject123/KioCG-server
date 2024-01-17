@@ -5,7 +5,7 @@ Subject: [PATCH] Healing campfire
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 136ab9899aba8ffd7a72b053b88191f8f4d47ed4..8f21ac7a659630cfa90b533e510a02a648cfeaa2 100644
+index 47643410a419124f0eb628a52ceead46f9838699..87e0a71d07072c2d50dec417f5f7dc7c513379e8 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -186,6 +186,7 @@ public abstract class Player extends LivingEntity {

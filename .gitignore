@@ -48,5 +48,6 @@ run/
 
 kiocg-server
 kiocg-api
+paper-api-generator
 
 !gradle/wrapper/gradle-wrapper.jar

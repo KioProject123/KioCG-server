@@ -17,10 +17,10 @@ index 71a684323a518b2c4092e731c8b382952e42a8bf..f43352c283df95b4d46395e81c514cb5
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f17bba46598a56fa8938ad2223e2d8753b37a1b3..e61a8d2667efc012eed621b659a8c25b8c695de9 100644
+index 01872b2c18dcaa782c0461bfb2f8914c1dd08fb7..f25e2f3f1dc991b14d51b20d2e16aad0722b249a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1726,7 +1726,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1727,7 +1727,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -30,10 +30,10 @@ index f17bba46598a56fa8938ad2223e2d8753b37a1b3..e61a8d2667efc012eed621b659a8c25b
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 6b0ccd400de500a14a3822f1b6466ae83526a169..ecb92e990d782a139757c13d08f46d24554f00c0 100644
+index 3ab0b25faf797ff27d242dfdc866db4e0a1bb625..f1e3b30528a3133047a969a335f09d80347c13e9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -218,6 +218,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -217,6 +217,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
      private final boolean tickTime;
      private double preciseTime; // Purpur
      private boolean forceTime; // Purpur
@@ -41,7 +41,7 @@ index 6b0ccd400de500a14a3822f1b6466ae83526a169..ecb92e990d782a139757c13d08f46d24
      private final RandomSequences randomSequences;
      public long lastMidTickExecuteFailure; // Paper - execute chunk tasks mid tick
  
-@@ -846,17 +847,29 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -845,17 +846,29 @@ public class ServerLevel extends Level implements WorldGenLevel {
          int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
          long j;
  
@@ -71,7 +71,7 @@ index 6b0ccd400de500a14a3822f1b6466ae83526a169..ecb92e990d782a139757c13d08f46d24
              if (!event.isCancelled()) {
                  this.wakeUpAllPlayers();
              }
-@@ -864,6 +877,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -863,6 +876,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
                  this.resetWeatherCycle();
              }

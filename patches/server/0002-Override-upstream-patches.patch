@@ -52,7 +52,7 @@ index 385ca2c1022e0985550a5cc2bbff953f1aa33f5c..cf2fec7817c4077e56b4db7932e9df34
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f69976dcba060027c67c2e1b49fa28d3f28f66f0..18d1301f0e5296934fb8364460be4bc86cdc297a 100644
+index 6f94f01da0a2294f6fdc564653dde1fdbf508153..68d23e3fc8e6ca215496008f97c1035a04f3439a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1215,7 +1215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -65,7 +65,7 @@ index f69976dcba060027c67c2e1b49fa28d3f28f66f0..18d1301f0e5296934fb8364460be4bc8
                  } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 37a3ce5da2cb89675e0180c4ed937e5851cd002b..0ba662c4668bf9cc4164f99cf0274c3d6df404b8 100644
+index d5a5406284bf764c9f7a31a4ad85bbcda18f4df8..9aaf6b867ede6493db874d3c6ac0e769fc387092 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2312,7 +2312,7 @@ public class ServerPlayer extends Player {
@@ -78,7 +78,7 @@ index 37a3ce5da2cb89675e0180c4ed937e5851cd002b..0ba662c4668bf9cc4164f99cf0274c3d
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 8fd6e46882a1828abdf858c0b10f955c9f2718eb..1a6356ea198b54f8b63ece439e766c361ed7b4bd 100644
+index 3b1c09f8afe1a008df4b75b605a796bfb1bf3899..dd8f61087ebb6e61285e8989585c44c8e9b54233 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -427,7 +427,12 @@ public abstract class LivingEntity extends Entity implements Attackable {

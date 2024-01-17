@@ -30,10 +30,10 @@ index 35e2f279d358201384ff74fd767df18f6fda432b..f45420d7d39fc17e77dff7aece2c8f40
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678a500a498 100644
+index af66c7eec6291b0bc9575f59c8210cd7f697232a..2115854853f2a3f009a99c2c357ad4cafee6ff02 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -85,6 +85,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -86,6 +86,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      public final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
      private final RecipeManager.CachedCheck<Container, ? extends AbstractCookingRecipe> quickCheck;
      public final RecipeType<? extends AbstractCookingRecipe> recipeType; // Paper
@@ -41,7 +41,7 @@ index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678
  
      protected AbstractFurnaceBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
          super(blockEntityType, pos, state);
-@@ -333,6 +334,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -334,6 +335,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      }
  
      public static void serverTick(Level world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
@@ -49,7 +49,7 @@ index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678
          boolean flag = blockEntity.isLit();
          boolean flag1 = false;
  
-@@ -362,6 +364,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -363,6 +365,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
          if (!blockEntity.isLit() && (!flag3 || !flag2)) {
              if (!blockEntity.isLit() && blockEntity.cookingProgress > 0) {
                  blockEntity.cookingProgress = Mth.clamp(blockEntity.cookingProgress - 2, 0, blockEntity.cookingTotalTime);
@@ -57,7 +57,7 @@ index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678
              }
          } else {
              RecipeHolder recipeholder;
-@@ -416,6 +419,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -417,6 +420,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
                  }
                  // CraftBukkit end
  
@@ -65,7 +65,7 @@ index 92e58d9503daf4cc9bc1f4c7785e159e0c1f4bf3..754de5aee5326ddf2b2a9879af26a678
                  ++blockEntity.cookingProgress;
                  if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) { // Paper - cook speed multiplier API
                      blockEntity.cookingProgress = 0;
-@@ -600,6 +604,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -601,6 +605,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
              this.setChanged();
          }
  
@@ -147,7 +147,7 @@ index 18d3cb828f85e17ec27dbb5b33c6f17fff178a1d..008a1c85451a812ebf1656bf715cd812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..e2f11aec0a3546d94ad5f97540de1fa99b612ef4 100644
+index 1ddae39df4e7cb36db412ebdec8ca9d2818450a9..2fb58e315393c3ed5783c364f28f8e44d98a0397 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -516,7 +516,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -157,13 +157,13 @@ index 1d13fabb3f34023b4fbb1be9ad02ebc606645531..e2f11aec0a3546d94ad5f97540de1fa9
 -    private static boolean isFullContainer(Container inventory, Direction direction) {
 +    public static boolean isFullContainer(Container inventory, Direction direction) { // KioCG - private -> public
          if (true) return inventory.isCompletelyFull(direction); // Pufferfish - use bitsets
-         // Paper start - optimize hoppers
+         // Paper start - Perf: Optimize Hoppers
          if (inventory instanceof WorldlyContainer worldlyContainer) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 66656c4cf157228c9f52b33b358713ef0172f9ff..ae07a81576d2c52acb2bc020000668b8c10edc24 100644
+index c37aa33134b8602caae5ecff00439ad5e0005d18..f6f0909ae6605922cafb1adae739022018ece133 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -587,7 +587,7 @@ public class LevelChunk extends ChunkAccess {
+@@ -586,7 +586,7 @@ public class LevelChunk extends ChunkAccess {
              } else {
                  ServerLevel worldserver = (ServerLevel) world;
  

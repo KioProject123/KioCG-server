@@ -5,7 +5,7 @@ Subject: [PATCH] Virtual enchanting table maximum level
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
-index b9eff1e2e460ebfa6e040a4f17fdd3b7d5813b00..635f31d1765c9baccce1a778eb0fbd0ea5638d32 100644
+index 12d1b00e837af7291368b8d1fc67655b001f3a79..c9b94de200dddc80fc3230cabf7de9548fbd0dbf 100644
 --- a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
 @@ -169,6 +169,7 @@ public class EnchantmentMenu extends AbstractContainerMenu {

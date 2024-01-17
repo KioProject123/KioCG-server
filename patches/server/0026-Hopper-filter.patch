@@ -59,7 +59,7 @@ index 675644974ae6fb5380a6496a2ac3ec4d1ef7c924..a1bb15b16bdd591773f95be1a5bc8f85
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e454b9314d4 100644
+index 2fb58e315393c3ed5783c364f28f8e44d98a0397..a9da58ce6a99b6f4a1c71aa84912a3252bd9d03b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -175,7 +175,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
          ItemStack movedItem = origItemStack;
          final int originalItemCount = origItemStack.getCount();
          final int movedItemCount = Math.min(level.spigotConfig.hopperAmount, originalItemCount);
-@@ -568,6 +646,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -567,6 +645,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
                  }
                  return false;
              } else {
@@ -183,7 +183,7 @@ index e2f11aec0a3546d94ad5f97540de1fa99b612ef4..d6fbf4b2368d646c1c586de8a0a67e45
                  for (int slot = 0, max = iinventory.getContainerSize(); slot < max; ++slot) {
                      ItemStack item = iinventory.getItem(slot);
                      if (item.isEmpty() || !canTakeItemFromContainer(hopper, iinventory, item, slot, enumdirection)) {
-@@ -649,6 +728,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -648,6 +727,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      public static boolean addItem(Container inventory, ItemEntity itemEntity) {

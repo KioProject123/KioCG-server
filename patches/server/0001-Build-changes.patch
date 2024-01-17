@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 790835a0c4889d17b4efd06cb463744973642a48..57fc51bd7495dcac9eac500f99e1c45b99e1b57c 100644
+index 5b8a28969451b12c4fc66976afd052ffa5805932..e18cd7f8cd6e123e2a49c98dd1011e782373c57b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,7 +14,7 @@ val alsoShade: Configuration by configurations.creating
@@ -17,7 +17,7 @@ index 790835a0c4889d17b4efd06cb463744973642a48..57fc51bd7495dcac9eac500f99e1c45b
      implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
          exclude("io.papermc.paper", "paper-api")
      }
-@@ -93,7 +93,7 @@ tasks.jar {
+@@ -92,7 +92,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",

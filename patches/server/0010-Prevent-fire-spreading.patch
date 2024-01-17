@@ -5,7 +5,7 @@ Subject: [PATCH] Prevent fire spreading
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/FireBlock.java b/src/main/java/net/minecraft/world/level/block/FireBlock.java
-index 8c0db5219ff30bdfae61b4b9f6033c8e28d21ee1..c466463c4c55e8df8761db1671214697cf4d8bfa 100644
+index 03310fe5d05bc9c61df221977c071757a488c352..6f7ba66db1c24294298feaa167759261c34ff292 100644
 --- a/src/main/java/net/minecraft/world/level/block/FireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FireBlock.java
 @@ -220,6 +220,8 @@ public class FireBlock extends BaseFireBlock {
@@ -18,7 +18,7 @@ index 8c0db5219ff30bdfae61b4b9f6033c8e28d21ee1..c466463c4c55e8df8761db1671214697
  
                  for (int l = -1; l <= 1; ++l) {
 diff --git a/src/main/java/net/minecraft/world/level/material/LavaFluid.java b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
-index 70ddb3b130ee59a6e200ea5af3ac89f3c3fa9e9b..ea8748995390ac5988d2665ac83cc160ca30f592 100644
+index 2d492d849ff73a738dfbcb16507feb89bf19a962..cf74843b241c5adb3f6c5623cc90cdd2dd08f932 100644
 --- a/src/main/java/net/minecraft/world/level/material/LavaFluid.java
 +++ b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
 @@ -68,6 +68,7 @@ public abstract class LavaFluid extends FlowingFluid {

@@ -5,7 +5,7 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 9dd54d8927ed2594fa1d90d8ed4a286405ba6b2b..76ef7066bc562c3b87b5e0786915a5bbc7721f28 100644
+index b4dac6826da76ff573a74a3c9aaae54c5537d12a..db1070787b7cee58f68e45e91f984f19d7e4a85e 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -29,7 +29,7 @@ index 6d00b3cd4a9cb0fc8a9e9c27f37429a25fcf6e9d..f65a0dfe7b80c09f442b2ebcd210219d
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index 4a520ff6ce7f6011838430b3972e99b8b916db7e..bee8c860e102d6c7c0aebf52bef8326245961c7a 100644
+index 3f00d40125b63a76ed549755d4c9d9a2ff2d4adf..c4800c716417716618880edc44609f898cd8235f 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 @@ -258,6 +258,7 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
@@ -77,7 +77,7 @@ index 8b6f8fca8402c177c399824c6bf0bdef2c24ec55..f8f6441d5581874a6737723cf10b9bb0
              // CraftBukkit end
          }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 822c6d1474e170a3cdd5876adcbeb6c4ee5681b7..4f61fe8857f7f3f8df911064cfbba134ceb84e46 100644
+index d65919f91b29de051797454bf3dbcd4499d582ce..3495504f85a61aecfdd790e2318aad263d743cbc 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -1025,6 +1025,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

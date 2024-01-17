@@ -1,18 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 26 Dec 2023 04:18:48 +0800
+Date: Wed, 17 Jan 2024 08:11:02 +0800
 Subject: [PATCH] Death drop protection
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5dd6f1243ed437c0bee48f1e3625b92e4b9f4fd3..98e99d00ae9514d8b448fb0322e2f0ac0cc408bd 100644
+index 8a68320f9d78c31276ff7df0d5ee7c30aa310308..65c01e14db72a666625147235893a909dc1b1a83 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1017,7 +1017,15 @@ public class ServerPlayer extends Player {
          if (!keepInventory) {
              for (ItemStack item : this.getInventory().getContents()) {
                  if (!item.isEmpty() && !EnchantmentHelper.hasVanishingCurse(item)) {
--                    loot.add(new DefaultDrop(item, stack -> this.drop(stack, true, false, false))); // Paper - drop function taken from Inventory#dropAll (don't fire drop event)
+-                    loot.add(new DefaultDrop(item, stack -> this.drop(stack, true, false, false))); // Paper - Restore vanilla drops behavior; drop function taken from Inventory#dropAll (don't fire drop event)
 +                    // KioCG start
 +                    loot.add(new DefaultDrop(item, stack -> {
 +                        ItemEntity droped = this.drop(stack, true, false, false);
@@ -20,7 +20,7 @@ index 5dd6f1243ed437c0bee48f1e3625b92e4b9f4fd3..98e99d00ae9514d8b448fb0322e2f0ac
 +                            droped.setTarget(this.getUUID());
 +                            droped.age = -32767;
 +                        }
-+                    })); // Paper - drop function taken from Inventory#dropAll (don't fire drop event)
++                    })); // Paper - Restore vanilla drops behavior; drop function taken from Inventory#dropAll (don't fire drop event)
 +                    // KioCG end
                  }
              }

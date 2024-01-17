@@ -62,7 +62,7 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 776f6edd2aaa748ffd72bce05a9883d5ec285931..f62a68fd73db64da993c80d7b4fd7e2e6bdc41cb 100644
+index 04fe99ef2bfd289293b00ac3f4a41c3ebd92254f..cd366e46241291b90bfc09bf09936b4a6ffbb66c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -304,6 +304,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -207,7 +207,7 @@ index 0e36e3e672de4c806e2d534b437489a3a349a722..d701c94c55339c31f3a7ce82da5c714c
              this.path = null;
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Animal.java b/src/main/java/net/minecraft/world/entity/animal/Animal.java
-index 8df8a48bd1dbbb4a6835f68bd700eac2b5acf91b..c916d96caed8a0090e56fcaf48d74dcd8561a7b7 100644
+index a64ab2058d4e3439bf6ee418f3192b83c346eb85..54fb80cb0d23fd512d7f8881929a0286e2297d4a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Animal.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Animal.java
 @@ -42,6 +42,7 @@ public abstract class Animal extends AgeableMob {
@@ -309,7 +309,7 @@ index bdb78cc701543cfe91a6bafd1786fe2ea0bf1ddc..4760e5accf6a35d7279487771d491fa6
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 68404053233985cb830e95e287c81875a3b86957..9294459a41a25b90ed8c304d86f32beaa0e94466 100644
+index 27ebfda79d9c4463f157b99c2c56e256839b3a31..6a5beccebcf6392e789738bedc5c20c0f66dea82 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
