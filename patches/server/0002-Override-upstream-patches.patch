@@ -52,7 +52,7 @@ index 385ca2c1022e0985550a5cc2bbff953f1aa33f5c..cf2fec7817c4077e56b4db7932e9df34
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6f94f01da0a2294f6fdc564653dde1fdbf508153..68d23e3fc8e6ca215496008f97c1035a04f3439a 100644
+index 16b5f59dd3658bb9fc5be629aa4e1bc0ce356243..0997695d813b0209df4136e5281b8f9f17422081 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1215,7 +1215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -65,7 +65,7 @@ index 6f94f01da0a2294f6fdc564653dde1fdbf508153..68d23e3fc8e6ca215496008f97c1035a
                  } else curTime = Util.getNanos(); // Paper
                  // Spigot end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index d5a5406284bf764c9f7a31a4ad85bbcda18f4df8..9aaf6b867ede6493db874d3c6ac0e769fc387092 100644
+index 1bc71111393255dc2af6734241d29238f659b007..3adb7bd525c09f74bd018ab7855799a409fe02dc 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2312,7 +2312,7 @@ public class ServerPlayer extends Player {
@@ -78,7 +78,7 @@ index d5a5406284bf764c9f7a31a4ad85bbcda18f4df8..9aaf6b867ede6493db874d3c6ac0e769
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 3b1c09f8afe1a008df4b75b605a796bfb1bf3899..dd8f61087ebb6e61285e8989585c44c8e9b54233 100644
+index d914eab93a1a282ce149e361015abd94269fa0be..262f54fc894434366caf807a878b31bc6ed09fd4 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -427,7 +427,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
@@ -109,7 +109,7 @@ index c30b00e5637d3def256c93cc227a15ddaf99bc56..c86ca83ecb13b07442e09557487c1486
              for (int i = 0; i < 1 + looting; i++) {
                  list.add(new ItemStack(Items.CARVED_PUMPKIN));
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 27d76e0c4809d333c548379bf78ec2db083b027e..0951f89827ca959357a4febef3213044169e7579 100644
+index 2913d69fcff4b6df68586146b7323cea33eba74b..cbb1fff06b62444277ba6589b5f6ec0f6ce96aae 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -324,6 +324,7 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -121,7 +121,7 @@ index 27d76e0c4809d333c548379bf78ec2db083b027e..0951f89827ca959357a4febef3213044
                              if (player.hasPermission("purpur.anvil.format")) {
                                  java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
 diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-index c4eca9db159d6a581d863558ebc3008d51d25cfb..fc266cbe85b1aae64a4f284dc128378d88fe5a01 100644
+index 221d06a5707398ed7523229e80b2a3f965b98ae2..587da9cae03ff8db0a61f5e9b43bd3472d90ec39 100644
 --- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 @@ -110,6 +110,24 @@ public class FarmBlock extends Block {

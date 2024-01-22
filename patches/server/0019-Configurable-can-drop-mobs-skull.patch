@@ -30,7 +30,7 @@ index ee6c4ac72efd674c3a35fcbec5b9f363f2f5413d..f7f1c3aab99bc7e6aa3f46855675f819
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index 64f6b5f44db4fd90e789032e3833da60cfcfbef1..664ddea3f82a620130df968b28b50e68ba15cd81 100644
+index c01f641a58de999ab0772efc24900308aad8f04a..10803a6c7831e9562af186f27c7c4b4c4be5a45b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -300,7 +300,7 @@ public class Creeper extends Monster implements PowerableMob {
@@ -43,7 +43,7 @@ index 64f6b5f44db4fd90e789032e3833da60cfcfbef1..664ddea3f82a620130df968b28b50e68
                  this.spawnAtLocation((ItemLike) Items.CREEPER_HEAD);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index f4a47ac2c86cc95178922cce7320ba1ef5121b57..82bcce358099a24e38c81b75b541bc38933d7885 100644
+index 6df5d100f21f26d88b3a36768bc9220f64d47cb8..ede47e5da73097fec9435f9839646bf9df93336b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -177,7 +177,7 @@ public class Skeleton extends AbstractSkeleton {
@@ -56,7 +56,7 @@ index f4a47ac2c86cc95178922cce7320ba1ef5121b57..82bcce358099a24e38c81b75b541bc38
                  this.spawnAtLocation((ItemLike) Items.SKELETON_SKULL);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
-index b5462ca1e67c87eeb447b8c4536c4bba897be186..85b10c2d5d08af3307771e44c9b37982d7598c3a 100644
+index e97cb4e166c2e9ac6d93ed5b15350758326e7e74..fd8b629431037af8c1dffed171eaa050177cf231 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/WitherSkeleton.java
 @@ -101,7 +101,7 @@ public class WitherSkeleton extends AbstractSkeleton {
@@ -69,7 +69,7 @@ index b5462ca1e67c87eeb447b8c4536c4bba897be186..85b10c2d5d08af3307771e44c9b37982
                  this.spawnAtLocation((ItemLike) Items.WITHER_SKELETON_SKULL);
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 5142f647e7ca56b4001ecfbcfc136d1307e6420f..10eb1f56eb1ecc9fcc60be9dc7a7a8bd0bfe58b1 100644
+index 04ef6d9be78e4f1ba956f89ea655c9d5fc01e777..f0fd99215eb1435b005884ea3bc8c8b9f3e7ecfa 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -644,7 +644,7 @@ public class Zombie extends Monster {
@@ -82,7 +82,7 @@ index 5142f647e7ca56b4001ecfbcfc136d1307e6420f..10eb1f56eb1ecc9fcc60be9dc7a7a8bd
  
                  if (!itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index 8e829d522a6012f409161ad5a9a06721a942d7e4..9ffa04d1d98e9890dbd650ec88e4f4c693b81c11 100644
+index 1422c0f4ff6a3e61f229574cd7b50971bdbd8451..9b472e2bbeec8fd03c5371bd6283942b4946d138 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -176,7 +176,7 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento

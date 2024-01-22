@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sat, 28 Oct 2023 13:56:54 +0800
+Date: Tue, 23 Jan 2024 03:37:29 +0800
 Subject: [PATCH] Vanilla recipe excludes model items
 
 
@@ -80,7 +80,7 @@ index 6bd963516ad994f77aeea90628c421705ae3da95..db0639fb0f6a022db9fc62cdda8199c5
              return false;
          } else if (this.items.isPresent() && !stack.is(this.items.get())) {
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index e03860f341aacead6b9bcc0f25c427a3211231eb..07663334ca99d472b4c87d0c42a74198633d6528 100644
+index 6dd9cce1891613d634c242138117a98b528bb849..fce8fe8fd7331abcc3abdbd2e8083e8ed995079d 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -177,9 +177,10 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -108,19 +108,19 @@ index e03860f341aacead6b9bcc0f25c427a3211231eb..07663334ca99d472b4c87d0c42a74198
                      }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
-index 1eda87516b3ac9bea08d18a06e9fd9eba03d02be..7993d50738d9062bcd68f1caac2ff02a15c6315a 100644
+index ae2dc7fc4df54f9ed8e78ff1347f9782eccc9d4b..bd5a30a7537e1ac93fcede9aeffeca6451df70d6 100644
 --- a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
 @@ -192,6 +192,7 @@ public class BeaconMenu extends AbstractContainerMenu {
          if (this.paymentSlot.hasItem()) {
-             // Paper start
+             // Paper start - Add PlayerChangeBeaconEffectEvent
              io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent event = new io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent((org.bukkit.entity.Player) this.player.player.getBukkitEntity(), convert(primary), convert(secondary), this.access.getLocation().getBlock());
 +            if (io.papermc.paper.configuration.GlobalConfiguration.get().kiocgConfig.modelItems.vanillaRecipeInclude.shouldCancelled(getType(), this.paymentSlot.getItem())) event.setCancelled(true); // KioCG
              if (event.callEvent()) {
                  this.beaconData.set(1, BeaconMenu.encodeEffect(event.getPrimary() == null ? null : org.bukkit.craftbukkit.potion.CraftPotionEffectType.bukkitToMinecraft(event.getPrimary())));
                  this.beaconData.set(2, BeaconMenu.encodeEffect(event.getSecondary() == null ? null : org.bukkit.craftbukkit.potion.CraftPotionEffectType.bukkitToMinecraft(event.getSecondary())));
 diff --git a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
-index 32e7c7599bffb9ea5384615d31e0b63de08a8813..c00613bfe559df459fd3eae1bbc1ad8b2ab6cc87 100644
+index 45bf1c95d86bdfc709c5f1a1fbefb18e1cc51f4c..be152bb2432e3a555eb83bae297536584d43efc4 100644
 --- a/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/CartographyTableMenu.java
 @@ -154,6 +154,14 @@ public class CartographyTableMenu extends AbstractContainerMenu {
@@ -177,7 +177,7 @@ index 849b6a30d412d10f1e2e6e88f2d8d990e4a720e4..12d1b00e837af7291368b8d1fc67655b
  
                      if (event.isCancelled()) {
 diff --git a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
-index 46c4468b846085d92f773142ecbee0fe258ff319..ba52aab4c9c438d3d7cbb8e2af1fbd6869c28c9d 100644
+index af99ce32872e079beb6ac1caf3a8ac4c3cae4648..d4bc1e0f050988f8e11883c69cdbf3ebfe074ca7 100644
 --- a/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/GrindstoneMenu.java
 @@ -213,6 +213,13 @@ public class GrindstoneMenu extends AbstractContainerMenu {
@@ -195,11 +195,11 @@ index 46c4468b846085d92f773142ecbee0fe258ff319..ba52aab4c9c438d3d7cbb8e2af1fbd68
              org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareGrindstoneEvent(this.getBukkitView(), this.removeNonCurses(itemstack2, i, b0)); // CraftBukkit
          } else {
 diff --git a/src/main/java/net/minecraft/world/inventory/LoomMenu.java b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
-index c70af9c36ab5806643b050554d7d27a1e2db2028..67c502814c99dd882307dfe91734d7ddbbb8c494 100644
+index e51dabca7b81adee35246e429dcb8f42ae0bf22c..07e0b730e86d293152513bb6e31701a181d3fe21 100644
 --- a/src/main/java/net/minecraft/world/inventory/LoomMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
 @@ -204,6 +204,7 @@ public class LoomMenu extends AbstractContainerMenu {
-             // Paper end
+             // Paper end - Add PlayerLoomPatternSelectEvent
              return true;
          } else {
 +            sendAllDataToRemote(); // KioCG - 防止客户端不同步
@@ -230,7 +230,7 @@ index c70af9c36ab5806643b050554d7d27a1e2db2028..67c502814c99dd882307dfe91734d7dd
          if (!itemstack.isEmpty() && !itemstack1.isEmpty()) {
              itemstack2 = itemstack.copyWithCount(1);
 diff --git a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
-index 857f65be8c4d9ec3a0586017b3f3e8e35cb78b97..5270f97d6f4f627a840e461c7e1f6a84397ab1e3 100644
+index 1e9e70263996afa294458364aa70e738b5aabea1..3f2a045490c0963138c0453d578c4f649c2c6e13 100644
 --- a/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/SmithingMenu.java
 @@ -109,6 +109,13 @@ public class SmithingMenu extends ItemCombinerMenu {
@@ -248,7 +248,7 @@ index 857f65be8c4d9ec3a0586017b3f3e8e35cb78b97..5270f97d6f4f627a840e461c7e1f6a84
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareSmithingEvent(this.getBukkitView(), itemstack);
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
-index d6b9de312f67269e1e4b7bb5200ce8a0be674602..7ad4169ad8332ee6c51d7d67e48d10112faa1dbe 100644
+index 6ba59a60b85c04127abd7df37a647fa71745327a..b91149380d369a957c7c825074439ab3e755d4a3 100644
 --- a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 @@ -167,6 +167,13 @@ public class StonecutterMenu extends AbstractContainerMenu {
@@ -275,7 +275,7 @@ index d6b9de312f67269e1e4b7bb5200ce8a0be674602..7ad4169ad8332ee6c51d7d67e48d1011
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index cbfd535d62acdde7789fa88332f4a607c381d450..0662c5c9fe2fc8d89e6eaefa787efa69b4166aed 100644
+index 361e0d5ec35219c2706c7344efc25ee6d50a2460..c1c0f1c0baeba4929a71bf777400c9cd9062c176 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
 @@ -916,6 +916,16 @@ public final class ItemStack {
@@ -296,7 +296,7 @@ index cbfd535d62acdde7789fa88332f4a607c381d450..0662c5c9fe2fc8d89e6eaefa787efa69
      public org.bukkit.inventory.ItemStack asBukkitMirror() {
          return CraftItemStack.asCraftMirror(this);
 diff --git a/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java b/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
-index e03ce53b93d1b9366f2a7f14f341750a163ae0db..6946978dd59f5abdf74610d81bf2f542b7a2c4af 100644
+index 9c89a85d934955c9388cfe1361f13e70e699d279..1afc657ef3008d803b2186f314e518ecbc3a3ae1 100644
 --- a/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
 +++ b/src/main/java/net/minecraft/world/item/trading/MerchantOffer.java
 @@ -252,6 +252,7 @@ public class MerchantOffer {
@@ -308,7 +308,7 @@ index e03ce53b93d1b9366f2a7f14f341750a163ae0db..6946978dd59f5abdf74610d81bf2f542
          }
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 2115854853f2a3f009a99c2c357ad4cafee6ff02..4900da5a76888e1d2e45fea6b3a34cc919a200d7 100644
+index 83cdf721c327dd8dc04c85b6da483d048dca1e73..fc0a466c3b44da0e854ad6d5f55192985defd952 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -383,6 +383,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
@@ -334,7 +334,7 @@ index 2115854853f2a3f009a99c2c357ad4cafee6ff02..4900da5a76888e1d2e45fea6b3a34cc9
  
              if (itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index 7af18eac34f3eb424180f8603b4ccc824b0b3480..ae887c60f7ef962ce6cef038132c5c7a9223377d 100644
+index b4b176447330992753f446968c23d658f94b6c4a..d23c7d7dcde1f44f2592334557667590945ac6c8 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 @@ -156,6 +156,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
@@ -372,13 +372,13 @@ index 7af18eac34f3eb424180f8603b4ccc824b0b3480..ae887c60f7ef962ce6cef038132c5c7a
  
          if (owner != null) {
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 008a1c85451a812ebf1656bf715cd812389b8cb2..84a99e44a225dcf09ca80155de0339477f66426d 100644
+index d33fd3f94d5c4c4dbd8e87dd337b686dac808580..f8247c12d91d3b2b25ca84f3e395846ea0c0bc6b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -79,9 +79,23 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -80,9 +80,23 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
                          org.bukkit.inventory.ItemStack result = CraftItemStack.asBukkitCopy(itemstack1);
  
-                         BlockCookEvent blockCookEvent = new BlockCookEvent(CraftBlock.at(world, pos), source, result, (org.bukkit.inventory.CookingRecipe<?>) recipeHolderOptional.map(RecipeHolder::toBukkitRecipe).orElse(null)); // Paper
+                         BlockCookEvent blockCookEvent = new BlockCookEvent(CraftBlock.at(world, pos), source, result, (org.bukkit.inventory.CookingRecipe<?>) recipeHolderOptional.map(RecipeHolder::toBukkitRecipe).orElse(null)); // Paper - Add recipe to cook events
 +                        // KioCG start
 +                        boolean resetCookingProgress = false;
 +                        if (blockCookEvent.getRecipe() != null && blockCookEvent.getRecipe().getKey().getNamespace().equals(org.bukkit.NamespacedKey.MINECRAFT)) {

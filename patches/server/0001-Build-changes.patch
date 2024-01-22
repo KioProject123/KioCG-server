@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 5b8a28969451b12c4fc66976afd052ffa5805932..e18cd7f8cd6e123e2a49c98dd1011e782373c57b 100644
+index 0c92d10f334f82d196e065c0811d0c1f48887377..5fafaa4787875189a4100f66dae9c27bcc35c79b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,7 +14,7 @@ val alsoShade: Configuration by configurations.creating

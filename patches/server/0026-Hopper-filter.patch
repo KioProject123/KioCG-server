@@ -46,7 +46,7 @@ index 9c681f39695f7a2b6321b848472be9019fd8bac6..a3555514e37229e863d20cc4396c2a61
          if (HopperBlockEntity.isFullContainer(this, null)) return false; // KioCG
          if (HopperBlockEntity.suckInItems(this.level(), this)) {
 diff --git a/src/main/java/net/minecraft/world/level/block/DropperBlock.java b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
-index 675644974ae6fb5380a6496a2ac3ec4d1ef7c924..a1bb15b16bdd591773f95be1a5bc8f856161e6e6 100644
+index 1d13f8a1009d6eda351c697052d499d594a6aaa8..810d502593a2f36a429ea47ad447e25c62844e9f 100644
 --- a/src/main/java/net/minecraft/world/level/block/DropperBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
 @@ -72,6 +72,8 @@ public class DropperBlock extends DispenserBlock {
@@ -59,7 +59,7 @@ index 675644974ae6fb5380a6496a2ac3ec4d1ef7c924..a1bb15b16bdd591773f95be1a5bc8f85
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 2fb58e315393c3ed5783c364f28f8e44d98a0397..a9da58ce6a99b6f4a1c71aa84912a3252bd9d03b 100644
+index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6fcd76f23 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen

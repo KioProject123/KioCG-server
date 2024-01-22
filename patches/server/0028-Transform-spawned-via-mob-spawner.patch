@@ -5,7 +5,7 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index b4dac6826da76ff573a74a3c9aaae54c5537d12a..db1070787b7cee58f68e45e91f984f19d7e4a85e 100644
+index 6f42bec45e2c5d049ab0f3c83aa4a8c7d252529b..5a0a8ab8a63a7848ff6cdf81a23432fb354585a0 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -53,7 +53,7 @@ index 14135dac80dec4224715e21cef6556d22e569026..2a883c24548aa0208f9dfefb65b694d6
              }
          }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index 82bcce358099a24e38c81b75b541bc38933d7885..d6d8da50850520a0067925b57fc0839d1564c4ca 100644
+index ede47e5da73097fec9435f9839646bf9df93336b..e5d2ddaf069c4498ebd08e1f8ea6bc8caaa97241 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -234,6 +234,7 @@ public class Skeleton extends AbstractSkeleton {
@@ -65,7 +65,7 @@ index 82bcce358099a24e38c81b75b541bc38933d7885..d6d8da50850520a0067925b57fc0839d
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-index 8b6f8fca8402c177c399824c6bf0bdef2c24ec55..f8f6441d5581874a6737723cf10b9bb09499340e 100644
+index b18fc603f11cf946baf390b8621139c880a1979a..7f65f75c0fa3d69726e36617f5c270e1a4a541c9 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
 @@ -337,6 +337,7 @@ public class Slime extends Mob implements Enemy {
@@ -77,7 +77,7 @@ index 8b6f8fca8402c177c399824c6bf0bdef2c24ec55..f8f6441d5581874a6737723cf10b9bb0
              // CraftBukkit end
          }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index d65919f91b29de051797454bf3dbcd4499d582ce..3495504f85a61aecfdd790e2318aad263d743cbc 100644
+index 6b75e778c189780f14cbb33d9e84762671370c49..2ef2a881e42736d382580991bb32e5863ac0a39c 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -1025,6 +1025,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

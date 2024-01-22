@@ -5,7 +5,7 @@ Subject: [PATCH] Support FoodFlight plugin
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 65c01e14db72a666625147235893a909dc1b1a83..41db90847e7d2bedc7caa2cee2b35e66dd15bb04 100644
+index 17bb21e1df6c8601bcdbd28a14fc891895d39bef..b735fd93bd6033043ad0c3eff19c63cab530aaaf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -901,6 +901,16 @@ public class ServerPlayer extends Player {
@@ -26,7 +26,7 @@ index 65c01e14db72a666625147235893a909dc1b1a83..41db90847e7d2bedc7caa2cee2b35e66
              if (this.oldLevel == -1) {
                  this.oldLevel = this.experienceLevel;
 diff --git a/src/main/java/net/minecraft/world/level/StructureManager.java b/src/main/java/net/minecraft/world/level/StructureManager.java
-index 09c85ed428b8eaf51f8b3c6e45cce925f05ab354..ec580ed175f68d9d23d4cc6de62ad3638a0e39d0 100644
+index b59581b92aed0bc1b09008c695b0b112c3e65743..155170580c0729d5affbd97ef43b90452eec63f4 100644
 --- a/src/main/java/net/minecraft/world/level/StructureManager.java
 +++ b/src/main/java/net/minecraft/world/level/StructureManager.java
 @@ -158,6 +158,33 @@ public class StructureManager {

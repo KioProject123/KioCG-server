@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize trigger advancements
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index aa9454f4bc3214c84286b0b8dd39ccdbf90f28f2..8a68320f9d78c31276ff7df0d5ee7c30aa310308 100644
+index 631a906909508a66827f49e0e32e151ff569dac5..f764e075c3299bb50c7e83d1432645a7a316f8f7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -718,6 +718,7 @@ public class ServerPlayer extends Player {
@@ -34,7 +34,7 @@ index aa9454f4bc3214c84286b0b8dd39ccdbf90f28f2..8a68320f9d78c31276ff7df0d5ee7c30
              }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 5ca5b5e5925d330f2962a9a1024b5dd675f0003a..48e2c01391207195b1ebf0031e6316e78f480867 100644
+index fa185a8145843edf44fc0aeedb6c36b2b13263ae..6f3c97ff2656e54cc41d2912837ddaf4ece98c13 100644
 --- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
 @@ -232,15 +232,25 @@ public abstract class AbstractContainerMenu {

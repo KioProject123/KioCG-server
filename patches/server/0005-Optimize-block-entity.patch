@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 26 Dec 2023 12:44:23 +0800
+Date: Tue, 23 Jan 2024 03:27:53 +0800
 Subject: [PATCH] Optimize block entity
 
 
@@ -17,7 +17,7 @@ index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..9c681f39695f7a2b6321b848472be901
              this.immunize();  // Paper
              return true;
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-index 35e2f279d358201384ff74fd767df18f6fda432b..f45420d7d39fc17e77dff7aece2c8f40b61d2670 100644
+index 7496da8b914fbf540bfb1c5800ddda1d6ec66f4e..bcb4198efddc9dc8d56518b24c7d02ee3cfbbd7f 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 @@ -296,7 +296,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
@@ -30,13 +30,13 @@ index 35e2f279d358201384ff74fd767df18f6fda432b..f45420d7d39fc17e77dff7aece2c8f40
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index af66c7eec6291b0bc9575f59c8210cd7f697232a..2115854853f2a3f009a99c2c357ad4cafee6ff02 100644
+index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d048dca1e73 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -86,6 +86,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      public final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
      private final RecipeManager.CachedCheck<Container, ? extends AbstractCookingRecipe> quickCheck;
-     public final RecipeType<? extends AbstractCookingRecipe> recipeType; // Paper
+     public final RecipeType<? extends AbstractCookingRecipe> recipeType; // Paper - cook speed multiplier API
 +    private boolean shouldTick = true; // KioCG
  
      protected AbstractFurnaceBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
@@ -74,7 +74,7 @@ index af66c7eec6291b0bc9575f59c8210cd7f697232a..2115854853f2a3f009a99c2c357ad4ca
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index c57efcb9a79337ec791e4e8f6671612f0a82b441..7af18eac34f3eb424180f8603b4ccc824b0b3480 100644
+index bc01481ac5990ad1cfd1def5a16dd0ed2f9de8c9..b4b176447330992753f446968c23d658f94b6c4a 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 @@ -59,6 +59,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
@@ -110,10 +110,10 @@ index c57efcb9a79337ec791e4e8f6671612f0a82b441..7af18eac34f3eb424180f8603b4ccc82
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-index 18d3cb828f85e17ec27dbb5b33c6f17fff178a1d..008a1c85451a812ebf1656bf715cd812389b8cb2 100644
+index 9f7b49a6a50cb53d914c8f4b5132c035c5ab71da..d33fd3f94d5c4c4dbd8e87dd337b686dac808580 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/CampfireBlockEntity.java
-@@ -126,6 +126,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -127,6 +127,24 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
  
      }
  
@@ -138,7 +138,7 @@ index 18d3cb828f85e17ec27dbb5b33c6f17fff178a1d..008a1c85451a812ebf1656bf715cd812
      public static void particleTick(Level world, BlockPos pos, BlockState state, CampfireBlockEntity campfire) {
          RandomSource randomsource = world.random;
          int i;
-@@ -253,6 +271,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
+@@ -254,6 +272,7 @@ public class CampfireBlockEntity extends BlockEntity implements Clearable {
      public void dowse() {
          if (this.level != null) {
              this.markUpdated();
@@ -147,7 +147,7 @@ index 18d3cb828f85e17ec27dbb5b33c6f17fff178a1d..008a1c85451a812ebf1656bf715cd812
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 1ddae39df4e7cb36db412ebdec8ca9d2818450a9..2fb58e315393c3ed5783c364f28f8e44d98a0397 100644
+index 7041394d366e6145369d032a0a14f0478af4679f..74c89dde1d118dc71110b3998e7bbde34018d559 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -516,7 +516,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -160,7 +160,7 @@ index 1ddae39df4e7cb36db412ebdec8ca9d2818450a9..2fb58e315393c3ed5783c364f28f8e44
          // Paper start - Perf: Optimize Hoppers
          if (inventory instanceof WorldlyContainer worldlyContainer) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index c37aa33134b8602caae5ecff00439ad5e0005d18..f6f0909ae6605922cafb1adae739022018ece133 100644
+index f782fee9243129d0990777dcd2d74735ceb5e64e..8ce1ff1a005c26a9641ca487cd489d910ef98834 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -586,7 +586,7 @@ public class LevelChunk extends ChunkAccess {

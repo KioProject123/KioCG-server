@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index bf4338521cfb3527164f83baf0c6c7065215771d..4872372a12c05aebb7e42f790827a1dbedad7a5d 100644
+index 658c6d27b828e5a1d4538136a74fc49a69b471c0..08b49ca46d4d8a2afcddfbd93510aa860bd92ab0 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -18,7 +18,7 @@ index bf4338521cfb3527164f83baf0c6c7065215771d..4872372a12c05aebb7e42f790827a1db
      public static final EntityType<Wolf> WOLF = EntityType.register("wolf", EntityType.Builder.of(Wolf::new, MobCategory.CREATURE).sized(0.6F, 0.85F).clientTrackingRange(10));
      public static final EntityType<Zoglin> ZOGLIN = EntityType.register("zoglin", EntityType.Builder.of(Zoglin::new, MobCategory.MONSTER).fireImmune().sized(1.3964844F, 1.4F).clientTrackingRange(8));
 diff --git a/src/main/java/net/minecraft/world/entity/PathfinderMob.java b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
-index 463b72cab6a62e9738b33007728b2b00ae12e1bc..47637044ff6879422c0c55697cef147539ef45e6 100644
+index 3d95257d2203fe40bb1fab58ad2a1f9e815184a9..8bdf84bd138358b9b6837a24f17bd49456e127ba 100644
 --- a/src/main/java/net/minecraft/world/entity/PathfinderMob.java
 +++ b/src/main/java/net/minecraft/world/entity/PathfinderMob.java
 @@ -94,7 +94,7 @@ public abstract class PathfinderMob extends Mob {
@@ -57,7 +57,7 @@ index 676e1580849e8942eb41c7a3a80f464138b22764..9c57a2e4b1a80711efbf2a756458c025
          this.setFlags(EnumSet.of(Goal.Flag.MOVE));
      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cat.java b/src/main/java/net/minecraft/world/entity/animal/Cat.java
-index 6e5b4a50b8d2dddbd7f099426b4866b35bcb798a..03490dac43a6077d59aac655f903057047c45220 100644
+index 6af5e1dfcfd739e0bc857f648c189151d5a795c8..ac9358cc218794a9b4291553ee3fd8901394cef4 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cat.java
 @@ -162,7 +162,14 @@ public class Cat extends TamableAnimal implements VariantHolder<CatVariant> {
@@ -86,7 +86,7 @@ index 6e5b4a50b8d2dddbd7f099426b4866b35bcb798a..03490dac43a6077d59aac655f9030570
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Parrot.java b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
-index 351b580611bf4b92d7addcc402c3276f7cb4e639..ee035e827a347f61a6549b6e03a605b03ea46cdf 100644
+index 670cf5a74554b0b420706db2fbce3a8e5dca147b..99b2ce60f971380c039c0125f3b0fab9ad9dd980 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Parrot.java
 @@ -239,9 +239,23 @@ public class Parrot extends ShoulderRidingEntity implements VariantHolder<Parrot
@@ -116,7 +116,7 @@ index 351b580611bf4b92d7addcc402c3276f7cb4e639..ee035e827a347f61a6549b6e03a605b0
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Wolf.java b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
-index 5d49ed7ddf44a3d549b178ae548664194967776b..96f2a6688ccab4c97e8546d13e674198c55cf2d2 100644
+index a90055fe8819a32180754b6060a0f88e81d1a3b6..a72535425a0c4a4fe260fdab79cc65918bd53788 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Wolf.java
 @@ -108,6 +108,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
@@ -202,7 +202,7 @@ index aea5864957e54798a08cc350e1a5d2f5f3c03353..b721d14310fd6569f037b6f6793156e0
                      }
                  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index 68f45498405f5fd9a6f5525b9a59518a8b506aa8..a7f352ef8fcaf1ead9a1bbb42dfbb9f35b5d3dff 100644
+index a00646bc8a9caefe56e48b7682e8fb0c464b81fa..c6b886c5670dc5d4cb67739692ec86ec2a0b5db3 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -82,7 +82,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -215,7 +215,7 @@ index 68f45498405f5fd9a6f5525b9a59518a8b506aa8..a7f352ef8fcaf1ead9a1bbb42dfbb9f3
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Drowned.java b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
-index 034bb2d1292dde6276885c3ea71d886c3894311c..00b6005500637a1388787c1a3959d153d9a4f8f1 100644
+index 7600e747d91ae888eb801cfafcb09bffb76c8e62..09d7f68d4cdd58b0a9e183804b6b2c51c0e18444 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Drowned.java
 @@ -147,7 +147,7 @@ public class Drowned extends Zombie implements RangedAttackMob {
@@ -244,7 +244,7 @@ index d13eed85d5399cd6991b3ad90f05a5805a3a2678..2b22e378c642fa2b37db013c49842b80
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index f6dd5fd56926215830ccebbd46098d4bc08e17e4..5142f647e7ca56b4001ecfbcfc136d1307e6420f 100644
+index a161f8316dc38148a60ad3a661eb2d50a34ec068..04ef6d9be78e4f1ba956f89ea655c9d5fc01e777 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -164,7 +164,7 @@ public class Zombie extends Monster {
@@ -266,7 +266,7 @@ index f6dd5fd56926215830ccebbd46098d4bc08e17e4..5142f647e7ca56b4001ecfbcfc136d13
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d685a8669 100644
+index 3f78ab74cd7706ad16f6d5a989803691c9842f9f..c68cf6f0ff6f9b76219fbd6d90c8789b6ad2c521 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 @@ -117,6 +117,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
@@ -288,7 +288,7 @@ index 237247cb91248eb2d05e967e95cb8ad0a8a63080..904e3fce62a193b9c866d9f4c200e83d
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 9357539c71e3a8408b1f055527ffd192b5f9f1d9..2d4efee0db6d21f8844e685ade6a57de15eccb63 100644
+index 9113c8ebff5e71f859a19f024969582052c57546..926bfd02ea2e5b2f5f99cd94377fea79c188be9c 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -303,6 +303,7 @@ public class ActivationRange

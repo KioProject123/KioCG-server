@@ -5,7 +5,7 @@ Subject: [PATCH] Adjust enchantment
 
 
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 0951f89827ca959357a4febef3213044169e7579..e03860f341aacead6b9bcc0f25c427a3211231eb 100644
+index cbb1fff06b62444277ba6589b5f6ec0f6ce96aae..6dd9cce1891613d634c242138117a98b528bb849 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 @@ -227,8 +227,10 @@ public class AnvilMenu extends ItemCombinerMenu {
@@ -36,7 +36,7 @@ index 0951f89827ca959357a4febef3213044169e7579..e03860f341aacead6b9bcc0f25c427a3
                                  if (itemstack.getCount() > 1) {
                                      i = 40;
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index 2c51a73ebfd05af21b0f5d731fc9f1df77fed1a1..de3f4b10a98edf8b8afc178d7f78bca26ede6391 100644
+index 62f291abef664d8bccd682db9de8d0ae6fe2b9bd..60c56e2928bebac4e9faac096169e1d28f65ab93 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 @@ -317,6 +317,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
@@ -139,7 +139,7 @@ index c4245ecf24066c708beb434a3b610fc7c6b07044..84550504d647224cb9e8559cf40aa6e9
      public int getMinCost(int level) {
          return 15;
 diff --git a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
-index f782e8dd9d3456f345859dffd69e5830d576ccd1..a1fbf86234bc2eff09951981392bcf1d9b6404e0 100644
+index 593e7fc97559e18df13bece888616d03bd534971..d56c1448c911b42eae4372b0526c176102fc146f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
 +++ b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
 @@ -82,6 +82,7 @@ public class CraftEnchantment extends Enchantment {
