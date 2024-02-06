@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 9 Jan 2024 20:35:05 +0800
+Date: Tue, 6 Feb 2024 17:01:57 +0800
 Subject: [PATCH] Override upstream patches
 
 
@@ -52,20 +52,20 @@ index 385ca2c1022e0985550a5cc2bbff953f1aa33f5c..cf2fec7817c4077e56b4db7932e9df34
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 16b5f59dd3658bb9fc5be629aa4e1bc0ce356243..0997695d813b0209df4136e5281b8f9f17422081 100644
+index b1dd8d66a524254a270a725f5f7a46f28e13b749..34747338383d045c206f863ecf578a680f339148 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1215,7 +1215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-                         this.recentTps[3] = tps15.getAverage();
-                         // Purpur end
-                     // Paper end
--                        lagging = recentTps[0] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur
-+                        lagging = recentTps[1] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur // KioCG - 防止TPS瞬时波动
-                     tickSection = curTime;
-                 } else curTime = Util.getNanos(); // Paper
-                 // Spigot end
+                     this.recentTps[2] = tps5.getAverage();
+                     this.recentTps[3] = tps15.getAverage();
+                     // Purpur end
+-                    lagging = recentTps[0] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur
++                    lagging = recentTps[1] < org.purpurmc.purpur.PurpurConfig.laggingThreshold; // Purpur // KioCG - 防止TPS瞬时波动
+                     tickSection = currentTime;
+                 }
+                 // Paper end - further improve server tick loop
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1bc71111393255dc2af6734241d29238f659b007..3adb7bd525c09f74bd018ab7855799a409fe02dc 100644
+index 352eb214013111e199fff43ded3a7a617fc90c66..f3e53d1459fb1e3e280c0566008cc3c253907914 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2312,7 +2312,7 @@ public class ServerPlayer extends Player {
@@ -78,10 +78,10 @@ index 1bc71111393255dc2af6734241d29238f659b007..3adb7bd525c09f74bd018ab7855799a4
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index d914eab93a1a282ce149e361015abd94269fa0be..262f54fc894434366caf807a878b31bc6ed09fd4 100644
+index 466e1dc1b7d314df2c49980e104bcbfd0a11817d..8642925744bc563feb5efae75e2074101041a269 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -427,7 +427,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -426,7 +426,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {
@@ -121,7 +121,7 @@ index 2913d69fcff4b6df68586146b7323cea33eba74b..cbb1fff06b62444277ba6589b5f6ec0f
                              if (player.hasPermission("purpur.anvil.format")) {
                                  java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("(?i)&([k-or])").matcher(name);
 diff --git a/src/main/java/net/minecraft/world/level/block/FarmBlock.java b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
-index 221d06a5707398ed7523229e80b2a3f965b98ae2..587da9cae03ff8db0a61f5e9b43bd3472d90ec39 100644
+index 0c39126ce51439cce05747161aba43bce33a12d8..ba2305201707a1880a0f27014388645782255e39 100644
 --- a/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FarmBlock.java
 @@ -110,6 +110,24 @@ public class FarmBlock extends Block {

@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize entity behavior
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index 658c6d27b828e5a1d4538136a74fc49a69b471c0..08b49ca46d4d8a2afcddfbd93510aa860bd92ab0 100644
+index a9e2a758669550530eb29475ba99fe42e520f6ae..6dd335d534e885667bd0f96194fc76bbc571c00f 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -286,7 +286,7 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -244,7 +244,7 @@ index d13eed85d5399cd6991b3ad90f05a5805a3a2678..2b22e378c642fa2b37db013c49842b80
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index a161f8316dc38148a60ad3a661eb2d50a34ec068..04ef6d9be78e4f1ba956f89ea655c9d5fc01e777 100644
+index c531d830f4d6b2d2213e160d7e1a5b50b80dbea5..4e69136a9316a2f8a67d4da9e795076f0d5943f7 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -164,7 +164,7 @@ public class Zombie extends Monster {
@@ -288,10 +288,10 @@ index 3f78ab74cd7706ad16f6d5a989803691c9842f9f..c68cf6f0ff6f9b76219fbd6d90c8789b
          this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
          this.goalSelector.addGoal(2, new WanderingTrader.WanderToPositionGoal(this, 2.0D, 0.35D));
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 9113c8ebff5e71f859a19f024969582052c57546..926bfd02ea2e5b2f5f99cd94377fea79c188be9c 100644
+index 2e9aed328e576abbe216fdb2071c13421e6645b8..feac67305e81be633a7097a01a1565e535fa1c4a 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -303,6 +303,7 @@ public class ActivationRange
+@@ -302,6 +302,7 @@ public class ActivationRange
              return 100; // Paper
          }
          // Paper start
@@ -299,7 +299,7 @@ index 9113c8ebff5e71f859a19f024969582052c57546..926bfd02ea2e5b2f5f99cd94377fea79
          if ( !entity.onGround() || entity.getDeltaMovement().horizontalDistanceSqr() > 9.999999747378752E-6D )
          {
              return 100;
-@@ -312,6 +313,11 @@ public class ActivationRange
+@@ -311,6 +312,11 @@ public class ActivationRange
          {
              if ( (!entity.onGround() && !(entity instanceof FlyingMob)) ) // Paper - remove passengers logic
              {
@@ -311,7 +311,7 @@ index 9113c8ebff5e71f859a19f024969582052c57546..926bfd02ea2e5b2f5f99cd94377fea79
                  return 10; // Paper
              }
          } else if ( !( (AbstractArrow) entity ).inGround )
-@@ -403,7 +409,7 @@ public class ActivationRange
+@@ -402,7 +408,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

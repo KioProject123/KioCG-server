@@ -17,10 +17,10 @@ index 71a684323a518b2c4092e731c8b382952e42a8bf..f43352c283df95b4d46395e81c514cb5
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6ecb55f554cc0f452d57a9028fa9296e31d10264..13542de528411fdaac690c116d84c89c6d4fcd9f 100644
+index 5650406698ba2806de3495651bfdb308fb02fab6..272e521e1491385d85e216b4aefae25befc42940 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1727,7 +1727,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1729,7 +1729,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              long worldTime = level.getGameTime();
              final ClientboundSetTimePacket worldPacket = new ClientboundSetTimePacket(worldTime, dayTime, doDaylight);
              for (Player entityhuman : level.players()) {
@@ -30,7 +30,7 @@ index 6ecb55f554cc0f452d57a9028fa9296e31d10264..13542de528411fdaac690c116d84c89c
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index cbc756fb645b00d8a13d001598b6f17a4940b959..e315eec42b9b87082864a3d4383155bf233d04d4 100644
+index 7919b049de7b1a91193974b5cf503592553ab168..20fc8028f9392afdd9e90cbc6b064a4ec22ef6db 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -217,6 +217,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -92,7 +92,7 @@ index caa8a69bde0c212c36dd990a67836ac2f95548c0..ac09bf01c49e4a7321c08dbf4c7d9637
                  if ((entityplayer.isSleeping() || entityplayer.fauxSleeping) || (entityplayer.level().purpurConfig.idleTimeoutCountAsSleeping && entityplayer.isAfk())) { // CraftBukkit // Purpur
                      ++this.sleepingPlayers;
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index dab252cbadffbcdf19bacc0b378d671b29393e9c..193d373d5ab43a202c173118dbebeafc503b5e2f 100644
+index a78173ac1a8a71048bd6dbad84c0163e51cd150f..854a636586dfdbc89535032b8bf6b312c9dce90c 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 @@ -421,6 +421,7 @@ public class PurpurWorldConfig {

@@ -108,10 +108,10 @@ index 6dd9cce1891613d634c242138117a98b528bb849..fce8fe8fd7331abcc3abdbd2e8083e8e
                      }
  
 diff --git a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
-index ae2dc7fc4df54f9ed8e78ff1347f9782eccc9d4b..bd5a30a7537e1ac93fcede9aeffeca6451df70d6 100644
+index 88842f31836df70717fdf7f77f39a2ad8bb45326..466c4e67043e0d374d51c48ff52aa62cf1603dce 100644
 --- a/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/BeaconMenu.java
-@@ -192,6 +192,7 @@ public class BeaconMenu extends AbstractContainerMenu {
+@@ -191,6 +191,7 @@ public class BeaconMenu extends AbstractContainerMenu {
          if (this.paymentSlot.hasItem()) {
              // Paper start - Add PlayerChangeBeaconEffectEvent
              io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent event = new io.papermc.paper.event.player.PlayerChangeBeaconEffectEvent((org.bukkit.entity.Player) this.player.player.getBukkitEntity(), convert(primary), convert(secondary), this.access.getLocation().getBlock());
@@ -139,7 +139,7 @@ index 45bf1c95d86bdfc709c5f1a1fbefb18e1cc51f4c..be152bb2432e3a555eb83bae29753658
              MapItemSavedData worldmap = MapItem.getSavedData(map, world);
  
 diff --git a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-index 1b05847cd5ec69ecaf75a2d3803089efbb89d165..7bc65d3a1ab5331a192b4167cd170e5262f79869 100644
+index c3800bdd5096cb06e085e28f6bf0f65586ecf11e..6665591cec79ed5177ce7c43aed129a2d7cc7b11 100644
 --- a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
 @@ -88,6 +88,13 @@ public class CraftingMenu extends RecipeBookMenu<CraftingContainer> {
@@ -195,10 +195,10 @@ index af99ce32872e079beb6ac1caf3a8ac4c3cae4648..d4bc1e0f050988f8e11883c69cdbf3eb
              org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareGrindstoneEvent(this.getBukkitView(), this.removeNonCurses(itemstack2, i, b0)); // CraftBukkit
          } else {
 diff --git a/src/main/java/net/minecraft/world/inventory/LoomMenu.java b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
-index e51dabca7b81adee35246e429dcb8f42ae0bf22c..07e0b730e86d293152513bb6e31701a181d3fe21 100644
+index c1c9cfd3f77b2dbbc39741d629c7dfb24a48d4f6..2b508663caf7e0f3e861e113ba21b2ea909b5287 100644
 --- a/src/main/java/net/minecraft/world/inventory/LoomMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/LoomMenu.java
-@@ -204,6 +204,7 @@ public class LoomMenu extends AbstractContainerMenu {
+@@ -205,6 +205,7 @@ public class LoomMenu extends AbstractContainerMenu {
              // Paper end - Add PlayerLoomPatternSelectEvent
              return true;
          } else {
@@ -206,7 +206,7 @@ index e51dabca7b81adee35246e429dcb8f42ae0bf22c..07e0b730e86d293152513bb6e31701a1
              return false;
          }
      }
-@@ -214,7 +215,7 @@ public class LoomMenu extends AbstractContainerMenu {
+@@ -215,7 +216,7 @@ public class LoomMenu extends AbstractContainerMenu {
          } else {
              Item item = stack.getItem();
  
@@ -215,7 +215,7 @@ index e51dabca7b81adee35246e429dcb8f42ae0bf22c..07e0b730e86d293152513bb6e31701a1
                  BannerPatternItem itembannerpattern = (BannerPatternItem) item;
  
                  return (List) BuiltInRegistries.BANNER_PATTERN.getTag(itembannerpattern.getBannerPattern()).map(ImmutableList::copyOf).orElse(ImmutableList.of());
-@@ -363,6 +364,13 @@ public class LoomMenu extends AbstractContainerMenu {
+@@ -364,6 +365,13 @@ public class LoomMenu extends AbstractContainerMenu {
          ItemStack itemstack = this.bannerSlot.getItem();
          ItemStack itemstack1 = this.dyeSlot.getItem();
          ItemStack itemstack2 = ItemStack.EMPTY;
@@ -248,7 +248,7 @@ index 1e9e70263996afa294458364aa70e738b5aabea1..3f2a045490c0963138c0453d578c4f64
                  org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareSmithingEvent(this.getBukkitView(), itemstack);
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
-index 6ba59a60b85c04127abd7df37a647fa71745327a..b91149380d369a957c7c825074439ab3e755d4a3 100644
+index eade15820dd9db38b6af2a5c4314acfb14ca03e9..2b0eca6936c9b4f96de30db0602639aa00154b80 100644
 --- a/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/StonecutterMenu.java
 @@ -167,6 +167,13 @@ public class StonecutterMenu extends AbstractContainerMenu {
@@ -263,9 +263,9 @@ index 6ba59a60b85c04127abd7df37a647fa71745327a..b91149380d369a957c7c825074439ab3
 +                }
 +                // KioCG end
                  if (!event.callEvent()) {
-                     ((Player) player.getBukkitEntity()).updateInventory();
+                     player.containerMenu.sendAllDataToRemote();
                      return false;
-@@ -198,7 +205,7 @@ public class StonecutterMenu extends AbstractContainerMenu {
+@@ -199,7 +206,7 @@ public class StonecutterMenu extends AbstractContainerMenu {
      public void slotsChanged(Container inventory) {
          ItemStack itemstack = this.inputSlot.getItem();
  

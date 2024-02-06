@@ -5,12 +5,12 @@ Subject: [PATCH] Linear achievement system
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-index 9abce8a22246f449e1e508dc9972d14cfb8c7c6f..661def6fa3fa864246cff8502ffd61681a70d8ab 100644
+index ba8a8575af92541cef2e116743d51cd68d1e794a..01699e577e3508bc38c009a1bf8eef6697c87ff8 100644
 --- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
 +++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
 @@ -234,6 +234,14 @@ public class PlayerAdvancements {
              }
-             // Paper end
+             // Paper end - Add PlayerAdvancementCriterionGrantEvent
              this.unregisterListeners(advancement);
 +            // KioCG start - 线性的成就系统
 +            final AdvancementNode advancementNode = MinecraftServer.getServer().getAdvancements().tree().get(advancement);

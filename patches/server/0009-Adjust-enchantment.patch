@@ -36,7 +36,7 @@ index cbb1fff06b62444277ba6589b5f6ec0f6ce96aae..6dd9cce1891613d634c242138117a98b
                                  if (itemstack.getCount() > 1) {
                                      i = 40;
 diff --git a/src/main/java/net/minecraft/world/item/CrossbowItem.java b/src/main/java/net/minecraft/world/item/CrossbowItem.java
-index 62f291abef664d8bccd682db9de8d0ae6fe2b9bd..60c56e2928bebac4e9faac096169e1d28f65ab93 100644
+index 211d8e59a9b3460b346e5f8cf581df70b05d1b8f..fee644c23b3997f4fa128ed4cb6a0fd77bf81929 100644
 --- a/src/main/java/net/minecraft/world/item/CrossbowItem.java
 +++ b/src/main/java/net/minecraft/world/item/CrossbowItem.java
 @@ -317,6 +317,13 @@ public class CrossbowItem extends ProjectileWeaponItem implements Vanishable {
@@ -139,10 +139,10 @@ index c4245ecf24066c708beb434a3b610fc7c6b07044..84550504d647224cb9e8559cf40aa6e9
      public int getMinCost(int level) {
          return 15;
 diff --git a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
-index 593e7fc97559e18df13bece888616d03bd534971..d56c1448c911b42eae4372b0526c176102fc146f 100644
+index 015ea2ecac493c88f45d6ad66c2ef346252b4ec8..198fee34e991ba2c5505b710353fe4b546ef03d3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
 +++ b/src/main/java/org/bukkit/craftbukkit/enchantments/CraftEnchantment.java
-@@ -82,6 +82,7 @@ public class CraftEnchantment extends Enchantment {
+@@ -73,6 +73,7 @@ public class CraftEnchantment extends Enchantment implements Handleable<net.mine
              case VANISHABLE -> EnchantmentTarget.VANISHABLE;
              case BOW_AND_CROSSBOW -> EnchantmentTarget.BOW_AND_CROSSBOW; // Purpur
              case WEAPON_AND_SHEARS -> EnchantmentTarget.WEAPON_AND_SHEARS; // Purpur

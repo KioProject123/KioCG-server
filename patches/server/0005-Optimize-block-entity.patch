@@ -160,7 +160,7 @@ index 7041394d366e6145369d032a0a14f0478af4679f..74c89dde1d118dc71110b3998e7bbde3
          // Paper start - Perf: Optimize Hoppers
          if (inventory instanceof WorldlyContainer worldlyContainer) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index f782fee9243129d0990777dcd2d74735ceb5e64e..8ce1ff1a005c26a9641ca487cd489d910ef98834 100644
+index 1b49ecbf8fdbe8b734f8ca5191dc9ed70aa66af7..14e58e7ce2120da624459bfe7179fed60593b95d 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -586,7 +586,7 @@ public class LevelChunk extends ChunkAccess {

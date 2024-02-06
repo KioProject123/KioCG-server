@@ -5,7 +5,7 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 6f42bec45e2c5d049ab0f3c83aa4a8c7d252529b..5a0a8ab8a63a7848ff6cdf81a23432fb354585a0 100644
+index 5dd03e2535de45cb06d15ff2cb4f174106e6bbc6..45c8cec36b02839a71f1ce444dbd598d2b17fde3 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -65,7 +65,7 @@ index ede47e5da73097fec9435f9839646bf9df93336b..e5d2ddaf069c4498ebd08e1f8ea6bc8c
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-index b18fc603f11cf946baf390b8621139c880a1979a..7f65f75c0fa3d69726e36617f5c270e1a4a541c9 100644
+index 489c8cbec828318e5b84cb9eaf25733b39781927..b11556e67b7464d0b76a0a0847e33e364740605d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
 @@ -337,6 +337,7 @@ public class Slime extends Mob implements Enemy {
@@ -77,10 +77,10 @@ index b18fc603f11cf946baf390b8621139c880a1979a..7f65f75c0fa3d69726e36617f5c270e1
              // CraftBukkit end
          }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 6b75e778c189780f14cbb33d9e84762671370c49..2ef2a881e42736d382580991bb32e5863ac0a39c 100644
+index 215fb7bc579f8d4dbf9a8732234d1fa77a709b80..984ef96c11376dbaf1945b5c0b022dbd7a7fab65 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -1025,6 +1025,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -1026,6 +1026,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                      return;
                  }
                  world.addFreshEntityWithPassengers(entitywitch, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);

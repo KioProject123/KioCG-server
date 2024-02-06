@@ -62,10 +62,10 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index c224688c978d6d130937a526d7d5cc452700865b..99e0ed96dfd3e6f55ad4aa48d6ddfdcc326e35ae 100644
+index 2c9bab23d3f2a761d6296029c509fa06a9cabb5c..cf38bc327cc0af43f9091a5c6e223d53ef97dc81 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -304,6 +304,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -303,6 +303,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -75,7 +75,7 @@ index c224688c978d6d130937a526d7d5cc452700865b..99e0ed96dfd3e6f55ad4aa48d6ddfdcc
  
      public Brain<?> getBrain() {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
-index 7093c62be53fe99ed9880fc8ddaa07440fe4f715..577637c3e9d3eae5639129a34a7d4d90fb00ad48 100644
+index 60a62781fcfe4c598c308a7ce2b0dcf72c0895ae..a32a49fa0f72f484daa56a6b06614974550cd746 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
 @@ -16,6 +16,7 @@ public class FloatGoal extends Goal {
@@ -187,10 +187,10 @@ index 00cf59524477ec79d4354cc403fc3e75a63b81a0..a1cc5c1524208835f9eb2cf838024155
              if (this.mob.distanceToSqr((Entity) this.player) < 36.0D) {
                  if (this.player.distanceToSqr(this.px, this.py, this.pz) > 0.010000000000000002D) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
-index 9ffbe784a0d45b494f29ab1555841b4be9f58128..985bf98e7db7110a125385bba0032909595654b2 100644
+index 43699f94dd0fd97513242fcdbc4ec4d0dc260f8e..c91fd53fcadb2b87d0aa5022168d75adf8fc0fc0 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/navigation/PathNavigation.java
-@@ -198,6 +198,7 @@ public abstract class PathNavigation {
+@@ -199,6 +199,7 @@ public abstract class PathNavigation {
      // Paper end - Perf: Optimise pathfinding
  
      public boolean moveTo(Entity entity, double speed) {
@@ -198,7 +198,7 @@ index 9ffbe784a0d45b494f29ab1555841b4be9f58128..985bf98e7db7110a125385bba0032909
          // Paper start - Perf: Optimise pathfinding
          if (this.pathfindFailures > 10 && this.path == null && net.minecraft.server.MinecraftServer.currentTick < this.lastFailure + 40) {
              return false;
-@@ -218,6 +219,7 @@ public abstract class PathNavigation {
+@@ -219,6 +220,7 @@ public abstract class PathNavigation {
      }
  
      public boolean moveTo(@Nullable Path path, double speed) {
@@ -309,7 +309,7 @@ index 997ab942be9f742804041b07d607e7dd6473ba96..673fc16b1c44c46a87a8642f62591c98
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index c137f8f1a2566690f2b2e82b16e7186eaa711f38..e6010f00b145700c00dd94fe622076722f4f0b75 100644
+index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a0ab4b23d 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -322,7 +322,7 @@ index c137f8f1a2566690f2b2e82b16e7186eaa711f38..e6010f00b145700c00dd94fe62207672
      private int notLobotomizedCount = 0; // Purpur
  
      public long nextGolemPanic = -1; // Pufferfish
-@@ -243,6 +244,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -244,6 +245,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return !bottom.hasCollision && !top.hasCollision;
      }
  
@@ -346,7 +346,7 @@ index c137f8f1a2566690f2b2e82b16e7186eaa711f38..e6010f00b145700c00dd94fe62207672
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -346,13 +364,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -347,13 +365,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level().purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
@@ -362,7 +362,7 @@ index c137f8f1a2566690f2b2e82b16e7186eaa711f38..e6010f00b145700c00dd94fe62207672
          // Purpur end
          //this.level().getProfiler().pop(); // Purpur
          if (this.assignProfessionWhenSpawned) {
-@@ -657,6 +675,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -658,6 +676,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -371,7 +371,7 @@ index c137f8f1a2566690f2b2e82b16e7186eaa711f38..e6010f00b145700c00dd94fe62207672
      }
  
      @Override
-@@ -697,6 +717,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -698,6 +718,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  

@@ -5,10 +5,10 @@ Subject: [PATCH] Prevent fire spreading
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/FireBlock.java b/src/main/java/net/minecraft/world/level/block/FireBlock.java
-index 14817a0d760afc9edd6a97d51ace2348a8fcfbfa..5032d06f61fe6d9a40810df2f0e2eae2b827d5fd 100644
+index 7f05e58358024d303eab9ab4fbc1bb299760ad1e..785a1045a447539e17608dde56ddd7c4652e6d27 100644
 --- a/src/main/java/net/minecraft/world/level/block/FireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/FireBlock.java
-@@ -220,6 +220,8 @@ public class FireBlock extends BaseFireBlock {
+@@ -219,6 +219,8 @@ public class FireBlock extends BaseFireBlock {
                  this.trySpread(world, pos.north(), 300 + k, random, i, pos);
                  this.trySpread(world, pos.south(), 300 + k, random, i, pos);
                  // CraftBukkit end

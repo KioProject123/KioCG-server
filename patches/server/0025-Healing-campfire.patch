@@ -5,10 +5,10 @@ Subject: [PATCH] Healing campfire
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 48a32712188005aef300e02f78592517a6ba87ac..e605ede1c95fdebbe3bb1a1417b95bc8fb6fc68d 100644
+index c023566a34b718b25938ff0abba4cca24e29469e..ac5fad8fd8df4e37321b9e26b75e63141eccd92d 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -186,6 +186,7 @@ public abstract class Player extends LivingEntity {
+@@ -184,6 +184,7 @@ public abstract class Player extends LivingEntity {
      public int sixRowEnderchestSlotCount = -1; // Purpur
      public int burpDelay = 0; // Purpur
      public boolean canPortalInstant = false; // Purpur

@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize statistics ticking
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index de7a7001450505c171e1f832bfc593de4ccdee17..48a32712188005aef300e02f78592517a6ba87ac 100644
+index 11056453ceb9bfb3372e2c4a7a743ff213e4ac7d..c023566a34b718b25938ff0abba4cca24e29469e 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -307,19 +307,23 @@ public abstract class Player extends LivingEntity {

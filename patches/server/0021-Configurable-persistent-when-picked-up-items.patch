@@ -18,7 +18,7 @@ index f7f1c3aab99bc7e6aa3f46855675f819cfd6c809..e7f35737769dc907dbf227fb7c696a53
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 976b677ff36ddc4777dee454cd2ec979974e3a1c..6f42bec45e2c5d049ab0f3c83aa4a8c7d252529b 100644
+index a2588ffd854a4610cd24942b1fea0dc5080a511b..5dd03e2535de45cb06d15ff2cb4f174106e6bbc6 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -392,6 +392,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -69,7 +69,7 @@ index 976b677ff36ddc4777dee454cd2ec979974e3a1c..6f42bec45e2c5d049ab0f3c83aa4a8c7
 +                    if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
                  }
  
-                 int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - custom despawn distances
+                 int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - Configurable despawn distances
 @@ -914,6 +939,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
  
                  if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double) l && this.removeWhenFarAway(d0)) {
