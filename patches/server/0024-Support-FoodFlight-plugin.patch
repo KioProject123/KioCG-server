@@ -26,18 +26,26 @@ index 9cd91923f6d2f543e8722d1d182c772a1f155394..3b9f1902145231d2c5ddfb3daf952af5
              if (this.oldLevel == -1) {
                  this.oldLevel = this.experienceLevel;
 diff --git a/src/main/java/net/minecraft/world/level/StructureManager.java b/src/main/java/net/minecraft/world/level/StructureManager.java
-index b59581b92aed0bc1b09008c695b0b112c3e65743..155170580c0729d5affbd97ef43b90452eec63f4 100644
+index b59581b92aed0bc1b09008c695b0b112c3e65743..5edeaa78e58328be9e079e431765542eeb905285 100644
 --- a/src/main/java/net/minecraft/world/level/StructureManager.java
 +++ b/src/main/java/net/minecraft/world/level/StructureManager.java
-@@ -158,6 +158,33 @@ public class StructureManager {
+@@ -158,6 +158,41 @@ public class StructureManager {
          return this.level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_REFERENCES).hasAnyStructureReferences();
      }
  
 +    // KioCG start
++    private static final java.util.Set<net.minecraft.world.level.levelgen.structure.StructureType<?>> simpleStructure = new java.util.HashSet<>() {{
++        add(net.minecraft.world.level.levelgen.structure.StructureType.BURIED_TREASURE);
++        add(net.minecraft.world.level.levelgen.structure.StructureType.NETHER_FOSSIL);
++        add(net.minecraft.world.level.levelgen.structure.StructureType.RUINED_PORTAL);
++    }};
++
 +    public boolean hasAnyStructureAtExact(BlockPos pos) {
 +        net.minecraft.world.level.levelgen.structure.BoundingBox boundingBox = new net.minecraft.world.level.levelgen.structure.BoundingBox
 +            (pos.getX() - 4, pos.getY() - 4, pos.getZ() - 4, pos.getX() + 4, pos.getY() + 4, pos.getZ() + 4);
 +        for (Map.Entry<Structure, LongSet> entry : this.getAllStructuresAt(pos).entrySet()) {
++            if (simpleStructure.contains(entry.getKey().type())) continue;
++
 +            java.util.concurrent.atomic.AtomicBoolean hasPieceAt = new java.util.concurrent.atomic.AtomicBoolean(false);
 +            this.fillStartsForStructure(entry.getKey(), entry.getValue(), structureStart -> {
 +                if (this.structureHasPieceIntersects(boundingBox, structureStart)) {
