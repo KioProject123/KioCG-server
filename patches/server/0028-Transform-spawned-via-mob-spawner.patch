@@ -5,10 +5,10 @@ Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 5dd03e2535de45cb06d15ff2cb4f174106e6bbc6..45c8cec36b02839a71f1ce444dbd598d2b17fde3 100644
+index 244046fb349332fe046ea18b1fd2068d77b06ab1..f457dc6b9cb95bea2d9b95a728dd1d40e20e8ebb 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1535,6 +1535,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1542,6 +1542,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
                      return null;
                  }
                  this.level().addFreshEntity(t0, spawnReason);

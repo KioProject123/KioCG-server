@@ -65,7 +65,7 @@ index b1dd8d66a524254a270a725f5f7a46f28e13b749..34747338383d045c206f863ecf578a68
                  }
                  // Paper end - further improve server tick loop
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 352eb214013111e199fff43ded3a7a617fc90c66..f3e53d1459fb1e3e280c0566008cc3c253907914 100644
+index 36b7686fdfeaab13cb1be9610ddc76fc70f6f6e5..66ea5837dbfa9762d395f1bd754912587eeca38d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -2312,7 +2312,7 @@ public class ServerPlayer extends Player {

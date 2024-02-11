@@ -46,11 +46,11 @@ index 9c681f39695f7a2b6321b848472be9019fd8bac6..a3555514e37229e863d20cc4396c2a61
          if (HopperBlockEntity.isFullContainer(this, null)) return false; // KioCG
          if (HopperBlockEntity.suckInItems(this.level(), this)) {
 diff --git a/src/main/java/net/minecraft/world/level/block/DropperBlock.java b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
-index 1d13f8a1009d6eda351c697052d499d594a6aaa8..810d502593a2f36a429ea47ad447e25c62844e9f 100644
+index 9a8a0fb958e8ec782111507bae957f854b2aac72..7b715f232d3bcc57e4eb8a535e2626de98bb9174 100644
 --- a/src/main/java/net/minecraft/world/level/block/DropperBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/DropperBlock.java
-@@ -72,6 +72,8 @@ public class DropperBlock extends DispenserBlock {
-                     if (iinventory == null) {
+@@ -73,6 +73,8 @@ public class DropperBlock extends DispenserBlock {
+                         if (!org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockPreDispenseEvent(world, pos, itemstack, i)) return; // Paper - Add BlockPreDispenseEvent
                          itemstack1 = DropperBlock.DISPENSE_BEHAVIOUR.dispense(sourceblock, itemstack);
                      } else {
 +                        if (enumdirection == Direction.DOWN && !HopperBlockEntity.suckInFilter(iinventory, itemstack)) return; // KioCG - Hopper filter

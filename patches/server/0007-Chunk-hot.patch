@@ -248,7 +248,7 @@ index 75b3de5c1e26815aa04dba3f09f2ef7807767154..7919b049de7b1a91193974b5cf503592
          } else {
              passenger.stopRiding();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index f3e53d1459fb1e3e280c0566008cc3c253907914..8d883c8889481094fb6f8f2464126c7dc49c7b17 100644
+index 66ea5837dbfa9762d395f1bd754912587eeca38d..4fc544fb7bbe68b4d70bbc9c326c852114a35e99 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -285,6 +285,7 @@ public class ServerPlayer extends Player {
@@ -355,10 +355,10 @@ index a9e70484b01fc082ea25d43d1d42833499b5e41d..863683b58c3797c2d8ec8124b021c4ac
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 4ba1d63d81de7b8bbce02640c3e954ef0e654894..a2588ffd854a4610cd24942b1fea0dc5080a511b 100644
+index c2ce4efd43dfc783b231cd5f4a2644ed22a7db73..54fe049d14a04e7b355c822f27984c8ec3bee5af 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1858,4 +1858,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1865,4 +1865,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
      }
      // Purpur end

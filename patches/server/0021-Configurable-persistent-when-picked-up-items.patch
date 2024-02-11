@@ -18,7 +18,7 @@ index f7f1c3aab99bc7e6aa3f46855675f819cfd6c809..e7f35737769dc907dbf227fb7c696a53
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index a2588ffd854a4610cd24942b1fea0dc5080a511b..5dd03e2535de45cb06d15ff2cb4f174106e6bbc6 100644
+index 54fe049d14a04e7b355c822f27984c8ec3bee5af..244046fb349332fe046ea18b1fd2068d77b06ab1 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -392,6 +392,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
