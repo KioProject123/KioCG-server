@@ -30,7 +30,7 @@ index 5650406698ba2806de3495651bfdb308fb02fab6..272e521e1491385d85e216b4aefae25b
                  }
                  ServerPlayer entityplayer = (ServerPlayer) entityhuman;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 7919b049de7b1a91193974b5cf503592553ab168..20fc8028f9392afdd9e90cbc6b064a4ec22ef6db 100644
+index 3df99bd201c22ac3a6494412b3831480ff58afa1..a3cb0043fcc04dd0f7de84d309629e0ba45f082b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -217,6 +217,7 @@ public class ServerLevel extends Level implements WorldGenLevel {

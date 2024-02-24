@@ -62,10 +62,10 @@ index 0000000000000000000000000000000000000000..4fe89ac58ed27baeac4105c1b4bfa163
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 2c9bab23d3f2a761d6296029c509fa06a9cabb5c..cf38bc327cc0af43f9091a5c6e223d53ef97dc81 100644
+index 2303e2a9161430b2c12df27d00ac8018089334ff..6cefe87b17643a44ebd601f8c0692c6e5ad6aea7 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -303,6 +303,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -305,6 +305,8 @@ public abstract class LivingEntity extends Entity implements Attackable {
          this.brain = this.makeBrain(new Dynamic(dynamicopsnbt, (Tag) dynamicopsnbt.createMap((Map) ImmutableMap.of(dynamicopsnbt.createString("memories"), (Tag) dynamicopsnbt.emptyMap()))));
      }
  
@@ -309,10 +309,10 @@ index 997ab942be9f742804041b07d607e7dd6473ba96..673fc16b1c44c46a87a8642f62591c98
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a0ab4b23d 100644
+index 50202286a0d83f7fe5331eb669d999718a9082cf..72e5f3dea0a53a036b9a72852b2962f9e82841d3 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -141,7 +141,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -142,7 +142,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }, MemoryModuleType.MEETING_POINT, (entityvillager, holder) -> {
          return holder.is(PoiTypes.MEETING);
      });
@@ -322,7 +322,7 @@ index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a
      private int notLobotomizedCount = 0; // Purpur
  
      public long nextGolemPanic = -1; // Pufferfish
-@@ -244,6 +245,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -245,6 +246,23 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          return !bottom.hasCollision && !top.hasCollision;
      }
  
@@ -346,7 +346,7 @@ index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a
      @Override
      public Brain<Villager> getBrain() {
          return (Brain<Villager>) super.getBrain(); // CraftBukkit - decompile error
-@@ -347,13 +365,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -348,13 +366,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          // Purpur start
          if (this.level().purpurConfig.villagerLobotomizeEnabled) {
              // treat as inactive if lobotomized
@@ -362,7 +362,7 @@ index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a
          // Purpur end
          //this.level().getProfiler().pop(); // Purpur
          if (this.assignProfessionWhenSpawned) {
-@@ -658,6 +676,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -659,6 +677,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              nbt.putBoolean("AssignProfessionWhenSpawned", true);
          }
  
@@ -371,7 +371,7 @@ index 18f92478f07de7c941ff8bbe0ec2ef2fe3617fd7..176497018e34d12b8455a667674a284a
      }
  
      @Override
-@@ -698,6 +718,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -699,6 +719,14 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
              this.assignProfessionWhenSpawned = nbt.getBoolean("AssignProfessionWhenSpawned");
          }
  

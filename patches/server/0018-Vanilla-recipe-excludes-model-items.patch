@@ -275,10 +275,10 @@ index eade15820dd9db38b6af2a5c4314acfb14ca03e9..2b0eca6936c9b4f96de30db0602639aa
              this.setupRecipeList(inventory, itemstack);
          }
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 361e0d5ec35219c2706c7344efc25ee6d50a2460..c1c0f1c0baeba4929a71bf777400c9cd9062c176 100644
+index f6664447c45b1d6f3371af7bed8b1175b17f25e2..93de68fe72548078475b409125b18c85e062dc7b 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -916,6 +916,16 @@ public final class ItemStack {
+@@ -917,6 +917,16 @@ public final class ItemStack {
          return this.tag != null ? this.tag.getList("Enchantments", 10) : new ListTag();
      }
  
@@ -308,10 +308,10 @@ index 9c89a85d934955c9388cfe1361f13e70e699d279..1afc657ef3008d803b2186f314e518ec
          }
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 83cdf721c327dd8dc04c85b6da483d048dca1e73..fc0a466c3b44da0e854ad6d5f55192985defd952 100644
+index 753a95fd18def1d9b088e4b0dec2dc71079d7f16..cdf5f8a21682b9aa07e9a8482363d8eb870b8dc5 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-@@ -383,6 +383,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -388,6 +388,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
                  CraftItemStack fuel = CraftItemStack.asCraftMirror(itemstack);
  
                  FurnaceBurnEvent furnaceBurnEvent = new FurnaceBurnEvent(CraftBlock.at(world, pos), fuel, blockEntity.getBurnDuration(itemstack));
@@ -319,7 +319,7 @@ index 83cdf721c327dd8dc04c85b6da483d048dca1e73..fc0a466c3b44da0e854ad6d5f5519298
                  world.getCraftServer().getPluginManager().callEvent(furnaceBurnEvent);
  
                  if (furnaceBurnEvent.isCancelled()) {
-@@ -451,6 +452,13 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -456,6 +457,13 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
  
      private static boolean canBurn(RegistryAccess registryManager, @Nullable RecipeHolder<?> recipe, NonNullList<ItemStack> slots, int count) {
          if (!((ItemStack) slots.get(0)).isEmpty() && recipe != null) {
@@ -334,7 +334,7 @@ index 83cdf721c327dd8dc04c85b6da483d048dca1e73..fc0a466c3b44da0e854ad6d5f5519298
  
              if (itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index b4b176447330992753f446968c23d658f94b6c4a..d23c7d7dcde1f44f2592334557667590945ac6c8 100644
+index 65ddf5c04f7d6212a20d535cc2d1d423f6b27bec..05d5a67b77f42c180ab8f4e795f93bcd108bc55c 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 @@ -156,6 +156,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements

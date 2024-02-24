@@ -59,10 +59,10 @@ index 9a8a0fb958e8ec782111507bae957f854b2aac72..7b715f232d3bcc57e4eb8a535e2626de
                          CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().split(1));
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6fcd76f23 100644
+index b1e8512822c2cb757285d7e3cd31f87eb1e6a754..2e1d6e03f203df6748e3f7850581633efe72baa4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -53,6 +53,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -54,6 +54,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      // Pufferfish end
      private int cooldownTime;
      private long tickedGameTime;
@@ -70,7 +70,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
  
      // CraftBukkit start - add fields and methods
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
-@@ -122,6 +123,68 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -123,6 +124,68 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          }
  
          this.cooldownTime = nbt.getInt("TransferCooldown");
@@ -139,7 +139,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
      }
  
      @Override
-@@ -218,6 +281,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -219,6 +282,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          if (world.isClientSide) {
              return false;
          } else {
@@ -147,7 +147,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
              if (!blockEntity.isOnCooldown() && (Boolean) state.getValue(HopperBlock.ENABLED)) {
                  boolean flag = false;
  
-@@ -269,6 +333,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -270,6 +334,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          for (int i = 0; i < hopper.getContainerSize(); ++i) {
              final ItemStack item = hopper.getItem(i);
              if (!item.isEmpty()) {
@@ -161,7 +161,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
                  foundItem = true;
                  ItemStack origItemStack = item;
                  ItemStack movedItem = origItemStack;
-@@ -309,6 +380,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -310,6 +381,13 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      private static boolean hopperPull(final Level level, final Hopper hopper, final Container container, ItemStack origItemStack, final int i) {
@@ -175,7 +175,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
          ItemStack movedItem = origItemStack;
          final int originalItemCount = origItemStack.getCount();
          final int movedItemCount = Math.min(level.spigotConfig.hopperAmount, originalItemCount);
-@@ -567,6 +645,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -568,6 +646,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
                  }
                  return false;
              } else {
@@ -183,7 +183,7 @@ index 74c89dde1d118dc71110b3998e7bbde34018d559..e3f4e2e3d59f5259a972dc6377c824e6
                  for (int slot = 0, max = iinventory.getContainerSize(); slot < max; ++slot) {
                      ItemStack item = iinventory.getItem(slot);
                      if (item.isEmpty() || !canTakeItemFromContainer(hopper, iinventory, item, slot, enumdirection)) {
-@@ -648,6 +727,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -649,6 +728,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      public static boolean addItem(Container inventory, ItemEntity itemEntity) {

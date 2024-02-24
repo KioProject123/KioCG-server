@@ -151,7 +151,7 @@ index cf2fec7817c4077e56b4db7932e9df3404b72bd1..ee6c4ac72efd674c3a35fcbec5b9f363
      // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index b6cc108c2d4361e6f415cfc3ff8c7699a8e222f4..b5acac41523c553cb8e0a226539b77646c1fd23d 100644
+index b203394ed62807e7d5df433830993f1d2ee14939..7e48c4eec15c799572c6c90e1ffd7751d20ac432 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -258,6 +258,7 @@ public class Commands {
@@ -210,7 +210,7 @@ index 34747338383d045c206f863ecf578a680f339148..5650406698ba2806de3495651bfdb308
          float f;
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 75b3de5c1e26815aa04dba3f09f2ef7807767154..7919b049de7b1a91193974b5cf503592553ab168 100644
+index fb6b762bac4d36b2e307b5343988884fa339d001..3df99bd201c22ac3a6494412b3831480ff58afa1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1477,6 +1477,8 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -312,10 +312,10 @@ index 66ea5837dbfa9762d395f1bd754912587eeca38d..4fc544fb7bbe68b4d70bbc9c326c8521
  
      public void doTick() {
 diff --git a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
-index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d249eb843ec 100644
+index 094ab43e5a209ea848bf0994db9018281c64e08d..e2084013770e78d006ddd9547f6c9040aceb22c9 100644
 --- a/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
 +++ b/src/main/java/net/minecraft/world/entity/AreaEffectCloud.java
-@@ -497,4 +497,11 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
+@@ -498,4 +498,11 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
      public EntityDimensions getDimensions(Pose pose) {
          return EntityDimensions.scalable(this.getRadius() * 2.0F, 0.5F);
      }
@@ -328,10 +328,10 @@ index 1f55185814125c691288294d18bf1580461c8066..7b6815bbeefd3c7dff77b4c7f15f2d24
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 66bf1ac9ef535183dc542eee6278041b6f69e463..8c1190f5b167972ba4adfc5da15b49426241c5c4 100644
+index 2092ede561d14ace1c003ced051cd4967bb41beb..be4feeef0276e8872ee2242e30c13f97b2e22074 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -5079,4 +5079,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -5106,4 +5106,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
          return false;
      }
      // Purpur end
@@ -339,10 +339,10 @@ index 66bf1ac9ef535183dc542eee6278041b6f69e463..8c1190f5b167972ba4adfc5da15b4942
 +    public boolean shouldTickHot() { return this.tickCount > 20*10 && this.isAlive(); } // KioCG
  }
 diff --git a/src/main/java/net/minecraft/world/entity/LightningBolt.java b/src/main/java/net/minecraft/world/entity/LightningBolt.java
-index a9e70484b01fc082ea25d43d1d42833499b5e41d..863683b58c3797c2d8ec8124b021c4acd32a56d0 100644
+index 0a8a53710c693a220e9475f6f3112b91d8209c00..5053852c72b68db41a2f51a72fffa1f8fe09b8da 100644
 --- a/src/main/java/net/minecraft/world/entity/LightningBolt.java
 +++ b/src/main/java/net/minecraft/world/entity/LightningBolt.java
-@@ -286,4 +286,11 @@ public class LightningBolt extends Entity {
+@@ -287,4 +287,11 @@ public class LightningBolt extends Entity {
      public Stream<Entity> getHitEntities() {
          return this.hitEntities.stream().filter(Entity::isAlive);
      }
@@ -355,10 +355,10 @@ index a9e70484b01fc082ea25d43d1d42833499b5e41d..863683b58c3797c2d8ec8124b021c4ac
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index c2ce4efd43dfc783b231cd5f4a2644ed22a7db73..54fe049d14a04e7b355c822f27984c8ec3bee5af 100644
+index 5099c6d84fbb55952759498e623c8a1964ffbe5b..6b477300535295b6c58b9a0340e52d067cd49b65 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1865,4 +1865,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1866,4 +1866,11 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
      }
      // Purpur end
@@ -371,10 +371,10 @@ index c2ce4efd43dfc783b231cd5f4a2644ed22a7db73..54fe049d14a04e7b355c822f27984c8e
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f027436b236 100644
+index c80324d79b74fc620568347289f4e39629162409..82c149cefb5b6b63e293527f46ea86a711075229 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/horse/TraderLlama.java
-@@ -215,4 +215,11 @@ public class TraderLlama extends Llama {
+@@ -218,4 +218,11 @@ public class TraderLlama extends Llama {
              super.start();
          }
      }
@@ -387,10 +387,10 @@ index 02e3adc9a55fa9cd2a418094eb206970faaf471b..c6c25e7a1020c70a429a7753312a1f02
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index c68cf6f0ff6f9b76219fbd6d90c8789b6ad2c521..0b54901eac6574b7487b0b90a384307a66f0fc51 100644
+index e491a391d452df9c79935232dedd03c47c3d50ca..e341ceabe8d2947a22e4c23812ff20afc0447863 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -369,4 +369,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -370,4 +370,11 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return !pos.closerToCenterThan(this.trader.position(), proximityDistance);
          }
      }
@@ -403,10 +403,10 @@ index c68cf6f0ff6f9b76219fbd6d90c8789b6ad2c521..0b54901eac6574b7487b0b90a384307a
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index dfc73cd1b4fd9a2572a71b653e6e3d9133ec634c..11056453ceb9bfb3372e2c4a7a743ff213e4ac7d 100644
+index 43199815ffe3d666577390b96187aa898ceb910e..f194b2faa9765f68ba10f0d88c05656172921db4 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -2464,4 +2464,11 @@ public abstract class Player extends LivingEntity {
+@@ -2473,4 +2473,11 @@ public abstract class Player extends LivingEntity {
              return this.message;
          }
      }
@@ -419,7 +419,7 @@ index dfc73cd1b4fd9a2572a71b653e6e3d9133ec634c..11056453ceb9bfb3372e2c4a7a743ff2
 +    // KioCG end
  }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 422145f30b7c8e11366705cd9b974a5a89ba5e10..4291ee5de2bf895ef9cdc8c033e778f5a16b704f 100644
+index 577df1ad8eb57ae7a53c9931c379824a6882fa5f..4ae5164833ba87c07b7204603c1f88b1d9cb11cf 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -340,4 +340,11 @@ public abstract class Projectile extends Entity implements TraceableEntity {

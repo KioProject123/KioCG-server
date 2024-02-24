@@ -266,10 +266,10 @@ index c531d830f4d6b2d2213e160d7e1a5b50b80dbea5..4e69136a9316a2f8a67d4da9e795076f
  
      public static AttributeSupplier.Builder createAttributes() {
 diff --git a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-index 3f78ab74cd7706ad16f6d5a989803691c9842f9f..c68cf6f0ff6f9b76219fbd6d90c8789b6ad2c521 100644
+index b133c186d2d1412aa623ba3db68091bc69c282a5..e491a391d452df9c79935232dedd03c47c3d50ca 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/WanderingTrader.java
-@@ -117,6 +117,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -118,6 +118,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
              return level().purpurConfig.milkClearsBeneficialEffects && this.canDrinkMilk && this.level().isDay() && entityvillagertrader.isInvisible(); // Paper - Add more WanderingTrader API // Purpur
          }));
          this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
@@ -278,7 +278,7 @@ index 3f78ab74cd7706ad16f6d5a989803691c9842f9f..c68cf6f0ff6f9b76219fbd6d90c8789b
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zombie.class, 8.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Evoker.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Vindicator.class, 8.0F, 0.5D, 0.5D));
-@@ -124,6 +126,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
+@@ -125,6 +127,8 @@ public class WanderingTrader extends net.minecraft.world.entity.npc.AbstractVill
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Pillager.class, 15.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Illusioner.class, 12.0F, 0.5D, 0.5D));
          this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Zoglin.class, 10.0F, 0.5D, 0.5D));

@@ -78,10 +78,10 @@ index 36b7686fdfeaab13cb1be9610ddc76fc70f6f6e5..66ea5837dbfa9762d395f1bd75491258
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 466e1dc1b7d314df2c49980e104bcbfd0a11817d..8642925744bc563feb5efae75e2074101041a269 100644
+index bfa69b2c37f07132f8b31c12d26f4ceb074901a5..98f18bca51abb05a8c9b4fcb55011d4dbf7e51fa 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -426,7 +426,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -428,7 +428,12 @@ public abstract class LivingEntity extends Entity implements Attackable {
                          double d1 = this.level().getWorldBorder().getDamagePerBlock();
  
                          if (d1 > 0.0D) {
@@ -96,7 +96,7 @@ index 466e1dc1b7d314df2c49980e104bcbfd0a11817d..8642925744bc563feb5efae75e207410
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
-index c30b00e5637d3def256c93cc227a15ddaf99bc56..c86ca83ecb13b07442e09557487c1486b1fd29aa 100644
+index b75d07f3af4addbb306ecb6baacf1607ef65fc25..37be573be745376ae722eb493a3fff2ed8441c43 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/SnowGolem.java
 @@ -237,7 +237,7 @@ public class SnowGolem extends AbstractGolem implements Shearable, RangedAttackM
@@ -191,7 +191,7 @@ index 0c39126ce51439cce05747161aba43bce33a12d8..ba2305201707a1880a0f270143886457
                  return;
              }
 diff --git a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
-index d0d951f867390fa12cae2ba2a49212354b10d7b0..03f0ab2a650762231e6c74f9f5958e7bd5607e1a 100644
+index 11825590af9346c61d5d15e5ef446b3c77b81b54..767dc9667872da828077e75b5871a789d3d1af27 100644
 --- a/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 +++ b/src/main/java/org/purpurmc/purpur/entity/PhantomFlames.java
 @@ -98,7 +98,7 @@ public class PhantomFlames extends LlamaSpit {

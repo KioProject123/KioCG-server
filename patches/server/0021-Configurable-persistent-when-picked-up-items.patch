@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Mon, 16 Oct 2023 03:40:49 +0800
+Date: Sat, 24 Feb 2024 21:16:42 +0800
 Subject: [PATCH] Configurable persistent when picked up items
 
 
@@ -18,18 +18,18 @@ index f7f1c3aab99bc7e6aa3f46855675f819cfd6c809..e7f35737769dc907dbf227fb7c696a53
      }
      // KioCG end
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 54fe049d14a04e7b355c822f27984c8ec3bee5af..244046fb349332fe046ea18b1fd2068d77b06ab1 100644
+index 6b477300535295b6c58b9a0340e52d067cd49b65..c2c03fa2e221757bd48d0b8697412b3ad43ba9aa 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -392,6 +392,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -393,6 +393,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
          }
          if (this.ticksSinceLastInteraction > this.level().purpurConfig.entityLifeSpan) {
-             this.discard();
+             this.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
 +            if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
          }
      }
      // Purpur end
-@@ -795,9 +796,32 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -796,9 +797,32 @@ public abstract class Mob extends LivingEntity implements Targeting {
      protected void setItemSlotAndDropWhenKilled(EquipmentSlot slot, ItemStack stack) {
          this.setItemSlot(slot, stack);
          this.setGuaranteedDrop(slot);
@@ -62,18 +62,18 @@ index 54fe049d14a04e7b355c822f27984c8ec3bee5af..244046fb349332fe046ea18b1fd2068d
      public void setGuaranteedDrop(EquipmentSlot slot) {
          switch (slot.getType()) {
              case HAND:
-@@ -907,6 +931,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -908,6 +932,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
  
                  if (d0 > (double) j && this.removeWhenFarAway(d0)) {
-                     this.discard();
+                     this.discard(EntityRemoveEvent.Cause.DESPAWN); // CraftBukkit - add Bukkit remove cause
 +                    if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
                  }
  
                  int k = this.level().paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).soft(); // Paper - Configurable despawn distances
-@@ -914,6 +939,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -915,6 +940,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
  
                  if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > (double) l && this.removeWhenFarAway(d0)) {
-                     this.discard();
+                     this.discard(EntityRemoveEvent.Cause.DESPAWN); // CraftBukkit - add Bukkit remove cause
 +                    if (this.level().paperConfig().kiocgConfig.entities.persistentOnlyWhenPickedUpEnchantedItems) this.dropPickedUpItems(); // KioCG
                  } else if (d0 < (double) l) {
                      this.noActionTime = 0;

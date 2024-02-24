@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize statistics ticking
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 11056453ceb9bfb3372e2c4a7a743ff213e4ac7d..c023566a34b718b25938ff0abba4cca24e29469e 100644
+index f194b2faa9765f68ba10f0d88c05656172921db4..39bca22ef152148a177d6ca0162e824f71aef14e 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -307,19 +307,23 @@ public abstract class Player extends LivingEntity {
+@@ -309,19 +309,23 @@ public abstract class Player extends LivingEntity {
          this.moveCloak();
          if (!this.level().isClientSide) {
              this.foodData.tick(this);

@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Sun, 17 Dec 2023 14:26:29 +0800
+Date: Sat, 24 Feb 2024 21:21:23 +0800
 Subject: [PATCH] Transform spawned via mob spawner
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 244046fb349332fe046ea18b1fd2068d77b06ab1..f457dc6b9cb95bea2d9b95a728dd1d40e20e8ebb 100644
+index c2c03fa2e221757bd48d0b8697412b3ad43ba9aa..f185340b56726dd84f22a6635db53cb19c8fc871 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -1542,6 +1542,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
+@@ -1543,6 +1543,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
                      return null;
                  }
                  this.level().addFreshEntity(t0, spawnReason);
@@ -17,7 +17,7 @@ index 244046fb349332fe046ea18b1fd2068d77b06ab1..f457dc6b9cb95bea2d9b95a728dd1d40
                  if (this.isPassenger()) {
                      Entity entity = this.getVehicle();
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
-index 6d00b3cd4a9cb0fc8a9e9c27f37429a25fcf6e9d..f65a0dfe7b80c09f442b2ebcd210219dffdfbe6a 100644
+index be4ccc42d6f598cbaaf39aafbd49b594ac7b06fe..9d5904d807b33b392434d904820de5c7cde76117 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
 @@ -233,6 +233,7 @@ public class Cow extends Animal {
@@ -25,35 +25,35 @@ index 6d00b3cd4a9cb0fc8a9e9c27f37429a25fcf6e9d..f65a0dfe7b80c09f442b2ebcd210219d
          }
          this.level().addFreshEntity(mooshroom);
 +        mooshroom.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
-         this.remove(RemovalReason.DISCARDED);
+         this.remove(RemovalReason.DISCARDED, org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-index 3f00d40125b63a76ed549755d4c9d9a2ff2d4adf..c4800c716417716618880edc44609f898cd8235f 100644
+index 21632120b52e4d594153ebe057a14afa74c3f4eb..31d7dc087ba1937218ab05617c15bb9fc17a6542 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/MushroomCow.java
-@@ -258,6 +258,7 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
+@@ -259,6 +259,7 @@ public class MushroomCow extends Cow implements Shearable, VariantHolder<Mushroo
                      return;
                  }
                  this.level().addFreshEntity(entitycow, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SHEARED);
 +                entitycow.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
  
-                 this.discard(); // CraftBukkit - from above
+                 this.discard(EntityRemoveEvent.Cause.TRANSFORMATION); // CraftBukkit - from above and add Bukkit remove cause
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
-index 14135dac80dec4224715e21cef6556d22e569026..2a883c24548aa0208f9dfefb65b694d63ba62a4b 100644
+index 2a9c2a69a0589e4e7b7c79d3716376b360a2eba1..ce133ba0ec78b2ffb0efd0b6cce7be1933b57b50 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
-@@ -285,6 +285,7 @@ public class Tadpole extends AbstractFish {
+@@ -288,6 +288,7 @@ public class Tadpole extends AbstractFish {
                  // CraftBukkit end
                  this.playSound(SoundEvents.TADPOLE_GROW_UP, 0.15F, 1.0F);
                  worldserver.addFreshEntityWithPassengers(frog, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.METAMORPHOSIS); // CraftBukkit - add SpawnReason
 +                frog.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
-                 this.discard();
+                 this.discard(EntityRemoveEvent.Cause.TRANSFORMATION); // CraftBukkit - add Bukkit remove cause
              }
          }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
-index ede47e5da73097fec9435f9839646bf9df93336b..e5d2ddaf069c4498ebd08e1f8ea6bc8caaa97241 100644
+index 5e6c102735326b383b8b72f4d230e98ee07cfd1a..647c06966a11c2f58f7f0964a7f0f4b9e34bea6e 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Skeleton.java
 @@ -234,6 +234,7 @@ public class Skeleton extends AbstractSkeleton {
@@ -61,14 +61,14 @@ index ede47e5da73097fec9435f9839646bf9df93336b..e5d2ddaf069c4498ebd08e1f8ea6bc8c
  
          this.level().addFreshEntity(skeleton);
 +        skeleton.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
-         this.remove(RemovalReason.DISCARDED);
+         this.remove(RemovalReason.DISCARDED, org.bukkit.event.entity.EntityRemoveEvent.Cause.DISCARD);
          if (!player.getAbilities().instabuild) {
              stack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-index 489c8cbec828318e5b84cb9eaf25733b39781927..b11556e67b7464d0b76a0a0847e33e364740605d 100644
+index 0f77f00e9a02d1f982f285617604e7291b70a2a4..de3d08796aeb42fe7e13d834a9fca5ea135b74cc 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-@@ -337,6 +337,7 @@ public class Slime extends Mob implements Enemy {
+@@ -345,6 +345,7 @@ public class Slime extends Mob implements Enemy {
              }
              for (LivingEntity living : slimes) {
                  this.level().addFreshEntity(living, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.SLIME_SPLIT); // CraftBukkit - SpawnReason
@@ -77,14 +77,14 @@ index 489c8cbec828318e5b84cb9eaf25733b39781927..b11556e67b7464d0b76a0a0847e33e36
              // CraftBukkit end
          }
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 215fb7bc579f8d4dbf9a8732234d1fa77a709b80..984ef96c11376dbaf1945b5c0b022dbd7a7fab65 100644
+index 62ea4d030f5e387feb2852e1aa0c66041419763d..991d160c79b3017dfe5bc7ad826e202a1a84d78e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -1026,6 +1026,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -1027,6 +1027,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
                      return;
                  }
                  world.addFreshEntityWithPassengers(entitywitch, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
 +                entitywitch.spawnedViaMobSpawner = this.spawnedViaMobSpawner; // KioCG
                  // CraftBukkit end
                  this.releaseAllPois();
-                 this.discard();
+                 this.discard(EntityRemoveEvent.Cause.TRANSFORMATION); // CraftBukkit - add Bukkit remove cause

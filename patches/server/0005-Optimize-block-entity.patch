@@ -1,6 +1,6 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Joket_abc <15005771700@qq.com>
-Date: Tue, 23 Jan 2024 03:27:53 +0800
+Date: Sat, 24 Feb 2024 21:08:02 +0800
 Subject: [PATCH] Optimize block entity
 
 
@@ -17,10 +17,10 @@ index fc35cfc9d045f3e5b6a50af1d0ba83b6e322091f..9c681f39695f7a2b6321b848472be901
              this.immunize();  // Paper
              return true;
 diff --git a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-index 7496da8b914fbf540bfb1c5800ddda1d6ec66f4e..bcb4198efddc9dc8d56518b24c7d02ee3cfbbd7f 100644
+index 5eed401d3d722c6553240aba4a8e2337ee32b263..a61c036d86b80a9a2f0f0b3171e4c87fee72f67f 100644
 --- a/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CampfireBlock.java
-@@ -296,7 +296,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
+@@ -291,7 +291,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
      @Nullable
      @Override
      public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
@@ -30,7 +30,7 @@ index 7496da8b914fbf540bfb1c5800ddda1d6ec66f4e..bcb4198efddc9dc8d56518b24c7d02ee
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
-index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d048dca1e73 100644
+index 5a3a619c4b936a4d186c0593f5af7b2493b85825..753a95fd18def1d9b088e4b0dec2dc71079d7f16 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity.java
 @@ -86,6 +86,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
@@ -41,7 +41,7 @@ index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d04
  
      protected AbstractFurnaceBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
          super(blockEntityType, pos, state);
-@@ -334,6 +335,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -339,6 +340,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
      }
  
      public static void serverTick(Level world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
@@ -49,7 +49,7 @@ index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d04
          boolean flag = blockEntity.isLit();
          boolean flag1 = false;
  
-@@ -363,6 +365,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -368,6 +370,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
          if (!blockEntity.isLit() && (!flag3 || !flag2)) {
              if (!blockEntity.isLit() && blockEntity.cookingProgress > 0) {
                  blockEntity.cookingProgress = Mth.clamp(blockEntity.cookingProgress - 2, 0, blockEntity.cookingTotalTime);
@@ -57,7 +57,7 @@ index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d04
              }
          } else {
              RecipeHolder recipeholder;
-@@ -417,6 +420,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -422,6 +425,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
                  }
                  // CraftBukkit end
  
@@ -65,7 +65,7 @@ index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d04
                  ++blockEntity.cookingProgress;
                  if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) { // Paper - cook speed multiplier API
                      blockEntity.cookingProgress = 0;
-@@ -601,6 +605,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
+@@ -606,6 +610,7 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
              this.setChanged();
          }
  
@@ -74,13 +74,13 @@ index 1d179e9485df78657ce67ab7ca4c4b1bcaf6c4ea..83cdf721c327dd8dc04c85b6da483d04
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
-index bc01481ac5990ad1cfd1def5a16dd0ed2f9de8c9..b4b176447330992753f446968c23d658f94b6c4a 100644
+index 9bb542ce3a8c52e1688bb1f66fc916dd23a5fd10..65ddf5c04f7d6212a20d535cc2d1d423f6b27bec 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BrewingStandBlockEntity.java
 @@ -59,6 +59,7 @@ public class BrewingStandBlockEntity extends BaseContainerBlockEntity implements
      private int lastTick = MinecraftServer.currentTick;
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
-     private int maxStack = 64;
+     private int maxStack = MAX_STACK;
 +    private boolean shouldTick = true; // KioCG
  
      public void onOpen(CraftHumanEntity who) {
@@ -147,10 +147,10 @@ index 9f7b49a6a50cb53d914c8f4b5132c035c5ab71da..d33fd3f94d5c4c4dbd8e87dd337b686d
  
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 7041394d366e6145369d032a0a14f0478af4679f..74c89dde1d118dc71110b3998e7bbde34018d559 100644
+index 9e577408d8e794c40bf34bc800cd0920856a5d2b..b1e8512822c2cb757285d7e3cd31f87eb1e6a754 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -516,7 +516,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -517,7 +517,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          return inventory instanceof WorldlyContainer ? IntStream.of(((WorldlyContainer) inventory).getSlotsForFace(side)) : IntStream.range(0, inventory.getContainerSize());
      }
  
